@@ -2,7 +2,7 @@ import React from 'react';
 
 const Header = () => {
     return (
-        <h1>Quran Memorisation Tester</h1>
+        <h1 style ={{margin: '0px 0.5em', padding: '0.3em 0em'}}>Quran Memorisation Tester</h1>
     )
 }
 

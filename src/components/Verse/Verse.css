@@ -1,0 +1,31 @@
+@font-face {
+    font-family: 'Mushaf Ligatures';
+    src: local('QCF_BSML'),
+         url(https://raw.githubusercontent.com/mustafa0x/qpc-fonts/f93bf5f3/mushaf-v2-woff2/QCF_BSML.woff2) format('woff2'),
+         url(https://raw.githubusercontent.com/mustafa0x/qpc-fonts/f93bf5f3/mushaf-woff/QCF_BSML.woff) format('woff');
+  }
+  @font-face {
+    font-family: 'Mushaf Page NNN';
+    src: local('QCF_PNNN'),
+         url(https://raw.githubusercontent.com/mustafa0x/qpc-fonts/f93bf5f3/mushaf-woff2/QCF_PNNN.woff2) format('woff2'),
+         url(https://raw.githubusercontent.com/mustafa0x/qpc-fonts/f93bf5f3/mushaf-woff/QCF_PNNN.woff) format('woff');
+  }
+
+  h1 {
+      
+}
+
+.verse-container {
+    max-width: '2em'; /* Set the desired maximum width */
+    margin: 0 auto; /* Center the container horizontally */
+  }
+
+.verse {
+    font-family: 'Mushaf Page NNN';
+    font-size: 2.5em;
+    max-width: 30em;
+    
+    margin-top: 1em; 
+    border:1px solid rgb(201, 201, 201);
+    padding: 1.5em 10px;
+  }

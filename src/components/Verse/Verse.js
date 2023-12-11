@@ -1,8 +1,20 @@
-import React from 'react';
+import {React, useState, useEffect} from 'react';
+import './Verse.css';
 
-const Verse = () => {
+const Verse = ({ verseText }) => {
+
+    const [verse, setVerse] = useState(verseText);
+
+    useEffect(() => {
+        // Update local state when the prop changes
+        setVerse(verseText);
+    }, [verseText]);
     return (
-        <h1 dir="rtl">ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَـٰلَمِينَ ٢</h1>
+        <div>
+            <h1 dir="rtl" className="verse verse-container">
+                {verse}
+            </h1>
+        </div>
     )
 }
 

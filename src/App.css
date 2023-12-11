@@ -28,6 +28,17 @@
   color: #61dafb;
 }
 
+.dark {
+  background-color: #333;
+  color: #fff;
+}
+.light {
+  background-color: #faf5f5;
+  margin: 0;
+  height: 100vh;
+  color: #333; /* Set text color to a darker shade for readability */
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
