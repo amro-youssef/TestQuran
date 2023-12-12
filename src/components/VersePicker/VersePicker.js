@@ -4,47 +4,6 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import './VersePicker.css'
 
-
-// const getChapters = () => {
-//     return fetch('https://api.quran.com/api/v4/chapters/', {
-//     method: 'GET',
-//         headers: { 
-//             'Accept': 'application/json'
-//         }
-//     })
-//     .then(response => response.json())
-//     .then(response => {
-//         return response?.chapters;
-//     })
-//     .catch((error) => {
-//         console.log(error);
-//         return []
-//     });
-// }
-
-// const getChapterNames = () => {
-//     return getChapters().then(response => {
-//         return response.map(chapter => (`${chapter?.id} ${chapter?.name_simple}`))
-//     });
-// }
-
-// const getNumberVerses = async (chapterNumber) => {
-//     try {
-//         const response = await fetch(`https://api.quran.com/api/v4/chapters/${chapterNumber}`, {
-//             method: 'GET',
-//             headers: {
-//                 'Accept': 'application/json'
-//             }
-//         });
-//         const data = await response.json();
-//         console.log("getNumberVerses", data?.chapter?.verses_count);
-//         return data?.chapter?.verses_count;
-//     } catch (error) {
-//         console.log(error);
-//         return -1;
-//     }
-// }
-
 const VersePicker = ({ loadState }) => {
     const [startChapters, setStartChapters] = useState([]);
     const [startVerses, setStartVerses] = useState([]);
@@ -224,8 +183,6 @@ const VersePicker = ({ loadState }) => {
                     //defaultValue={chapters.chapterNumberSelected} need to get verse count of each chapter, then auto set this to the first
                 />
             </div>
-
-
         </div>
         
     )

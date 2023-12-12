@@ -1,4 +1,5 @@
 import {React, useState, useEffect} from 'react';
+import { Button } from '@mui/material';
 import './Verse.css';
 
 const Verse = ({ verseText }) => {
@@ -10,10 +11,14 @@ const Verse = ({ verseText }) => {
         setVerse(verseText);
     }, [verseText]);
     return (
-        <div>
-            <h1 dir="rtl" className="verse verse-container">
+        // <div className="verse verse-container">
+        <div className="verse">
+            <h1 dir="rtl">
                 {verse}
             </h1>
+            {/* <button>
+                read more 
+            </button> */}
         </div>
     )
 }

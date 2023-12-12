@@ -11,21 +11,25 @@
          url(https://raw.githubusercontent.com/mustafa0x/qpc-fonts/f93bf5f3/mushaf-woff/QCF_PNNN.woff) format('woff');
   }
 
-  h1 {
-      
+  @font-face {
+    font-family: "v2";
+    src: local('QCF_PNNN'),
+         url(https://github.com/quran/quran.com-frontend-next/blob/master/public/fonts/quran/hafs/v2/woff2/p1.woff2) format('woff2'),
+         /* url(https://raw.githubusercontent.com/mustafa0x/qpc-fonts/f93bf5f3/mushaf-woff/QCF_PNNN.woff) format('woff'); */
+    
 }
 
 .verse-container {
     max-width: '2em'; /* Set the desired maximum width */
     margin: 0 auto; /* Center the container horizontally */
+    margin-top: 1em; 
+    border:1px solid rgb(201, 201, 201);
   }
 
 .verse {
-    font-family: 'Mushaf Page NNN';
-    font-size: 2.5em;
-    max-width: 30em;
+    font-family: 'v2';
+    font-size: 1.8em;
+    max-width: 40em;
     
-    margin-top: 1em; 
-    border:1px solid rgb(201, 201, 201);
-    padding: 1.5em 10px;
+    /* padding: 1.5em 10px; */
   }
