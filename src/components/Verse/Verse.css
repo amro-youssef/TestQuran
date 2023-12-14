@@ -20,16 +20,35 @@
 }
 
 .verse-container {
-    max-width: '2em'; /* Set the desired maximum width */
+    /* max-width: '2em'; Set the desired maximum width */
     margin: 0 auto; /* Center the container horizontally */
-    margin-top: 1em; 
+    margin-top: 0em; 
     border:1px solid rgb(201, 201, 201);
   }
 
 .verse {
     font-family: 'v2';
-    font-size: 1.8em;
-    max-width: 40em;
+    font-size: 2em;
+    /* max-width: 40em; */
     
     /* padding: 1.5em 10px; */
   }
+
+
+@media (width < 500px) {
+    .verse {
+        font-size: 1em;
+    }
+}
+
+@media (768px <= width < 1024px) {
+    .verse {
+        font-size: 1em
+    }
+}
+
+@media (width > 1024px) {
+    .verse {
+        font-size: 1.2em
+    }
+}

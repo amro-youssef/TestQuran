@@ -48,7 +48,7 @@ const getVerseText = async (chapterNumber, verseNumber) => {
         const data = await response.json();
         // NOTE: this may be very ineffience
         data.verses = data.verses.filter(verse => verse.verse_key == `${chapterNumber}:${verseNumber}`)
-        return data.verses[0].text_uthmani
+        return data.verses[0]?.text_uthmani
     } catch (error) {
         console.log(error);
         return -1;

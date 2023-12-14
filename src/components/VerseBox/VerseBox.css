@@ -1,12 +1,23 @@
 .verse-container {
-    max-width: '2em'; /* Set the desired maximum width */
     margin: 0 auto; /* Center the container horizontally */
-    margin-top: 1em; 
+    /* margin-top: 1em;  */
     border:1px solid rgb(201, 201, 201);
 
-    max-width: 40em;
-    font-size: 1.8em;
+    /* max-width: 60em; */
+    width: 65%;
+    /* font-size: 1.3em; */
     
-    margin-top: 1em; 
-    padding: 1.5em 10px;
+    /* padding: 1.5em; */
+  }
+
+  @media (width < 500px) {
+    .verse-container {
+        width: 90%;
+    }
+  }
+
+  @media (width <= 1224px) {
+    .verse-container {
+        width: 85%;
+    }
   }
