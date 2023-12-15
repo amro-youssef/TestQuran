@@ -6,6 +6,7 @@ import Header from './components/Header/Header';
 import VersePicker from './components/VersePicker/VersePicker';
 import SubmitButton from './components/SubmitButton/SubmitButton';
 import VerseBox from './components/VerseBox/VerseBox';
+import SwipeableTemporaryDrawer from './components/Sidebar/Sidebar';
 
 const App = () => { 
   const [startChapterNumber, setStartChapterNumber] = useState(null); 
@@ -17,6 +18,7 @@ const App = () => {
   const [currentVerse, setCurrentVerse] = useState(null);
   const [readMore, setReadMore] = useState(false);
   const [showVerseNumbers, setShowVerseNumbers] = useState(false);
+  const [reciterNumber, setReciterNumber] = useState(1);
 
   const [secondVerseText, setSecondVerseText] = useState(null);
   const [secondChapterNumber, setSecondChapterNumber] = useState(null);
@@ -48,6 +50,7 @@ const App = () => {
     }
   };
 
+
   const resetStates = () => {
     setCurrentVerse(null);
     setSecondChapterNumber(null);
@@ -57,7 +60,6 @@ const App = () => {
     setShowVerseNumbers(false);
     setReadMore(false);
   }
-  
 
   const getRandomVerse = async (verseList) => {
     const list = await verseList;
@@ -134,7 +136,13 @@ const App = () => {
 
   return (
     <div className="App light">
-      <Header />
+      <header style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'row'}}>
+        <div></div>
+        <Header style={{justifyContent: 'center'}}/>
+        <div style={{display: 'flex', justifyContent: 'right', alignSelf: 'flex-end'}}>
+          <SwipeableTemporaryDrawer setReciterNumber={(num) => setReciterNumber(num)}/>
+        </div>
+      </header>
       <Title />
       <div style={{ display: 'flex', justifyContent: 'space-evenly', flexWrap: 'wrap' }}>
         <VersePicker loadState={loadState}/>
@@ -151,6 +159,7 @@ const App = () => {
             viewVerseNumber={showVerseNumbers}
             onViewVerseNumberChange={onViewVerseNumberChange}
             playAudio={getAndPlayAudio}
+            reciterNumber={reciterNumber}
           />
           {readMore && secondVerseText ?  (
             <>
@@ -161,6 +170,7 @@ const App = () => {
                 viewVerseNumber={showVerseNumbers}
                 onViewVerseNumberChange={onViewVerseNumberChange}
                 playAudio={getAndPlayAudio}
+                reciterNumber={reciterNumber}
               />
             </>
           ) : <></>}
@@ -173,6 +183,7 @@ const App = () => {
                 viewVerseNumber={showVerseNumbers}
                 onViewVerseNumberChange={onViewVerseNumberChange}
                 playAudio={getAndPlayAudio}
+                reciterNumber={reciterNumber}
               />
             </>
           ) : <></>}

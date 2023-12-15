@@ -21,22 +21,66 @@ const getChapterNames = () => {
     });
 }
 
-const getAndPlayAudio = async (chapterNumber, verseNumber) => {
+let audioElement;
+const getAndPlayAudio = async (chapterNumber, verseNumber, reciterNumber) => {
+    // if (isAudioPlaying) {
+    //     console.log("Audio is already playing. Cannot start a new instance.");
+    //     return;
+    // }
+    // may be better to split this method into a get audio file and play audio file method
     const paddedChapterNumber = String(chapterNumber).padStart(3, '0');
     const paddedVerseNumber = String(verseNumber).padStart(3, '0');
+
+    if (audioElement && !audioElement.paused) {
+        audioElement.pause();
+        audioElement.currentTime = 0;
+    }
+
     try {
-        const response = await fetch(`https://verses.quran.com/AbdulBaset/Murattal/mp3/${paddedChapterNumber}${paddedVerseNumber}.mp3`, {
+        // const response = await fetch(`https://verses.quran.com/AbdulBaset/Murattal/mp3/${paddedChapterNumber}${paddedVerseNumber}.mp3`, {
+        //     method: 'GET',
+        //     headers: {
+        //         'Accept': 'application/json'
+        //     }
+        // });
+        const urlResponse = await fetch(`https://api.quran.com/api/v4/recitations/${parseInt(reciterNumber)}/by_ayah/${chapterNumber}:${verseNumber}`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json'
             }
         });
-        const audioBlob = await response.blob();
-        const audioUrl = URL.createObjectURL(audioBlob);
+        const data = await urlResponse.json();
+        console.log(data)
+        // strangely the api sometimes returns a direct link to the mp3, and sometimes it gives the end part
 
-        const audioElement = new Audio();
-        audioElement.src = audioUrl;
-        audioElement.play();
+        let response;
+        let audioBlob;
+        console.log(data.audio_files[0].url)
+        try {
+            console.log("try")
+            response = await fetch("https://verses.quran.com/" + data.audio_files[0].url, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+            if (!response.ok) {
+                response = await fetch(data.audio_files[0].url, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+            }
+            audioBlob = await response.blob();
+            const audioUrl = URL.createObjectURL(audioBlob);
+            audioElement = new Audio();
+            audioElement.src = audioUrl;
+            audioElement.play();
+        } catch (error) {
+            console.log("Failed to play audio")
+        }
+
     } catch (error) {
         console.log(error);
         return -1;
