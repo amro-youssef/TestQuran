@@ -3,12 +3,13 @@ import { Button } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import VolumeUp from '@mui/icons-material/VolumeUp';
 import InfoIcon from '@mui/icons-material/Info';
 
 import Verse from '../Verse/Verse.js';
 import './VerseBox.css';
 
-const VerseBox = ({ verseText, readMorePressed, chapterNumber, verseNumber, viewVerseNumber, onViewVerseNumberChange }) => {
+const VerseBox = ({ verseText, readMorePressed, chapterNumber, verseNumber, viewVerseNumber, onViewVerseNumberChange, playAudio }) => {
 
     const [verse, setVerse] = useState(verseText);
     const [buttonText, setButtonText] = useState(<VisibilityIcon />);
@@ -28,11 +29,11 @@ const VerseBox = ({ verseText, readMorePressed, chapterNumber, verseNumber, view
     }
 
     const toggleExpandIcon = () => {
-        if (expanded) {
-            setExpandIcon(<ExpandMoreIcon/>)
-        } else {
-            setExpandIcon(<ExpandLessIcon/>);
-        }
+        // if (expanded) {
+        //     setExpandIcon(<ExpandMoreIcon/>)
+        // } else {
+        //     setExpandIcon(<ExpandLessIcon/>);
+        // }
         setExpanded(!expanded)
     }
 
@@ -53,6 +54,15 @@ const VerseBox = ({ verseText, readMorePressed, chapterNumber, verseNumber, view
         }
     }, [viewVerseNumber]);
 
+    useEffect(() => {
+        if (expanded) {
+            setExpandIcon(<ExpandLessIcon/>);
+        }
+        else {
+            setExpandIcon(<ExpandMoreIcon/>);
+        }
+    }, [expanded])
+
     return (
         <div className="verse-container">
             <Verse verseText={verseText} />
@@ -60,14 +70,28 @@ const VerseBox = ({ verseText, readMorePressed, chapterNumber, verseNumber, view
                 <Button
                     size="large"
                     style={{display: 'flex', justifyContent: 'flex-start'}}
-                    onClick={toggleView}>
+                    onClick={toggleView}
+                    sx={ { borderRadius: 28 }}
+                    id="verse-number">
                         {buttonText}
                 </Button>
+                <Button
+                    size="large"
+                    style={{display: 'flex', justifyContent: 'flex-start'}}
+                    sx={ { borderRadius: 28 }}
+                    id="audio"
+                    onClick={() => playAudio(chapterNumber, verseNumber)}>
+                        {<VolumeUp/>}
+                </Button>
+
+
+
                 {verse && readMorePressed ? (
                     <Button
                         onClick={expandButtonPressed} 
                         variant="outlined" 
-                        style = {{display: 'flex', justifyContent: 'center', margin: 'auto'}}>
+                        style = {{display: 'flex', justifyContent: 'center', margin: 'auto'}}
+                        sx={ { borderRadius: 28 }}>
                             {expandIcon}
                     </Button>
                 ) : <></>}

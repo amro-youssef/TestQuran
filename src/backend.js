@@ -21,6 +21,28 @@ const getChapterNames = () => {
     });
 }
 
+const getAndPlayAudio = async (chapterNumber, verseNumber) => {
+    const paddedChapterNumber = String(chapterNumber).padStart(3, '0');
+    const paddedVerseNumber = String(verseNumber).padStart(3, '0');
+    try {
+        const response = await fetch(`https://verses.quran.com/AbdulBaset/Murattal/mp3/${paddedChapterNumber}${paddedVerseNumber}.mp3`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+        const audioBlob = await response.blob();
+        const audioUrl = URL.createObjectURL(audioBlob);
+
+        const audioElement = new Audio();
+        audioElement.src = audioUrl;
+        audioElement.play();
+    } catch (error) {
+        console.log(error);
+        return -1;
+    }
+}
+
 const getNumberVerses = async (chapterNumber) => {
     try {
         const response = await fetch(`https://api.quran.com/api/v4/chapters/${chapterNumber}`, {
@@ -59,5 +81,6 @@ module.exports = {
     getChapters,
     getChapterNames,
     getNumberVerses,
-    getVerseText
+    getVerseText,
+    getAndPlayAudio
 };

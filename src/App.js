@@ -1,5 +1,5 @@
 import './App.css';
-import {getChapters, getChapterNames, getNumberVerses, getVerseText} from './backend.js';
+import {getAndPlayAudio, getChapters, getChapterNames, getNumberVerses, getVerseText} from './backend.js';
 import {React, useState, useEffect} from 'react';
 import Title from './components/Title/Title';
 import Header from './components/Header/Header';
@@ -49,10 +49,12 @@ const App = () => {
   };
 
   const resetStates = () => {
+    setCurrentVerse(null);
     setSecondChapterNumber(null);
     setSecondVerseNumber(null);
     setThirdChapterNumber(null);
     setThirdVerseNumber(null);
+    setShowVerseNumbers(false);
     setReadMore(false);
   }
   
@@ -148,6 +150,7 @@ const App = () => {
             verseNumber={currentVerse?.verseNumber}
             viewVerseNumber={showVerseNumbers}
             onViewVerseNumberChange={onViewVerseNumberChange}
+            playAudio={getAndPlayAudio}
           />
           {readMore && secondVerseText ?  (
             <>
@@ -157,6 +160,7 @@ const App = () => {
                 verseNumber={secondVerseNumber}
                 viewVerseNumber={showVerseNumbers}
                 onViewVerseNumberChange={onViewVerseNumberChange}
+                playAudio={getAndPlayAudio}
               />
             </>
           ) : <></>}
@@ -168,6 +172,7 @@ const App = () => {
                 verseNumber={thirdVerseNumber}
                 viewVerseNumber={showVerseNumbers}
                 onViewVerseNumberChange={onViewVerseNumberChange}
+                playAudio={getAndPlayAudio}
               />
             </>
           ) : <></>}
