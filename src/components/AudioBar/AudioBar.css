@@ -1,0 +1,22 @@
+.bottom-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #e7e0e0;
+    /* color: #fff; */
+    padding: 10px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .bottom-bar button {
+    /* margin: 0 10px; */
+  }
+
+  .bottom-bar volume {
+    margin: auto;
+    align-items: center;
+  }
+  

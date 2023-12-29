@@ -1,26 +1,20 @@
 .verse-container {
     margin: 0 auto; /* Center the container horizontally */
-    /* margin-top: 1em;  */
-    /* border:1px solid rgb(201, 201, 201); */
-
     border-top: 1px solid rgb(201, 201, 201);;
     border-bottom: 1px solid rgb(201, 201, 201);;
-
-    /* max-width: 60em; */
     width: 77%;
-    /* font-size: 1.3em; */
     flex-grow: 1
-    /* padding: 1.5em; */
   }
 
+  
+  @media (width <= 1224px) {
+    .verse-container {
+      width: 85%;
+    }
+  }
+  
   @media (width < 500px) {
     .verse-container {
         width: 90%;
-    }
-  }
-
-  @media (width <= 1224px) {
-    .verse-container {
-        width: 85%;
     }
   }

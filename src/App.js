@@ -7,6 +7,7 @@ import VersePicker from './components/VersePicker/VersePicker';
 import SubmitButton from './components/SubmitButton/SubmitButton';
 import VerseBox from './components/VerseBox/VerseBox';
 import SwipeableTemporaryDrawer from './components/Sidebar/Sidebar';
+import AudioBar from './components/AudioBar/AudioBar'
 
 const App = () => { 
   const [startChapterNumber, setStartChapterNumber] = useState(null); 
@@ -19,6 +20,7 @@ const App = () => {
   const [readMore, setReadMore] = useState(false);
   const [showVerseNumbers, setShowVerseNumbers] = useState(false);
   const [reciterNumber, setReciterNumber] = useState(1);
+  const [audioUrl, setAudioUrl] = useState(null);
 
   const [secondVerseText, setSecondVerseText] = useState(null);
   const [secondChapterNumber, setSecondChapterNumber] = useState(null);
@@ -39,6 +41,7 @@ const App = () => {
     resetStates();
     const versesList = await getVersesList(parseInt(startChapterNumber), parseInt(startVerseNumber),
                           parseInt(endChapterNumber), parseInt(endVerseNumber));
+    console.log("verses list", versesList)
     if (versesList.some(element => element === null)) {
       return;
     }
@@ -94,13 +97,13 @@ const App = () => {
             verseNumber: j
           })
         }
-      }
-
-      for (let j = 1; j <= numVersesInChapter; j++) {
-        verseList.push({
-          chapterNumber: i,
-          verseNumber: j
-        })
+      } else {
+        for (let j = 1; j <= numVersesInChapter; j++) {
+          verseList.push({
+            chapterNumber: i,
+            verseNumber: j
+          })
+        }
       }
 
     }
@@ -134,11 +137,21 @@ const App = () => {
     setShowVerseNumbers(!showVerseNumbers);
   }
 
+  const playAudio = async (chapterNumber, verseNumber, reciterNumber) => {
+    const url = await getAndPlayAudio(chapterNumber, verseNumber, reciterNumber); //=get from backend
+    // strangely the api sometimes returns a direct link to the mp3, and sometimes it only gives the end part
+    if (url.substring(0, 2) === "//") {
+      setAudioUrl(url);
+    } else {
+      setAudioUrl("https://verses.quran.com/" + url);
+    }
+  }
+
   return (
     <div className="App light">
       <header style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'row'}}>
-        <div></div>
-        <Header style={{justifyContent: 'center'}}/>
+        <div style={{marginRight: '65px', flexShrink: 2}}></div>
+        <Header style={{justifyContent: 'center', flexShrink: 2}}/>
         <div style={{display: 'flex', justifyContent: 'right', alignSelf: 'flex-end'}}>
           <SwipeableTemporaryDrawer setReciterNumber={(num) => setReciterNumber(num)}/>
         </div>
@@ -158,7 +171,7 @@ const App = () => {
             verseNumber={currentVerse?.verseNumber}
             viewVerseNumber={showVerseNumbers}
             onViewVerseNumberChange={onViewVerseNumberChange}
-            playAudio={getAndPlayAudio}
+            playAudio={playAudio}
             reciterNumber={reciterNumber}
           />
           {readMore && secondVerseText ?  (
@@ -169,7 +182,7 @@ const App = () => {
                 verseNumber={secondVerseNumber}
                 viewVerseNumber={showVerseNumbers}
                 onViewVerseNumberChange={onViewVerseNumberChange}
-                playAudio={getAndPlayAudio}
+                playAudio={playAudio}
                 reciterNumber={reciterNumber}
               />
             </>
@@ -182,14 +195,16 @@ const App = () => {
                 verseNumber={thirdVerseNumber}
                 viewVerseNumber={showVerseNumbers}
                 onViewVerseNumberChange={onViewVerseNumberChange}
-                playAudio={getAndPlayAudio}
+                playAudio={playAudio}
                 reciterNumber={reciterNumber}
               />
             </>
           ) : <></>}
         </>
       ) : <></>}
+    <AudioBar audioFile={audioUrl}/>
     </div>
+    
   );
 }
 

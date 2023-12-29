@@ -2,7 +2,9 @@ import {React, useState, useEffect} from 'react';
 import {getChapters, getChapterNames, getNumberVerses} from './../../backend.js'
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
+import InputLabel from '@mui/material/InputLabel';
 import './VersePicker.css'
+import { Select } from '@mui/material';
 
 const VersePicker = ({ loadState }) => {
     const [startChapters, setStartChapters] = useState([]);
@@ -101,8 +103,9 @@ const VersePicker = ({ loadState }) => {
     }, [endChapterNumber, startChapterNumber, startVerseNumber]);
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', marginLeft: '20px' }} className='VersePicker'>
-            <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'row', marginRight: '3em' }}>
+        <div className='VersePicker'>
+            <div className='startDiv'>
+                {/* change this to a normal list */}
                 <Autocomplete
                     // value={chapterNameSelected}
                     onChange={(event, chapterName) => {
@@ -113,35 +116,53 @@ const VersePicker = ({ loadState }) => {
                             setStartVerses([])
                         } catch {}
                     }}
+                    className='Autocomplete chapter'
                     disablePortal
                     disableClearable
                     id="start-chapter"
                     value={startChapter}
                     options={startChapters}
-                    sx={{ width: '13em', marginRight: '10px' }}
+                    // sx={{ width: '13em', marginRight: '10px' }}
                     renderInput={(params) => <TextField {...params} label="Start Chapter" />}
                     style={{ display: 'flex', justifyContent: 'center' }}
                 />
+                {/* <Select
+                    onChange={(event, chapterName) => {
+                        try {
+                            setStartChapter(chapterName);
+                            setStartChapterName(chapterName.split(' ').slice(1).join(' '));
+                            setStartChapterNumber(parseInt(chapterName.split(' ')[0]))
+                            setStartVerses([])
+                        } catch {}
+                    }}
+                    id="start-chapter"
+                    value={startChapter}
+                    sx={{ width: '13em', marginRight: '10px' }}
+                    renderInput={(params) => <TextField {...params} label="Start Chapter" />}
+                    label="Start Chapter"
+                    style={{ display: 'flex', justifyContent: 'center' }}
+                /> */}
                 <Autocomplete
                     onChange={(event, verseNumber) => {
                         try {
                             setStartVerseNumber(verseNumber);
                         } catch {}
                     }}
+                    className='Autocomplete verse'
                     disablePortal
                     disableClearable
                     id="start-verse"
                     options={startVerses}
                     value = {startVerseNumber}
                     // options={[...Array(numVersesInChapter).keys()].map(item => item + 1)}
-                    sx={{ width: '9.5em', marginLeft: '10px' }}
+                    // sx={{ width: '9.5em', marginLeft: '10px' }}
                     renderInput={(params) => <TextField {...params} label="Start Verse" />}
                     style={{ display: 'flex', justifyContent: 'center' }}
                     //defaultValue={chapters.chapterNumberSelected} need to get verse count of each chapter, then auto set this to the first
                 />
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'row' }}>
+            <div className='endDiv'>
                 <Autocomplete
                     // TODO need to add functionality that means end chapter is bigger than start  
                     // value={chapterNameSelected}
@@ -156,12 +177,13 @@ const VersePicker = ({ loadState }) => {
                         }
                         //setNumVersesInChapter(getNumberVerses(parseInt(chapterName.split(' ')[0])))
                     }}
+                    className='Autocomplete chapter'
                     value={endChapter}
                     disablePortal
                     disableClearable
                     id="end-chapter"
                     options={endChapters}
-                    sx={{ width: '13em', marginRight: '10px' }}
+                    // sx={{ width: '13em', marginRight: '10px' }}
                     renderInput={(params) => <TextField {...params} label="End Chapter" />}
                     style={{ display: 'flex', justifyContent: 'center' }}
                 />
@@ -171,13 +193,14 @@ const VersePicker = ({ loadState }) => {
                             setEndVerseNumber(verseNumber);
                         } catch {}
                     }}
+                    className='Autocomplete verse'
                     disablePortal
                     disableClearable
                     id="end-verse"
                     options={endVerses}
                     value = {endVerseNumber}
                     // options={[...Array(numVersesInChapter).keys()].map(item => item + 1)}
-                    sx={{ width: '9.5em', marginLeft: '10px' }}
+                    // sx={{ width: '9.5em', marginLeft: '10px' }}
                     renderInput={(params) => <TextField {...params} label="End Verse" />}
                     style={{ display: 'flex', justifyContent: 'center' }}
                     //defaultValue={chapters.chapterNumberSelected} need to get verse count of each chapter, then auto set this to the first

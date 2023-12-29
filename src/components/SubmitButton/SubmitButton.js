@@ -5,7 +5,7 @@ const SubmitButton = ( {onClick} ) => {
 
     return (
         <Button
-            size="large"
+            size="medium"
             variant="contained"
             onClick={onClick}
         >

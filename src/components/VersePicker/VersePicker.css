@@ -1,8 +1,75 @@
+.VersePicker {
+    display: flex;
+    justify-content: center;
+    display: flex;
+    justify-content: space-between; 
+    flex-wrap: wrap; 
+    margin-left: 20px
+}
+
+
+.startDiv {
+    display: flex; 
+    justify-content: center; 
+    flex-direction: row; 
+    margin-right: 3em
+}
+
+.endDiv {
+    display: flex; 
+    justify-content: center; 
+    flex-direction: row
+}
+
+.Autocomplete.chapter {
+    width: 13em;
+    margin-left: 10px;
+}
+
+.Autocomplete.verse {
+    width: 9.5em;
+    margin-left: 10px;
+}
+
 /* Basic styling for mobile devices */
-@media (max-width: 600px) {
+@media (max-width: 700px) {
     /* Adjust the font size for better readability on smaller screens */
     body {
         font-size: 14px;
+    }
+
+    .VersePicker {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 10px;
+        flex-direction: column;
+        margin-left: 0px
+    }
+
+    .Autocomplete.chapter {
+        width: 15em;
+        margin-left: 10px;
+    }
+    
+    .Autocomplete.verse {
+        width: 6.5em;
+        margin-left: 10px;
+    }
+
+    /* #start-verse {
+        width:80%
+    } */
+
+    /* .startDiv, .endDiv {
+        width: 100%
+    } */
+
+    .Autocomplete {
+        font-size: 10px
+    }
+
+    .startDiv {
+        margin-right: 0em
     }
 
     /* Adjust the width of Autocomplete components */
@@ -30,5 +97,30 @@
     .MuiInputLabel-root,
     .MuiInputBase-input {
         padding: 8px;
+    }
+}
+
+
+@media (min-width: 850px) and (max-width: 1100px) {
+    .Autocomplete.chapter {
+        width: 10em;
+        margin-left: 10px;
+    }
+    
+    .Autocomplete.verse {
+        width: 6em;
+        margin-left: 10px;
+    }
+}
+
+@media (min-width: 700px) and (max-width: 850px) {
+    .Autocomplete.chapter {
+        width: 8em;
+        margin-left: 10px;
+    }
+    
+    .Autocomplete.verse {
+        width: 6em;
+        margin-left: 10px;
     }
 }
