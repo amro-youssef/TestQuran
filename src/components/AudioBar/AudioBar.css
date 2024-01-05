@@ -1,4 +1,6 @@
 .bottom-bar {
+    display: flex; 
+    flex-direction: row;
     position: fixed;
     bottom: 0;
     left: 0;
@@ -20,3 +22,30 @@
     align-items: center;
   }
   
+.timeline-slider {
+  width: 250px
+}
+
+.volume-slider {
+  width: 150px
+}
+
+@media (width < 1000px) {
+  .timeline-slider {
+    width: 200px
+  }
+
+  .volume-slider {
+    width: 100px
+  }
+}
+
+@media (width < 750px) {
+  .timeline-slider {
+    width: 150px
+  }
+
+  .volume-slider {
+    width: 80px
+  }
+}

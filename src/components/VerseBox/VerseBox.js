@@ -9,7 +9,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import Verse from '../Verse/Verse.js';
 import './VerseBox.css';
 
-const VerseBox = ({ verseText, readMorePressed, chapterNumber, verseNumber, viewVerseNumber, onViewVerseNumberChange, playAudio, reciterNumber }) => {
+const VerseBox = ({ verseText, readMorePressed, chapterNumber, verseNumber, viewVerseNumber, onViewVerseNumberChange, playAudio }) => {
 
     const [verse, setVerse] = useState(verseText);
     const [buttonText, setButtonText] = useState(<VisibilityIcon />);
@@ -33,6 +33,7 @@ const VerseBox = ({ verseText, readMorePressed, chapterNumber, verseNumber, view
     }
 
     const expandButtonPressed = () => {
+        console.log("expand function", readMorePressed);
         readMorePressed();
         toggleExpandIcon();
     }
@@ -62,37 +63,58 @@ const VerseBox = ({ verseText, readMorePressed, chapterNumber, verseNumber, view
         setExpanded(false);
     }, [verseText])
 
+    // const expandDivStyle = {
+    //     position: 'absolute',
+    //     left: document.getElementById('expand-div').client_width / 2
+    // }
+
+    const [leftPosition, setLeftPosition] = useState('50%');
+
+    // ensures expand button remains central in respect to its parent div
+    useEffect(() => {
+        const expandDiv = document.getElementById('expand-div');
+        if (expandDiv) {
+            const newPosition = `calc(50% - ${expandDiv.clientWidth / 2}px)`;
+            setLeftPosition(newPosition);
+        }
+    }, []);
+
+    const expandDivStyle = {
+        position: 'absolute',
+        left: leftPosition,
+    };
+
     return (
         <div className="verse-container">
             <Verse verseText={verseText} />
-            <div style={{display: 'flex', flexDirection: 'row'}}>
+            <div style={{display: 'flex', flexDirection: 'row', margin: '0 auto'}}>
                 <div style = {{display: 'flex', flexDirection: 'row'}} id="left-div">
                     <Button
-                        size="large"
+                        size="medium"
                         style={{display: 'flex', justifyContent: 'flex-start'}}
                         onClick={toggleView}
-                        sx={{ borderRadius: 28 }}
+                        sx={{ borderRadius: 24 }}
                         id="verse-number">
                             {buttonText}
                     </Button>
                     <Button
-                        size="large"
+                        size="medium"
                         style={{display: 'flex', justifyContent: 'flex-start'}}
-                        sx={{ borderRadius: 28 }}
+                        sx={{ borderRadius: 24 }}
                         id="audio"
                         onClick={() => {
-                            playAudio(chapterNumber, verseNumber, reciterNumber)}}
+                            playAudio(chapterNumber, verseNumber)}}
                             >
                             {<VolumeUp/>}
                     </Button>
                 </div>
-                <div style={{display:'flex', justifyContent: 'center', margin: '0 auto'}} id="expand-div">
+                <div style={expandDivStyle} id="expand-div">
                     {verse && readMorePressed ? (
                         <Button
                             onClick={expandButtonPressed} 
                             variant="outlined" 
                             style = {{display: 'flex', justifyContent: 'center'}}
-                            sx={ { borderRadius: 28 }}>
+                            sx={ { borderRadius: 24 }}>
                                 {expandIcon}
                         </Button>
                     ) : <></>}

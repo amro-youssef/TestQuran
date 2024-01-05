@@ -5,6 +5,10 @@ import Autocomplete from '@mui/material/Autocomplete';
 import InputLabel from '@mui/material/InputLabel';
 import './VersePicker.css'
 import { Select } from '@mui/material';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import MenuItem from '@mui/material/MenuItem';
+
+
 
 const VersePicker = ({ loadState }) => {
     const [startChapters, setStartChapters] = useState([]);
@@ -20,6 +24,8 @@ const VersePicker = ({ loadState }) => {
     const [endChapterName, setEndChapterName] = useState(null);
     const [endChapter, setEndChapter] = useState(null);
     const [endVerseNumber, setEndVerseNumber] = useState(null);
+
+    const isMobile = useMediaQuery('(max-width:600px)');
     
     useEffect(() => {
         getChapterNames().then(chapters => setStartChapters(chapters));
@@ -104,8 +110,10 @@ const VersePicker = ({ loadState }) => {
 
     return (
         <div className='VersePicker'>
+        {/* {!isMobile ? ( */}
+        {true ? (
+        <>
             <div className='startDiv'>
-                {/* change this to a normal list */}
                 <Autocomplete
                     // value={chapterNameSelected}
                     onChange={(event, chapterName) => {
@@ -126,22 +134,6 @@ const VersePicker = ({ loadState }) => {
                     renderInput={(params) => <TextField {...params} label="Start Chapter" />}
                     style={{ display: 'flex', justifyContent: 'center' }}
                 />
-                {/* <Select
-                    onChange={(event, chapterName) => {
-                        try {
-                            setStartChapter(chapterName);
-                            setStartChapterName(chapterName.split(' ').slice(1).join(' '));
-                            setStartChapterNumber(parseInt(chapterName.split(' ')[0]))
-                            setStartVerses([])
-                        } catch {}
-                    }}
-                    id="start-chapter"
-                    value={startChapter}
-                    sx={{ width: '13em', marginRight: '10px' }}
-                    renderInput={(params) => <TextField {...params} label="Start Chapter" />}
-                    label="Start Chapter"
-                    style={{ display: 'flex', justifyContent: 'center' }}
-                /> */}
                 <Autocomplete
                     onChange={(event, verseNumber) => {
                         try {
@@ -204,8 +196,95 @@ const VersePicker = ({ loadState }) => {
                     renderInput={(params) => <TextField {...params} label="End Verse" />}
                     style={{ display: 'flex', justifyContent: 'center' }}
                     //defaultValue={chapters.chapterNumberSelected} need to get verse count of each chapter, then auto set this to the first
-                />
+                /> 
             </div>
+        </>) : (
+            <>
+            <div className='startDiv'>
+              <div className="select-container">
+                <InputLabel htmlFor='start-chapter'>Start Chapter</InputLabel>
+                <Select
+                    value={startChapter}
+                    onChange={(event) => {
+                    try {
+                        const chapterName = event.target.value;
+                        setStartChapter(chapterName);
+                        setStartChapterName(chapterName.split(' ').slice(1).join(' '));
+                        setStartChapterNumber(parseInt(chapterName.split(' ')[0]));
+                        setStartVerses([]);
+                    } catch {}
+                    }}
+                >
+                    {startChapters.map((chapter) => (
+                    <MenuItem key={chapter} value={chapter}>
+                        {chapter}
+                    </MenuItem>
+                    ))}
+                </Select>
+              </div>
+    
+              <div className="select-container">
+                <InputLabel htmlFor='start-verse'>Start Verse</InputLabel>
+                <Select
+                    value={startVerseNumber}
+                    onChange={(event) => {
+                    try {
+                        setStartVerseNumber(event.target.value);
+                    } catch {}
+                    }}
+                >
+                    {startVerses.map((verse) => (
+                    <MenuItem key={verse} value={verse}>
+                        {verse}
+                    </MenuItem>
+                    ))}
+                </Select>
+              </div>
+            </div>
+    
+            <div className='endDiv'>
+                <div className="select-container">
+              <InputLabel htmlFor='end-chapter'>End Chapter</InputLabel>
+              <Select
+                value={endChapter}
+                onChange={(event) => {
+                  try {
+                    const chapterName = event.target.value;
+                    setEndChapter(chapterName);
+                    setEndChapterName(chapterName.split(' ').slice(1).join(' '));
+                    setEndChapterNumber(parseInt(chapterName.split(' ')[0]));
+                    setEndVerses([]);
+                  } catch {}
+                }}
+              >
+                {endChapters.map((chapter) => (
+                  <MenuItem key={chapter} value={chapter}>
+                    {chapter}
+                  </MenuItem>
+                ))}
+              </Select>
+              </div>
+    
+              <div className="select-container">
+              <InputLabel htmlFor='end-verse'>End Verse</InputLabel>
+              <Select
+                value={endVerseNumber}
+                onChange={(event) => {
+                  try {
+                    setEndVerseNumber(event.target.value);
+                  } catch {}
+                }}
+              >
+                {endVerses.map((verse) => (
+                  <MenuItem key={verse} value={verse}>
+                    {verse}
+                  </MenuItem>
+                ))}
+              </Select>
+              </div>
+            </div>
+          </>
+        )}
         </div>
         
     )

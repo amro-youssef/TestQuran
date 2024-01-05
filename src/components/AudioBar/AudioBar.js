@@ -18,7 +18,7 @@ const AudioBar = ( {audioFile} ) => {
 
   useEffect(() => {
     if (audioFile) {
-      audioRef.current.load();
+      // audioRef.current.load();
       audioRef.current.currentTime = 0;
       setPlaying(true);
       audioRef.current.play();
@@ -35,15 +35,11 @@ const AudioBar = ( {audioFile} ) => {
       audioRef.current.play();
     }
     setPlaying(!isPlaying);
-    console.log("is playing", isPlaying)
   };
 
   // handles pressing of play/pause button on a keyboatd
   useEffect(() => {
-    // Add event listener for the 'keydown' event
     const handleKeyDown = (event) => {
-      // Check if the pressed key is your keyboard's play/pause button
-      // Replace 'YOUR_KEY_CODE' with the actual key code for your keyboard
       console.log(event.keyCode)
       if (event.keyCode == '179') {
         playPauseHandler();
@@ -130,7 +126,7 @@ const AudioBar = ( {audioFile} ) => {
   // make verse being reciter be highlighted
   return (
     // <div className="bottom-bar" style={{ position: 'fixed', width: '100%', zIndex: 1000 }}>
-    <div className="bottom-bar" style={{display: 'flex', flexDirection: 'row'}}>
+    <div className="bottom-bar">
       <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
         <audio
           ref={audioRef} 
@@ -152,12 +148,12 @@ const AudioBar = ( {audioFile} ) => {
 
         <div style={{width: '10px'}}></div>
         <text>{getCurrentTime()} / {getEndTime()} </text>
-        <Slider aria-label="timeline" value={time} onChange={timelineChangeHandler} sx={{ width: 300}}/>
+        <Slider aria-label="timeline" value={time} onChange={timelineChangeHandler} sx={{ width: 300}} className="timeline-slider"/>
 
         <div style={{width: '20px'}}></div>
-        <VolumeDown color = "inherit"/>
-        <Slider aria-label="Volume" value={volume} onChange={volumeChangeHandler} sx={{ width: 150 }}/>
-        <VolumeUp color = "inherit"/>
+        <VolumeDown color="inherit"/>
+        <Slider aria-label="Volume" value={volume} onChange={volumeChangeHandler} sx={{ width: 150 }} className="volume-slider"/>
+        <VolumeUp color="inherit"/>
       </Stack>
     </div>
   );

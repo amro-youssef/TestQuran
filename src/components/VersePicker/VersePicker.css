@@ -31,6 +31,17 @@
     margin-left: 10px;
 }
 
+.select-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+  }
+  
+  .select-label {
+    transform: translate(14px, 12px) scale(1);
+    transform-origin: top left;
+  }
+
 /* Basic styling for mobile devices */
 @media (max-width: 700px) {
     /* Adjust the font size for better readability on smaller screens */

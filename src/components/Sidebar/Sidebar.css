@@ -1,0 +1,9 @@
+.box {
+    width: 400px
+}
+
+@media (width < 850px) {
+    .box {
+        width: 250px
+    }
+}

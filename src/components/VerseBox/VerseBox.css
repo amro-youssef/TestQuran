@@ -6,6 +6,11 @@
     flex-grow: 1
   }
 
+  #expand-div {
+    position: absolute;
+    left: 100%
+  }
+
   
   @media (width <= 1224px) {
     .verse-container {

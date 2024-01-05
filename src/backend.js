@@ -22,7 +22,7 @@ const getChapterNames = () => {
 }
 
 let audioElement;
-const getAndPlayAudio = async (chapterNumber, verseNumber, reciterNumber) => {
+const getAudioUrl = async (chapterNumber, verseNumber, reciterNumber) => {
     if (audioElement && !audioElement.paused) {
         audioElement.pause();
         audioElement.currentTime = 0;
@@ -83,10 +83,27 @@ const getVerseText = async (chapterNumber, verseNumber) => {
     }
 }
 
+const getReciters = async () => {
+    try {
+        const response = await fetch(`https://api.quran.com/api/v4/resources/recitations`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+        const data = await response.json();
+        return data.recitations;
+    } catch (error) {
+        console.log(error);
+        return -1;
+    }
+}
+
 module.exports = {
     getChapters,
     getChapterNames,
     getNumberVerses,
     getVerseText,
-    getAndPlayAudio
+    getAudioUrl,
+    getReciters
 };

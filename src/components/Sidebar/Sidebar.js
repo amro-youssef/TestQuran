@@ -21,7 +21,12 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import Checkbox from '@mui/material/Checkbox';
 import FormGroup from '@mui/material/FormGroup';
-
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import {getReciters} from './../../backend.js';
+import './Sidebar.css';
 
 export default function SwipeableTemporaryDrawer({ setReciterNumber }) {
   const [state, setState] = useState({
@@ -29,19 +34,32 @@ export default function SwipeableTemporaryDrawer({ setReciterNumber }) {
     left: false,
     bottom: false,
     right: false,
+    reciters: false
   });
-  const [selectedValue, setSelectedValue] = useState(6);
+  const [selectedValue, setSelectedValue] = useState(localStorage.getItem('reciterId') ? localStorage.getItem('reciterId') : 6);
+  const [reciterComponentList, setReciterComponentList] = useState();
+  const [reciterList, setReciterList] = useState([]);
+  const [reciterName, setReciterName] = useState();
 
-  const toggleDrawer = (anchor, open) => (event) => {
-    if (
-      event &&
-      event.type === 'keydown' &&
-      (event.key === 'Tab' || event.key === 'Shift')
-    ) {
-      return;
+  useEffect(() => {
+    for (const reciter of reciterList) {
+      if (reciter.id == selectedValue) {
+        setReciterName(reciter.reciter_name)
+        break;
+      }
     }
+  }, []);
 
-    setState({ ...state, [anchor]: open });
+  const toggleDrawer = (anchor) => () => {
+    setState({ ...state, [anchor]: !state[anchor] });
+  };
+
+  const CollapsiblePanel = ({ isOpen, children }) => {
+    return (
+      <div style={{ height: isOpen ? 'auto' : 0, overflow: 'hidden', transition: 'height 0.3s ease-in-out' }}>
+        {children}
+      </div>
+    );
   };
 
   const handleDrawerClose = () => {
@@ -49,30 +67,64 @@ export default function SwipeableTemporaryDrawer({ setReciterNumber }) {
   };
 
   useEffect(() => {
+    const fetchReciters = async () => {
+      const reciters = await getReciters();
+      setReciterList(reciters);
+      for (const reciter of reciters) {
+        if (reciter.id == selectedValue) {
+          setReciterName(reciter.reciter_name)
+          break;
+        }
+      }
+    };
+    fetchReciters();
+  }, []);
+
+  useEffect(() => {
     setReciterNumber(selectedValue);
   }, [selectedValue]);
 
+  useEffect(() => {
+    renderReciters()
+  }, []);
+
+  const renderReciters = async () => {
+    const reciters = await getReciters();
+    setReciterList(reciters)
+      reciters.sort((a, b) => a.id - b.id)
+      const labels = reciters.map((reciter) => (
+        <FormControlLabel
+          key={reciter.id}
+          value={reciter.id}
+          control={<Radio />}
+          label={reciter.style ? `${reciter.reciter_name} (${reciter.style})` : reciter.reciter_name}
+        />
+      ));
+      setReciterComponentList(labels);
+  }
+
   const list = (anchor) => (
     <Box
+      className="box"
       style={{display: 'flex', flexDirection: 'column', margin: '15px'}}
-      sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 350 }}
+      // sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
       role="presentation"
-    //   onClick={toggleDrawer(anchor, false)}
-    //   onKeyDown={toggleDrawer(anchor, false)}
     >
-        <IconButton onClick={handleDrawerClose}>
+        {/* <IconButton onClick={handleDrawerClose}>
             {<ChevronRightIcon />}
-        </IconButton>
+        </IconButton> */}
         <h2>Audio:</h2>
         <FormControlLabel control={<Checkbox />} label="Auto-play Audio" />
         <FormControlLabel control={<Checkbox />} label="Continue playing audio" />
 
-        <br/>
+        <div style={{margin: '5px'}}/>
+        {/* <br/> */}
+        {/* <CollapsiblePanel isOpen={state.reciters}>
+
         <FormControl>
             <FormLabel id="demo-radio-buttons-group-label">Select Reciter</FormLabel>
             <RadioGroup
                 aria-labelledby="demo-radio-buttons-group-label"
-                // defaultValue="Abdul Basit"
                 value = {selectedValue}
                 onChange={(event) => {
                     setSelectedValue(event.target.value);
@@ -80,12 +132,40 @@ export default function SwipeableTemporaryDrawer({ setReciterNumber }) {
                 }}
                 name="radio-buttons-group"
             >
-                <FormControlLabel value="6" control={<Radio />} label="Husary" />
-                <FormControlLabel value="1" control={<Radio />} label="Abdul Basit 'Abd us-Samad" />
-                <FormControlLabel value="..." control={<Radio />} label="..." />
+                {reciterList}
             </RadioGroup>
         </FormControl>
-        <Divider/>
+        </CollapsiblePanel> */}
+        <Button variant="outlined" onClick={toggleDrawer('reciters')}>Reciter: {reciterName}</Button>
+        
+        <Dialog open={state.reciters} onClose={toggleDrawer('reciters')}>
+          <DialogTitle>Select Reciter</DialogTitle>
+          <DialogContent>
+            <FormControl>
+              <RadioGroup
+                value={selectedValue}
+                onChange={(event) => {
+                  setSelectedValue(event.target.value);
+                  localStorage.setItem('reciterId', event.target.value)
+                  setReciterNumber(event.target.value);
+                  for (const reciter of reciterList) {
+                    if (reciter.id == event.target.value) {
+                      setReciterName(reciter.reciter_name)
+                      break;
+                    }
+                  }
+                }}
+                name="radio-buttons-group"
+              >
+                {reciterComponentList}
+              </RadioGroup>
+            </FormControl>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={toggleDrawer('reciters')}>Close</Button>
+          </DialogActions>
+        </Dialog>
+
         <h2>Verse:</h2>
         <FormControlLabel control={<Checkbox />} label="Always hide verse number" />
         <FormControlLabel control={<Checkbox />} label="Always hide text" />
