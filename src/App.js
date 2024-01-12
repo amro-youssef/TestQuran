@@ -16,60 +16,58 @@ const App = () => {
   const [endVerseNumber, setEndVerseNumber] = useState(null); 
 
   const [verseText, setVerseText] = useState(null);
-  const [currentVerse, setCurrentVerse] = useState(null);
+  const [firstVerse, setFirstVerse] = useState(null);
   const [readMore, setReadMore] = useState(false);
   const [showVerseNumbers, setShowVerseNumbers] = useState(false);
   const [reciterNumber, setReciterNumber] = useState(1);
   const [audioUrl, setAudioUrl] = useState(null);
 
   const [secondVerseText, setSecondVerseText] = useState(null);
-  const [secondChapterNumber, setSecondChapterNumber] = useState(null);
-  const [secondVerseNumber, setSecondVerseNumber] = useState(null);
+  // const [secondChapterNumber, setSecondChapterNumber] = useState(null);
+  // const [secondVerseNumber, setSecondVerseNumber] = useState(null);
 
   const [thirdVerseText, setThirdVerseText] = useState(null);
-  const [thirdChapterNumber, setThirdChapterNumber] = useState(null);
-  const [thirdVerseNumber, setThirdVerseNumber] = useState(null);
+  // const [thirdChapterNumber, setThirdChapterNumber] = useState(null);
+  // const [thirdVerseNumber, setThirdVerseNumber] = useState(null);
 
   const [showRestOfChapter, setShowRestOfChapter] = useState(false);
   const [restOfVerses, setRestOfVerses] = useState([]);
 
   const [loading, setLoading] = useState(false);
-  const [verseBoxes, setVerseBoxes] = useState([]);
+
+  const [versePlaying, setVersePlaying] = useState();
 
   const loadState = (startChapter, startVerse, endChapter, endVerse) => {
-      setStartChapterNumber(startChapter);
-      setStartVerseNumber(startVerse);
-      setEndChapterNumber(endChapter);
-      setEndVerseNumber(endVerse);
+      setStartChapterNumber(parseInt(startChapter));
+      setStartVerseNumber(parseInt(startVerse));
+      setEndChapterNumber(parseInt(endChapter));
+      setEndVerseNumber(parseInt(endVerse));
   }
 
   const onClick = async () => {
     setLoading(true);
     const versesList = await getVersesList(parseInt(startChapterNumber), parseInt(startVerseNumber),
     parseInt(endChapterNumber), parseInt(endVerseNumber));
-    console.log("verses list", versesList)
     if (versesList.some(element => element === null)) {
       return;
     }
     const randomVerse = await getRandomVerse(versesList)
     resetStates();
-    setCurrentVerse(randomVerse);
-    console.log("random vrese", randomVerse)
+    setFirstVerse(randomVerse);
     const randomText = await getVerseText(randomVerse?.chapterNumber, randomVerse?.verseNumber);
     if (randomText !== -1) {
       setVerseText(randomText);
-      // await generateVerseBoxes(randomVerse?.chapterNumber, randomVerse?.verseNumber, randomVerse?.chapterNumber, randomVerse?.verseNumber)
     }
     setLoading(false);
   };
 
 
   const resetStates = () => {
-    setCurrentVerse(null);
-    setSecondChapterNumber(null);
-    setSecondVerseNumber(null);
-    setThirdChapterNumber(null);
-    setThirdVerseNumber(null);
+    setFirstVerse(null);
+    // setSecondChapterNumber(null);
+    // setSecondVerseNumber(null);
+    // setThirdChapterNumber(null);
+    // setThirdVerseNumber(null);
     setShowVerseNumbers(false);
     setReadMore(false);
     setAudioUrl(null);
@@ -124,46 +122,54 @@ const App = () => {
   }
 
   const expandPressed = async () => {
-    // will need to deal will overlap of chapters
-    // setCurrentVerse({chapterNumber: 0, verseNumber: 0})
-    console.log("currentVerse", readMore, currentVerse)
     if (!readMore) {
-      console.log("read more")
-      const secondVerse = await getVerseText(currentVerse.chapterNumber, currentVerse.verseNumber + 1);
-      const thirdVerse = await getVerseText(currentVerse.chapterNumber, currentVerse.verseNumber + 2);
+      const secondVerse = await getVerseText(firstVerse.chapterNumber, firstVerse.verseNumber + 1);
+      const thirdVerse = await getVerseText(firstVerse.chapterNumber, firstVerse.verseNumber + 2);
       if (secondVerse !== -1) {
         setSecondVerseText(secondVerse);
         if (thirdVerse !== -1) {
           setThirdVerseText(thirdVerse);
         }
       }
-      setSecondChapterNumber(currentVerse.chapterNumber);
-      setSecondVerseNumber(currentVerse.verseNumber + 1)
-      setThirdChapterNumber(currentVerse.chapterNumber);
-      setThirdVerseNumber(currentVerse.verseNumber + 2)
+      // setSecondChapterNumber(parseInt(firstVerse.chapterNumber));
+      // setSecondVerseNumber(parseInt(firstVerse.verseNumber + 1));
+      // setThirdChapterNumber(parseInt(firstVerse.chapterNumber));
+      // setThirdVerseNumber(parseInt(firstVerse.verseNumber + 2));
 
-      // let endVerseNumber = currentVerse.verseNumber;
-      // endVerseNumber = secondVerse !== -1 ? endVerseNumber + 1 : endVerseNumber;
-      // endVerseNumber = thirdVerse !== -1 ? endVerseNumber + 1 : endVerseNumber;
-
-      // // why are we passing expand pressed? This is the function we're in right now...
-      // console.log("end verse number", endVerseNumber)
-      // await generateVerseBoxes(currentVerse.chapterNumber, currentVerse.verseNumber, currentVerse.chapterNumber, endVerseNumber)
     } else {
       setSecondVerseText(null);
       setThirdVerseText(null);
-      // await generateVerseBoxes(currentVerse.chapterNumber, currentVerse.verseNumber, currentVerse.chapterNumber, currentVerse.verseNumber, expandPressed)
+      // await generateVerseBoxes(firstVerse.chapterNumber, firstVerse.verseNumber, firstVerse.chapterNumber, firstVerse.verseNumber, expandPressed)
     }
 
     setReadMore(!readMore);
   }
 
   const getRestOfVerses = async () => {
-    const numVerses = await getNumberVerses(currentVerse.chapterNumber);
+    const numVerses = await getNumberVerses(firstVerse.chapterNumber);
     let restOfVerses = []
-    for (let verse = currentVerse.verseNumber; verse <= numVerses; verse++) {
-      const text = await getVerseText(currentVerse.chapterNumber, verse);
-      restOfVerses.push({chapter: currentVerse.chapterNumber, verse: verse, text: text});
+
+    // const CHUNK_SIZE = 20;
+    // for (let i = firstVerse.verseNumber; i < numVerses; i += CHUNK_SIZE) {
+      //   for (let verse = i; verse < CHUNK_SIZE + i && verse <= numVerses; verse++) {
+    //     const text = await getVerseText(firstVerse.chapterNumber, verse);
+    //     restOfVerses.push({chapter: firstVerse.chapterNumber, verse: verse, text: text});
+    //   }
+    //   if (restOfVerses.length > 3) {
+      //     restOfVerses = restOfVerses.slice(3);
+    //   } else {
+      //     return [];
+      //   }
+      //   setRestOfVerses(restOfVerses);
+      // }
+
+    // perhaps do this in chunks in order for the page to appear responsive
+    for (let verse = firstVerse.verseNumber; verse <= numVerses; verse++) {
+      const text = await getVerseText(firstVerse.chapterNumber, verse);
+      restOfVerses.push({chapter: firstVerse.chapterNumber, verse: verse, text: text});
+      if (verse % 10 == 0) {
+        setRestOfVerses(restOfVerses.slice(3));
+      }
     }
     if (restOfVerses.length > 3) {
       restOfVerses = restOfVerses.slice(3);
@@ -171,8 +177,6 @@ const App = () => {
       return [];
     }
     setRestOfVerses(restOfVerses);
-
-    // return restOfVerses;
   }
 
   const onViewVerseNumberChange = () => {
@@ -185,62 +189,75 @@ const App = () => {
   };
 
   const playAudio = async (chapterNumber, verseNumber) => {
-    const url = await getAudioUrl(chapterNumber, verseNumber, reciterNumber); //=get from backend
-    // strangely the api sometimes returns a direct link to the mp3, and sometimes it only gives the end part
-    if (url.substring(0, 2) === "//") {
-      setAudioUrl(url);
-    } else {
-      setAudioUrl("https://verses.quran.com/" + url);
+    const url = await getAudioUrl(chapterNumber, verseNumber, reciterNumber);
+    if (audioUrl && audioUrl.includes(url)) {
+      setAudioUrl(null);
+      playAudio(chapterNumber, verseNumber);
+    }
+
+    try {
+      if (url.substring(0, 2) === "//") {
+        setAudioUrl(url);
+      } else {
+        setAudioUrl("https://verses.quran.com/" + url);
+      }
+      setVersePlaying( {
+        chapterNumber: chapterNumber,
+        verseNumber: verseNumber
+      })
+    } catch {
+
     }
   }
-  
-  // const generateVerseBoxes = async (startChapter, startVerse, endChapter, endVerse, readMorePressed) => {
-  //   console.log(startChapter, startVerse, endChapter, endVerse)
-  //   const verseBoxesArray = [];
-  //   const list = [];
-  //   for (let chapter = startChapter; chapter <= endChapter; chapter++) {
-  //     const start = (chapter == startChapter) ? startVerse : 1;
-  //     const end = (chapter == endChapter) ? endVerse : await getNumberVerses(chapter);
-  
-  //     for (let verse = start; verse <= end; verse++) {
-  //       const verseText = await getVerseText(chapter, verse);
-  //       if (!verseText || verseText == "") {
-  //         continue;
-  //       }
-  //       verseBoxesArray.push(
-  //         <VerseBox
-  //           key={`verse-${chapter}-${verse}`}
-  //           verseText={verseText}
-  //           chapterNumber={chapter}
-  //           verseNumber={verse}
-  //           viewVerseNumber={showVerseNumbers}
-  //           onViewVerseNumberChange={onViewVerseNumberChange}
-  //           playAudio={playAudio}
-  //           // readMorePressed={(readMorePressed && (verse == startVerse)) ? readMorePressed : null}
-  //           readMorePressed={(verse == start) ? doExpand : null}
-  //         />
-  //       );
-  //     }
-  //   }
-  //   console.log(verseBoxesArray)
-  //   console.log("verse hook list", versesListHook)
-  //   setVerseBoxes(verseBoxesArray);
-  // }
 
-  // const doExpand = async () => {
-  //   setReadMore(!readMore);
-  // }
+  const incrementVerseAudio = async () => {
+    if (!versePlaying) {
+      return;
+    }
+    // makes it so that only the verses on the screen can be played
+    if (versePlaying.verseNumber + 1 > getLastVerseOnScreen()) {
+      return;
+    }
+    const versesInChapter = await getNumberVerses(versePlaying.chapterNumber);
+    if (versesInChapter > versePlaying.verseNumber) {
+      playAudio(versePlaying.chapterNumber, versePlaying.verseNumber + 1);
+    }
+  }
 
-  // useEffect(() => { 
-  //   console.log("---------use effect called")
-  //   async function callExpand() {
-  //     await expandPressed();
-  //   }
-  //   if (verseBoxes.length > 0) {
-  //     console.log("verse boxes > 0")
-  //     callExpand();
-  //   }
-  // }, [readMore])
+  const decrementVerseAudio = async () => {
+    if (!versePlaying) {
+      return;
+    }
+    // makes it so that only the verses on the screen can be played
+    if (versePlaying.verseNumber - 1 < getFirstVerseOnScreen()) {
+      return;
+    }
+    if (versePlaying.verseNumber > 1) {
+      playAudio(versePlaying.chapterNumber, versePlaying.verseNumber - 1);
+    }
+  }
+  /**
+   * Gets the verse index of first verse shown
+   */
+  const getFirstVerseOnScreen = () => {
+    return firstVerse?.verseNumber;
+  }
+
+  /**
+   * Gets the verse index of last verse shown
+   */
+  const getLastVerseOnScreen = () => {
+    if (restOfVerses.length > 0) {
+      return restOfVerses[restOfVerses.length - 1].verse;
+    }
+    else if (thirdVerseText) {
+      return firstVerse?.verseNumber + 2;
+    } else if (secondVerseText) {
+      return firstVerse?.verseNumber + 1;
+    }
+    return firstVerse?.verseNumber;
+  }
+
 
   return (
     <div className="App light">
@@ -256,30 +273,14 @@ const App = () => {
         <VersePicker loadState={loadState}/>
         <SubmitButton onClick={onClick} loading={loading}/>
       </div>
-      {/* {showRestOfChapter ? (
-        getRestOfVerses().then(verses => verses.map(verseInfo => {
-          return(
-          <VerseBox
-            verseText={verseInfo.text}
-            readMorePressed={expandPressed}
-            chapterNumber={verseInfo.chapter}
-            verseNumber={verseInfo.verse}
-            viewVerseNumber={showVerseNumbers}
-            onViewVerseNumberChange={onViewVerseNumberChange}
-            playAudio={playAudio}
-          />)
-        }))
-        
-      ): <></>} */}
-
       {verseText ? (
         <>
           <div style={{ marginTop: '2em' }}></div>
           <VerseBox
             verseText={verseText}
             readMorePressed={expandPressed}
-            chapterNumber={currentVerse?.chapterNumber}
-            verseNumber={currentVerse?.verseNumber}
+            chapterNumber={firstVerse?.chapterNumber}
+            verseNumber={firstVerse?.verseNumber}
             viewVerseNumber={showVerseNumbers}
             onViewVerseNumberChange={onViewVerseNumberChange}
             playAudio={playAudio}
@@ -289,8 +290,8 @@ const App = () => {
             <>
               <VerseBox
                 verseText={secondVerseText}
-                chapterNumber={secondChapterNumber}
-                verseNumber={secondVerseNumber}
+                chapterNumber={firstVerse?.chapterNumber}
+                verseNumber={firstVerse?.verseNumber + 1}
                 viewVerseNumber={showVerseNumbers}
                 onViewVerseNumberChange={onViewVerseNumberChange}
                 playAudio={playAudio}
@@ -301,8 +302,8 @@ const App = () => {
             <>
               <VerseBox
                 verseText={thirdVerseText}
-                chapterNumber={thirdChapterNumber}
-                verseNumber={thirdVerseNumber}
+                chapterNumber={firstVerse?.chapterNumber}
+                verseNumber={firstVerse?.verseNumber + 2}
                 viewVerseNumber={showVerseNumbers}
                 onViewVerseNumberChange={onViewVerseNumberChange}
                 playAudio={playAudio}
@@ -331,23 +332,9 @@ const App = () => {
             playAudio={playAudio}
           />
       ))}
-          
-
-      {/* {versesListHook.map(v => {
-        getVerseText(v?.chapterNumber, v?.verseNumber).then(response => {return(
-          <VerseBox
-            verseText={response}
-            readMorePressed={expandPressed}
-            chapterNumber={v?.chapterNumber}
-            verseNumber={v?.verseNumber}
-            viewVerseNumber={showVerseNumbers}
-            onViewVerseNumberChange={onViewVerseNumberChange}
-            playAudio={playAudio}
-          />);})
-      })} */}
-      {verseBoxes}
-    {audioUrl ? (<AudioBar audioFile={audioUrl}/>) : null}
-
+    {audioUrl ? (<AudioBar audioFile={audioUrl} incrementVerseAudio={incrementVerseAudio} decrementVerseAudio={decrementVerseAudio}/>) : null}
+      
+    <div style={{ marginTop: '5em' }}></div>
     </div>
     
   );

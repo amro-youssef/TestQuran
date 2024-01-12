@@ -14,10 +14,14 @@
   @font-face {
     font-family: "v2";
     src: local('QCF_PNNN'),
-         url(https://github.com/quran/quran.com-frontend-next/blob/master/public/fonts/quran/hafs/v2/woff2/p1.woff2) format('woff2'),
+         /* url(https://github.com/quran/quran.com-frontend-next/blob/master/public/fonts/quran/hafs/v2/woff2/p1.woff2) format('woff2'), */
+         url(./fonts/woff2/p1.woff2) format('woff2'),
+         url(./fonts/woff/p1.woff) format('woff')
+
          /* url(https://raw.githubusercontent.com/mustafa0x/qpc-fonts/f93bf5f3/mushaf-woff/QCF_PNNN.woff) format('woff'); */
     
-}
+  }
+
 
 .verse-container {
     /* max-width: '2em'; Set the desired maximum width */

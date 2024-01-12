@@ -62,9 +62,8 @@ const VersePicker = ({ loadState }) => {
         try {
             const versesCount = await getNumberVerses(startChapterNumber);
             if (startVerseNumber > versesCount) {
-                setStartVerseNumber(null)
+                setStartVerseNumber(null);
             }
-            console.log("verse count:", versesCount)
             if (!versesCount) {
                 setStartVerses(null);
             } else {

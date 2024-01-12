@@ -37,6 +37,7 @@ export default function SwipeableTemporaryDrawer({ setReciterNumber }) {
     reciters: false
   });
   const [selectedValue, setSelectedValue] = useState(localStorage.getItem('reciterId') ? localStorage.getItem('reciterId') : 6);
+  const [continuePlayingAudio, setContinuePlayingAudio] = useState(localStorage.getItem('continuePlayingAudio') === 'false' ? false : true);
   const [reciterComponentList, setReciterComponentList] = useState();
   const [reciterList, setReciterList] = useState([]);
   const [reciterName, setReciterName] = useState();
@@ -103,6 +104,11 @@ export default function SwipeableTemporaryDrawer({ setReciterNumber }) {
       setReciterComponentList(labels);
   }
 
+  const handleContinuePlayingChange = (event) => {
+    setContinuePlayingAudio(event.target.checked);
+    localStorage.setItem('continuePlayingAudio', event.target.checked)
+  };
+
   const list = (anchor) => (
     <Box
       className="box"
@@ -114,28 +120,10 @@ export default function SwipeableTemporaryDrawer({ setReciterNumber }) {
             {<ChevronRightIcon />}
         </IconButton> */}
         <h2>Audio:</h2>
-        <FormControlLabel control={<Checkbox />} label="Auto-play Audio" />
-        <FormControlLabel control={<Checkbox />} label="Continue playing audio" />
+        {/* <FormControlLabel control={<Checkbox />} label="Auto-play Audio" /> */}
+        <FormControlLabel checked={continuePlayingAudio} onChange={handleContinuePlayingChange} control={<Checkbox />} label="Continue playing audio" />
 
         <div style={{margin: '5px'}}/>
-        {/* <br/> */}
-        {/* <CollapsiblePanel isOpen={state.reciters}>
-
-        <FormControl>
-            <FormLabel id="demo-radio-buttons-group-label">Select Reciter</FormLabel>
-            <RadioGroup
-                aria-labelledby="demo-radio-buttons-group-label"
-                value = {selectedValue}
-                onChange={(event) => {
-                    setSelectedValue(event.target.value);
-                    setReciterNumber(event.target.value);
-                }}
-                name="radio-buttons-group"
-            >
-                {reciterList}
-            </RadioGroup>
-        </FormControl>
-        </CollapsiblePanel> */}
         <Button variant="outlined" onClick={toggleDrawer('reciters')}>Reciter: {reciterName}</Button>
         
         <Dialog open={state.reciters} onClose={toggleDrawer('reciters')}>

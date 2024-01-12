@@ -49,3 +49,10 @@
     width: 80px
   }
 }
+
+@media (width < 550px) {
+  .timeline-slider {
+    width: 80px
+  }
+
+}

@@ -7,3 +7,9 @@
         width: 250px
     }
 }
+
+@media (width < 600px) {
+    .box {
+        width: 150px
+    }
+}

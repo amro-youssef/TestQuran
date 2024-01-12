@@ -10,8 +10,9 @@ const SubmitButton = ( {onClick, loading} ) => {
             size="medium"
             variant="contained"
             onClick={onClick}
+            disabled={loading}
         >
-            {loading ? <CircularProgress width={32}/> : "Randomise"}
+            {loading ? <CircularProgress width={32}/> : "Randomize"}
         </Button>
     )
 }

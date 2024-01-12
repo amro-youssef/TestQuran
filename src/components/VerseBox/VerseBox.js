@@ -33,7 +33,6 @@ const VerseBox = ({ verseText, readMorePressed, chapterNumber, verseNumber, view
     }
 
     const expandButtonPressed = () => {
-        console.log("expand function", readMorePressed);
         readMorePressed();
         toggleExpandIcon();
     }
@@ -62,11 +61,6 @@ const VerseBox = ({ verseText, readMorePressed, chapterNumber, verseNumber, view
     useEffect(() => {
         setExpanded(false);
     }, [verseText])
-
-    // const expandDivStyle = {
-    //     position: 'absolute',
-    //     left: document.getElementById('expand-div').client_width / 2
-    // }
 
     const [leftPosition, setLeftPosition] = useState('50%');
 
@@ -103,7 +97,15 @@ const VerseBox = ({ verseText, readMorePressed, chapterNumber, verseNumber, view
                         sx={{ borderRadius: 24 }}
                         id="audio"
                         onClick={() => {
-                            playAudio(chapterNumber, verseNumber)}}
+                        //     // Play audio on user interaction (e.g., button click)
+                        // document.addEventListener('click', playAudio);
+                    
+                        playAudio(chapterNumber, verseNumber)
+                        // Cleanup event listener on component unmount
+                        // return () => {
+                        // document.removeEventListener('click', playAudio);
+                        // };
+                            }}
                             >
                             {<VolumeUp/>}
                     </Button>
