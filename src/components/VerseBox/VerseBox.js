@@ -1,5 +1,6 @@
 import {React, useState, useEffect} from 'react';
 import { Button } from '@mui/material';
+import {getChapterName} from './../../backend.js'
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
@@ -9,19 +10,20 @@ import InfoIcon from '@mui/icons-material/Info';
 import Verse from '../Verse/Verse.js';
 import './VerseBox.css';
 
-const VerseBox = ({ verseText, readMorePressed, chapterNumber, verseNumber, viewVerseNumber, onViewVerseNumberChange, playAudio }) => {
+const VerseBox = ({ verseText, readMorePressed, chapterNumber, verseNumber, viewVerseNumber, onViewVerseNumberChange, playAudio, hideVerse }) => {
 
     const [verse, setVerse] = useState(verseText);
     const [buttonText, setButtonText] = useState(<VisibilityIcon />);
     const [expandIcon, setExpandIcon] = useState(<ExpandMoreIcon />);
     const [expanded, setExpanded] = useState(false);
 
-    const showVerseNumber = () => {
-        setButtonText(`${chapterNumber}:${verseNumber}`)
+    const showVerseNumber = async () => {
+        const chapterName = await getChapterName(chapterNumber);
+        setButtonText(`${chapterNumber}:${verseNumber}\n${chapterName}`);
     }
 
     const hideVerseNumber = () => {
-        setButtonText(<VisibilityIcon />)
+        setButtonText(<VisibilityIcon />);
     }
 
     const toggleView = () => {
@@ -29,7 +31,7 @@ const VerseBox = ({ verseText, readMorePressed, chapterNumber, verseNumber, view
     }
 
     const toggleExpandIcon = () => {
-        setExpanded(!expanded)
+        setExpanded(!expanded);
     }
 
     const expandButtonPressed = () => {
@@ -80,7 +82,7 @@ const VerseBox = ({ verseText, readMorePressed, chapterNumber, verseNumber, view
 
     return (
         <div className="verse-container">
-            <Verse verseText={verseText} />
+            <Verse verseText={verseText} hideVerse={hideVerse} />
             <div style={{display: 'flex', flexDirection: 'row', margin: '0 auto'}}>
                 <div style = {{display: 'flex', flexDirection: 'row'}} id="left-div">
                     <Button

@@ -107,6 +107,13 @@ const VersePicker = ({ loadState }) => {
         fetchVersesCount();
     }, [endChapterNumber, startChapterNumber, startVerseNumber]);
 
+    String.prototype.toIndiaDigits= function(){
+        var id= ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+        return this.replace(/[0-9]/g, function(w){
+         return id[+w]
+        });
+       }
+
     return (
         <div className='VersePicker'>
         {/* {!isMobile ? ( */}
@@ -131,7 +138,7 @@ const VersePicker = ({ loadState }) => {
                     options={startChapters}
                     // sx={{ width: '13em', marginRight: '10px' }}
                     renderInput={(params) => <TextField {...params} label="Start Chapter" />}
-                    style={{ display: 'flex', justifyContent: 'center' }}
+                    style={{ display: 'flex', justifyContent: 'center', color: '#fff' }}
                 />
                 <Autocomplete
                     onChange={(event, verseNumber) => {

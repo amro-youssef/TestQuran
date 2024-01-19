@@ -21,6 +21,22 @@ const getChapterNames = () => {
     });
 }
 
+const getChapterName = async (chapterNumber) => {
+    try {
+        const urlResponse = await fetch(`https://api.quran.com/api/v4/chapters/${chapterNumber}`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+        const data = await urlResponse.json();
+        return data.chapter.name_simple;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
+
 let audioElement;
 const getAudioUrl = async (chapterNumber, verseNumber, reciterNumber) => {
     if (audioElement && !audioElement.paused) {
@@ -67,6 +83,17 @@ const getNumberVerses = async (chapterNumber) => {
 
 const getVerseText = async (chapterNumber, verseNumber) => {
     try {
+        // const response = await fetch(`https://api.quran.com/api/v4/quran/verses/code_v2`, {
+        //     method: 'GET',
+        //     headers: {
+        //         'Accept': 'application/json'
+        //     }
+        // });
+        // const data = await response.json();
+        // // NOTE: this may be very ineffience
+        // data.verses = data.verses.filter(verse => verse.verse_key == `${chapterNumber}:${verseNumber}`)
+        // return data.verses[0]?.code_v2;
+
         const response = await fetch(`https://api.quran.com/api/v4/quran/verses/uthmani`, {
             method: 'GET',
             headers: {
@@ -105,5 +132,6 @@ module.exports = {
     getNumberVerses,
     getVerseText,
     getAudioUrl,
-    getReciters
+    getReciters,
+    getChapterName
 };

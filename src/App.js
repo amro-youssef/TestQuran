@@ -59,6 +59,9 @@ const App = () => {
       setVerseText(randomText);
     }
     setLoading(false);
+    if (localStorage.getItem('autoPlayAudio') === 'true') {
+      playAudio(randomVerse?.chapterNumber, randomVerse?.verseNumber);
+    }
   };
 
 
@@ -295,6 +298,7 @@ const App = () => {
                 viewVerseNumber={showVerseNumbers}
                 onViewVerseNumberChange={onViewVerseNumberChange}
                 playAudio={playAudio}
+                hideVerse={true}
               />
             </>
           ) : <></>}
@@ -307,6 +311,7 @@ const App = () => {
                 viewVerseNumber={showVerseNumbers}
                 onViewVerseNumberChange={onViewVerseNumberChange}
                 playAudio={playAudio}
+                hideVerse={true}
               />
               {!showRestOfChapter && 
                 <p>
@@ -330,6 +335,7 @@ const App = () => {
             viewVerseNumber={showVerseNumbers}
             onViewVerseNumberChange={onViewVerseNumberChange}
             playAudio={playAudio}
+            hideVerse={true}
           />
       ))}
     {audioUrl ? (<AudioBar audioFile={audioUrl} incrementVerseAudio={incrementVerseAudio} decrementVerseAudio={decrementVerseAudio}/>) : null}

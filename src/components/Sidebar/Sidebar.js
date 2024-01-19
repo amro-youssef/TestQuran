@@ -2,15 +2,6 @@ import {React, useState, useEffect, Fragment} from 'react';
 import Box from '@mui/material/Box';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import Button from '@mui/material/Button';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import IconButton from '@mui/material/IconButton';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -38,6 +29,8 @@ export default function SwipeableTemporaryDrawer({ setReciterNumber }) {
   });
   const [selectedValue, setSelectedValue] = useState(localStorage.getItem('reciterId') ? localStorage.getItem('reciterId') : 6);
   const [continuePlayingAudio, setContinuePlayingAudio] = useState(localStorage.getItem('continuePlayingAudio') === 'false' ? false : true);
+  const [autoPlayAudio, setAutoPlayAudio] = useState(localStorage.getItem('autoPlayAudio') === 'true' ? true : false);
+  const [alwaysHideText, setAlwaysHideText] = useState(localStorage.getItem('alwaysHideText') === 'true' ? true : false);
   const [reciterComponentList, setReciterComponentList] = useState();
   const [reciterList, setReciterList] = useState([]);
   const [reciterName, setReciterName] = useState();
@@ -55,17 +48,17 @@ export default function SwipeableTemporaryDrawer({ setReciterNumber }) {
     setState({ ...state, [anchor]: !state[anchor] });
   };
 
-  const CollapsiblePanel = ({ isOpen, children }) => {
-    return (
-      <div style={{ height: isOpen ? 'auto' : 0, overflow: 'hidden', transition: 'height 0.3s ease-in-out' }}>
-        {children}
-      </div>
-    );
-  };
+  // const CollapsiblePanel = ({ isOpen, children }) => {
+  //   return (
+  //     <div style={{ height: isOpen ? 'auto' : 0, overflow: 'hidden', transition: 'height 0.3s ease-in-out' }}>
+  //       {children}
+  //     </div>
+  //   );
+  // };
 
-  const handleDrawerClose = () => {
-    setState({...state, ['right']: false});
-  };
+  // const handleDrawerClose = () => {
+  //   setState({...state, ['right']: false});
+  // };
 
   useEffect(() => {
     const fetchReciters = async () => {
@@ -106,7 +99,17 @@ export default function SwipeableTemporaryDrawer({ setReciterNumber }) {
 
   const handleContinuePlayingChange = (event) => {
     setContinuePlayingAudio(event.target.checked);
-    localStorage.setItem('continuePlayingAudio', event.target.checked)
+    localStorage.setItem('continuePlayingAudio', event.target.checked);
+  };
+
+  const handleAutoPlayChange = (event) => {
+    setAutoPlayAudio(event.target.checked);
+    localStorage.setItem('autoPlayAudio', event.target.checked);
+  };
+
+  const handleAlwaysHideText = (event) => {
+    setAlwaysHideText(event.target.checked);
+    localStorage.setItem('alwaysHideVerse', event.target.checked);
   };
 
   const list = (anchor) => (
@@ -120,7 +123,7 @@ export default function SwipeableTemporaryDrawer({ setReciterNumber }) {
             {<ChevronRightIcon />}
         </IconButton> */}
         <h2>Audio:</h2>
-        {/* <FormControlLabel control={<Checkbox />} label="Auto-play Audio" /> */}
+        <FormControlLabel checked={autoPlayAudio} onChange={handleAutoPlayChange} control={<Checkbox />} label="Auto-play audio" />
         <FormControlLabel checked={continuePlayingAudio} onChange={handleContinuePlayingChange} control={<Checkbox />} label="Continue playing audio" />
 
         <div style={{margin: '5px'}}/>
@@ -155,8 +158,8 @@ export default function SwipeableTemporaryDrawer({ setReciterNumber }) {
         </Dialog>
 
         <h2>Verse:</h2>
-        <FormControlLabel control={<Checkbox />} label="Always hide verse number" />
-        <FormControlLabel control={<Checkbox />} label="Always hide text" />
+        <FormControlLabel control={<Checkbox />} label="Always show verse number" />
+        <FormControlLabel checked={alwaysHideText} onChange={handleAlwaysHideText} control={<Checkbox />} label="Hide verse text" />
 
     </Box>
   );

@@ -1,15 +1,3 @@
-@font-face {
-    font-family: 'Mushaf Ligatures';
-    src: local('QCF_BSML'),
-         url(https://raw.githubusercontent.com/mustafa0x/qpc-fonts/f93bf5f3/mushaf-v2-woff2/QCF_BSML.woff2) format('woff2'),
-         url(https://raw.githubusercontent.com/mustafa0x/qpc-fonts/f93bf5f3/mushaf-woff/QCF_BSML.woff) format('woff');
-  }
-  @font-face {
-    font-family: 'Mushaf Page NNN';
-    src: local('QCF_PNNN'),
-         url(https://raw.githubusercontent.com/mustafa0x/qpc-fonts/f93bf5f3/mushaf-woff2/QCF_PNNN.woff2) format('woff2'),
-         url(https://raw.githubusercontent.com/mustafa0x/qpc-fonts/f93bf5f3/mushaf-woff/QCF_PNNN.woff) format('woff');
-  }
 
   @font-face {
     font-family: "v2";
@@ -17,9 +5,13 @@
          /* url(https://github.com/quran/quran.com-frontend-next/blob/master/public/fonts/quran/hafs/v2/woff2/p1.woff2) format('woff2'), */
          url(./fonts/woff2/p1.woff2) format('woff2'),
          url(./fonts/woff/p1.woff) format('woff')
-
+         url(./fonts/ttf/p1.ttf) format('truetype')
          /* url(https://raw.githubusercontent.com/mustafa0x/qpc-fonts/f93bf5f3/mushaf-woff/QCF_PNNN.woff) format('woff'); */
-    
+  }
+
+  @font-face {
+    font-family: "uthmanic";
+    src: url(./fonts/UthmanicHafs_V22.ttf) format('truetype')
   }
 
 
@@ -31,30 +23,43 @@
     
   }
 
+.hideable-div {
+    /* border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px; */
+    /* Add any other styles you need for your div */
+}
+
+.blur {
+    color: transparent;
+    text-shadow: 0 0 18px rgba(0,0,0,0.7);
+ }
+
+.placeholder {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    to {
+        background-position: -200% 0;
+    }
+}
+
 .verse {
     font-family: 'v2';
-    /* font-size: 2em; */
-    /* max-width: 40em; */
-    
-    /* padding: 1.5em 10px; */
   }
 
-
-/* @media (width < 500px) {
-    .verse {
-        font-size: 1em;
-    }
-} */
-
-@media (width < 1024px) {
+  @media (max-width: 1024px) {
     .verse {
         font-size: 1em;
         /* min-width: 90% */
     }
 }
 
-@media (width >= 1024px) {
+@media (min-width: 1024px) {
     .verse {
-        font-size: 1.2em
+        font-size: 1.2em;
     }
 }
