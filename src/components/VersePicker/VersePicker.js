@@ -1,16 +1,18 @@
+/* eslint-disable eqeqeq */
 import {React, useState, useEffect} from 'react';
-import {getChapters, getChapterNames, getNumberVerses} from './../../backend.js'
+import {getChapterNames, getNumberVerses} from './../../backend.js'
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import InputLabel from '@mui/material/InputLabel';
+import Paper from "@mui/material/Paper";
 import './VersePicker.css'
 import { Select } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import MenuItem from '@mui/material/MenuItem';
+import 'animate.css';
 
 
-
-const VersePicker = ({ loadState }) => {
+const VersePicker = ({ loadState, bounce1, bounce2, bounce3, bounce4 }) => {
     const [startChapters, setStartChapters] = useState([]);
     const [startVerses, setStartVerses] = useState([]);
     const [startChapterNumber, setStartChapterNumber] = useState();
@@ -130,15 +132,16 @@ const VersePicker = ({ loadState }) => {
                             setStartVerses([])
                         } catch {}
                     }}
-                    className='Autocomplete chapter'
+                    className= {`Autocomplete chapter  ${bounce1 ? 'animate__animated animate__bounce' : ''}`}
                     disablePortal
                     disableClearable
                     id="start-chapter"
                     value={startChapter}
                     options={startChapters}
+                    classes="autocomplete"
                     // sx={{ width: '13em', marginRight: '10px' }}
                     renderInput={(params) => <TextField {...params} label="Start Chapter" />}
-                    style={{ display: 'flex', justifyContent: 'center', color: '#fff' }}
+                    style={{ display: 'flex', justifyContent: 'center'}}
                 />
                 <Autocomplete
                     onChange={(event, verseNumber) => {
@@ -146,7 +149,7 @@ const VersePicker = ({ loadState }) => {
                             setStartVerseNumber(verseNumber);
                         } catch {}
                     }}
-                    className='Autocomplete verse'
+                    className={`Autocomplete verse  ${bounce2 ? 'animate__animated animate__bounce' : ''}`}
                     disablePortal
                     disableClearable
                     id="start-verse"
@@ -162,8 +165,6 @@ const VersePicker = ({ loadState }) => {
 
             <div className='endDiv'>
                 <Autocomplete
-                    // TODO need to add functionality that means end chapter is bigger than start  
-                    // value={chapterNameSelected}
                     onChange={(event, chapterName) => {
                         // change to an if
                         try {
@@ -175,7 +176,7 @@ const VersePicker = ({ loadState }) => {
                         }
                         //setNumVersesInChapter(getNumberVerses(parseInt(chapterName.split(' ')[0])))
                     }}
-                    className='Autocomplete chapter'
+                    className={`Autocomplete chapter  ${bounce3 ? 'animate__animated animate__bounce' : ''}`}
                     value={endChapter}
                     disablePortal
                     disableClearable
@@ -191,7 +192,7 @@ const VersePicker = ({ loadState }) => {
                             setEndVerseNumber(verseNumber);
                         } catch {}
                     }}
-                    className='Autocomplete verse'
+                    className={`Autocomplete verse  ${bounce4 ? 'animate__animated animate__bounce' : ''}`}
                     disablePortal
                     disableClearable
                     id="end-verse"
@@ -295,6 +296,5 @@ const VersePicker = ({ loadState }) => {
         
     )
 }
-
 
 export default VersePicker;

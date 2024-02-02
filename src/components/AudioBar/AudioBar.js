@@ -71,7 +71,6 @@ const AudioBar = ( {audioFile, incrementVerseAudio, decrementVerseAudio} ) => {
   // handles pressing of play/pause button on a keyboatd
   useEffect(() => {
     const handleKeyDown = (event) => {
-      console.log(event.keyCode)
       if (event.keyCode == '179') {
         playPauseHandler();
       }

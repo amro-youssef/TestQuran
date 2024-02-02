@@ -1,27 +1,43 @@
-const getChapters = () => {
-    return fetch('https://api.quran.com/api/v4/chapters/', {
-    method: 'GET',
-        headers: { 
-            'Accept': 'application/json'
-        }
-    })
-    .then(response => response.json())
-    .then(response => {
-        return response?.chapters;
-    })
-    .catch((error) => {
+/* eslint-disable eqeqeq */
+const getChapters = async () => {
+    try {
+        const response = await fetch('https://api.quran.com/api/v4/chapters/', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+        const response_json = await response.json();
+        return response_json?.chapters;
+    } catch (error) {
         console.log(error);
-        return []
-    });
+        return [];
+    }
 }
 
-const getChapterNames = () => {
-    return getChapters().then(response => {
-        return response.map(chapter => (`${chapter?.id} ${chapter?.name_simple}`))
-    });
+const getChapterNames = async () => {
+    if (!getChapterNames.cache) {
+        getChapterNames.cache = {};
+    }
+
+    if (getChapterNames.cache["chapterNames"]) {
+        console.log("hi im a cache")
+        return getChapterNames.cache["chapterNames"];
+    }
+    const response = await getChapters();
+    const names = response.map(chapter => (`${chapter?.id} ${chapter?.name_simple}`));
+    getChapterNames.cache["chapterNames"] = names;
+    return names;
 }
 
 const getChapterName = async (chapterNumber) => {
+    if (!getChapterName.cache) {
+        getChapterName.cache = {};
+    }
+
+    if (getChapterName.cache[chapterNumber]) {
+        return getChapterName.cache[chapterNumber];
+    }
     try {
         const urlResponse = await fetch(`https://api.quran.com/api/v4/chapters/${chapterNumber}`, {
             method: 'GET',
@@ -30,7 +46,9 @@ const getChapterName = async (chapterNumber) => {
             }
         });
         const data = await urlResponse.json();
-        return data.chapter.name_simple;
+        const chapterName = data.chapter.name_simple;
+        getChapterName.cache[chapterNumber] = chapterName;
+        return chapterName;
     } catch (error) {
         console.log(error);
         return null;
@@ -93,6 +111,12 @@ const getVerseText = async (chapterNumber, verseNumber) => {
         // // NOTE: this may be very ineffience
         // data.verses = data.verses.filter(verse => verse.verse_key == `${chapterNumber}:${verseNumber}`)
         // return data.verses[0]?.code_v2;
+        if (!getVerseText.cache) {
+            getVerseText.cache = {}
+        }
+        if (getVerseText.cache[chapterNumber + "," + verseNumber]) {
+            return getVerseText.cache[chapterNumber + "," + verseNumber];
+        }
 
         const response = await fetch(`https://api.quran.com/api/v4/quran/verses/uthmani`, {
             method: 'GET',
@@ -102,7 +126,8 @@ const getVerseText = async (chapterNumber, verseNumber) => {
         });
         const data = await response.json();
         // NOTE: this may be very ineffience
-        data.verses = data.verses.filter(verse => verse.verse_key == `${chapterNumber}:${verseNumber}`)
+        data.verses = data.verses.filter(verse => verse.verse_key == `${chapterNumber}:${verseNumber}`);
+        getVerseText.cache[chapterNumber + "," + verseNumber] = data.verses[0]?.text_uthmani;
         return data.verses[0]?.text_uthmani
     } catch (error) {
         console.log(error);

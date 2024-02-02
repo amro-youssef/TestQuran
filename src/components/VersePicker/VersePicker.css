@@ -83,32 +83,6 @@
         margin-right: 0em
     }
 
-    /* Adjust the width of Autocomplete components */
-    .MuiAutocomplete-root {
-        width: 100%;
-    }
-
-    /* Center the Autocomplete components */
-    .MuiAutocomplete-hasPopupIcon {
-        display: flex;
-        justify-content: center;
-    }
-
-    /* Adjust the width of text fields */
-    .MuiTextField-root {
-        width: 100%;
-    }
-
-    /* Add margin to improve spacing between elements */
-    .MuiFormControl-root {
-        margin-bottom: 10px;
-    }
-
-    /* Adjust spacing for better readability */
-    .MuiInputLabel-root,
-    .MuiInputBase-input {
-        padding: 8px;
-    }
 }
 
 

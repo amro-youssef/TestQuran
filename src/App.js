@@ -1,19 +1,22 @@
+/* eslint-disable eqeqeq */
 import './App.css';
-import {getAudioUrl, getChapters, getChapterNames, getNumberVerses, getVerseText} from './backend.js';
-import {React, useState, useEffect} from 'react';
+import {getAudioUrl, getNumberVerses, getVerseText, getChapterName} from './backend.js';
+import {React, useState} from 'react';
 import Title from './components/Title/Title';
 import Header from './components/Header/Header';
 import VersePicker from './components/VersePicker/VersePicker';
 import SubmitButton from './components/SubmitButton/SubmitButton';
 import VerseBox from './components/VerseBox/VerseBox';
 import SwipeableTemporaryDrawer from './components/Sidebar/Sidebar';
-import AudioBar from './components/AudioBar/AudioBar'
+import AudioBar from './components/AudioBar/AudioBar';
+import 'animate.css';
 
 const App = () => { 
   const [startChapterNumber, setStartChapterNumber] = useState(null); 
   const [endChapterNumber, setEndChapterNumber] = useState(null); 
   const [startVerseNumber, setStartVerseNumber] = useState(null); 
   const [endVerseNumber, setEndVerseNumber] = useState(null); 
+  const [chapterName, setChapterName] = useState(null); 
 
   const [verseText, setVerseText] = useState(null);
   const [firstVerse, setFirstVerse] = useState(null);
@@ -23,18 +26,17 @@ const App = () => {
   const [audioUrl, setAudioUrl] = useState(null);
 
   const [secondVerseText, setSecondVerseText] = useState(null);
-  // const [secondChapterNumber, setSecondChapterNumber] = useState(null);
-  // const [secondVerseNumber, setSecondVerseNumber] = useState(null);
-
   const [thirdVerseText, setThirdVerseText] = useState(null);
-  // const [thirdChapterNumber, setThirdChapterNumber] = useState(null);
-  // const [thirdVerseNumber, setThirdVerseNumber] = useState(null);
 
   const [showRestOfChapter, setShowRestOfChapter] = useState(false);
   const [restOfVerses, setRestOfVerses] = useState([]);
 
-  const [loading, setLoading] = useState(false);
+  const [bounce1, setBounce1] = useState(false);
+  const [bounce2, setBounce2] = useState(false);
+  const [bounce3, setBounce3] = useState(false);
+  const [bounce4, setBounce4] = useState(false);
 
+  const [loading, setLoading] = useState(false);
   const [versePlaying, setVersePlaying] = useState();
 
   const loadState = (startChapter, startVerse, endChapter, endVerse) => {
@@ -45,13 +47,14 @@ const App = () => {
   }
 
   const onClick = async () => {
+    if (checkEmptyFields()) return;
     setLoading(true);
     const versesList = await getVersesList(parseInt(startChapterNumber), parseInt(startVerseNumber),
     parseInt(endChapterNumber), parseInt(endVerseNumber));
     if (versesList.some(element => element === null)) {
       return;
     }
-    const randomVerse = await getRandomVerse(versesList)
+    const randomVerse = await getRandomVerse(versesList);
     resetStates();
     setFirstVerse(randomVerse);
     const randomText = await getVerseText(randomVerse?.chapterNumber, randomVerse?.verseNumber);
@@ -59,18 +62,46 @@ const App = () => {
       setVerseText(randomText);
     }
     setLoading(false);
+    setChapterName(await getChapterName(randomVerse?.chapterNumber));
+
     if (localStorage.getItem('autoPlayAudio') === 'true') {
       playAudio(randomVerse?.chapterNumber, randomVerse?.verseNumber);
     }
   };
 
+  /**
+   * @return whether there are empty fields
+   */
+  const checkEmptyFields = () => {
+    if (!startChapterNumber) {
+      setBounce1(true);
+      setTimeout(() => {
+        setBounce1(false);
+      }, 1000);
+      return true;
+    } if (!startVerseNumber) {
+      setBounce2(true);
+      setTimeout(() => {
+        setBounce2(false);
+      }, 1000);
+      return true;
+    } if (!endChapterNumber) {
+      setBounce3(true);
+      setTimeout(() => {
+        setBounce3(false);
+      }, 1000);
+      return true;
+    } if (!endVerseNumber) {
+      setBounce4(true);
+      setTimeout(() => {
+        setBounce4(false);
+      }, 1000);
+      return true;
+    }
+  }
 
   const resetStates = () => {
     setFirstVerse(null);
-    // setSecondChapterNumber(null);
-    // setSecondVerseNumber(null);
-    // setThirdChapterNumber(null);
-    // setThirdVerseNumber(null);
     setShowVerseNumbers(false);
     setReadMore(false);
     setAudioUrl(null);
@@ -152,25 +183,11 @@ const App = () => {
     const numVerses = await getNumberVerses(firstVerse.chapterNumber);
     let restOfVerses = []
 
-    // const CHUNK_SIZE = 20;
-    // for (let i = firstVerse.verseNumber; i < numVerses; i += CHUNK_SIZE) {
-      //   for (let verse = i; verse < CHUNK_SIZE + i && verse <= numVerses; verse++) {
-    //     const text = await getVerseText(firstVerse.chapterNumber, verse);
-    //     restOfVerses.push({chapter: firstVerse.chapterNumber, verse: verse, text: text});
-    //   }
-    //   if (restOfVerses.length > 3) {
-      //     restOfVerses = restOfVerses.slice(3);
-    //   } else {
-      //     return [];
-      //   }
-      //   setRestOfVerses(restOfVerses);
-      // }
-
     // perhaps do this in chunks in order for the page to appear responsive
     for (let verse = firstVerse.verseNumber; verse <= numVerses; verse++) {
       const text = await getVerseText(firstVerse.chapterNumber, verse);
       restOfVerses.push({chapter: firstVerse.chapterNumber, verse: verse, text: text});
-      if (verse % 10 == 0) {
+      if (verse % 10 === 0) {
         setRestOfVerses(restOfVerses.slice(3));
       }
     }
@@ -193,23 +210,41 @@ const App = () => {
 
   const playAudio = async (chapterNumber, verseNumber) => {
     const url = await getAudioUrl(chapterNumber, verseNumber, reciterNumber);
+    // this is used to fix an error where pressing the play button next to a verse
+    // for a verse already loaded in the audio bar not playing. It's not ideal as
+    // it causes the audio bar to disappear then reappear
     if (audioUrl && audioUrl.includes(url)) {
       setAudioUrl(null);
-      playAudio(chapterNumber, verseNumber);
+      setTimeout(() => {
+        try {
+          if (url.substring(0, 2) === "//") {
+            setAudioUrl(url);
+          } else {
+            setAudioUrl("https://verses.quran.com/" + url);
+          }
+          setVersePlaying( {
+            chapterNumber: chapterNumber,
+            verseNumber: verseNumber
+          })
+        } catch {
+    
+        }
+      });
     }
-
-    try {
-      if (url.substring(0, 2) === "//") {
-        setAudioUrl(url);
-      } else {
-        setAudioUrl("https://verses.quran.com/" + url);
+    else {
+      try {
+        if (url.substring(0, 2) === "//") {
+          setAudioUrl(url);
+        } else {
+          setAudioUrl("https://verses.quran.com/" + url);
+        }
+        setVersePlaying( {
+          chapterNumber: chapterNumber,
+          verseNumber: verseNumber
+        })
+      } catch {
+  
       }
-      setVersePlaying( {
-        chapterNumber: chapterNumber,
-        verseNumber: verseNumber
-      })
-    } catch {
-
     }
   }
 
@@ -263,85 +298,99 @@ const App = () => {
 
 
   return (
-    <div className="App light">
-      <header style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'row'}}>
-        <div style={{marginRight: '65px', flexShrink: 2}}></div>
-        <Header style={{justifyContent: 'center', flexShrink: 2}}/>
-        <div style={{display: 'flex', justifyContent: 'right', alignSelf: 'flex-end'}}>
-          <SwipeableTemporaryDrawer setReciterNumber={(num) => {setReciterNumber(num)}}/>
+      <div className="App light">
+        <header style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'row'}}>
+          <div style={{marginRight: '65px', flexShrink: 2}}></div>
+          <Header style={{justifyContent: 'center', flexShrink: 2}}/>
+          <div style={{display: 'flex', justifyContent: 'right', alignSelf: 'flex-end'}}>
+            <SwipeableTemporaryDrawer setReciterNumber={(num) => {setReciterNumber(num)}}/>
+          </div>
+        </header>
+        <Title />
+        <div style={{ display: 'flex', justifyContent: 'space-evenly', flexWrap: 'wrap' }}>
+          <VersePicker 
+            loadState={loadState} 
+            bounce1={bounce1}
+            bounce2={bounce2}
+            bounce3={bounce3}
+            bounce4={bounce4}
+          />
+          <SubmitButton onClick={onClick} loading={loading}/>
         </div>
-      </header>
-      <Title />
-      <div style={{ display: 'flex', justifyContent: 'space-evenly', flexWrap: 'wrap' }}>
-        <VersePicker loadState={loadState}/>
-        <SubmitButton onClick={onClick} loading={loading}/>
+        {verseText ? (
+          <>
+            <div style={{ marginTop: '2em' }}></div>
+            <VerseBox
+              verseText={verseText}
+              readMorePressed={expandPressed}
+              chapterNumber={firstVerse?.chapterNumber}
+              verseNumber={firstVerse?.verseNumber}
+              chapterName={chapterName}
+              viewVerseNumber={showVerseNumbers}
+              onViewVerseNumberChange={onViewVerseNumberChange}
+              playAudio={playAudio}
+              versePlaying={audioUrl ? versePlaying : null}
+            />
+
+            {readMore && secondVerseText ?  (
+              <>
+                <VerseBox
+                  verseText={secondVerseText}
+                  chapterNumber={firstVerse?.chapterNumber}
+                  verseNumber={firstVerse?.verseNumber + 1}
+                  chapterName={chapterName}
+                  viewVerseNumber={showVerseNumbers}
+                  onViewVerseNumberChange={onViewVerseNumberChange}
+                  playAudio={playAudio}
+                  versePlaying={audioUrl ? versePlaying : null}
+                  hideVerse={true}
+                />
+              </>
+            ) : <></>}
+            {readMore && thirdVerseText ?  (
+              <>
+                <VerseBox
+                  verseText={thirdVerseText}
+                  chapterNumber={firstVerse?.chapterNumber}
+                  verseNumber={firstVerse?.verseNumber + 2}
+                  chapterName={chapterName}
+                  viewVerseNumber={showVerseNumbers}
+                  onViewVerseNumberChange={onViewVerseNumberChange}
+                  playAudio={playAudio}
+                  versePlaying={audioUrl ? versePlaying : null}
+                  hideVerse={true}
+                />
+                {!showRestOfChapter && 
+                  <p>
+                    <button className='text-link' onClick={handleReadRestOfChapter}>
+                      Read rest of chapter
+                    </button>
+                  </p>
+                }
+              </>
+            ) : <></>}
+          </>
+        ) : <></>} 
+
+        {showRestOfChapter && readMore &&
+          restOfVerses.map((verseInfo) => (
+            <VerseBox
+              key={`${verseInfo.chapter}-${verseInfo.verse}`}
+              verseText={verseInfo.text}
+              chapterNumber={verseInfo.chapter}
+              verseNumber={verseInfo.verse}
+              chapterName={chapterName}
+              viewVerseNumber={showVerseNumbers}
+              onViewVerseNumberChange={onViewVerseNumberChange}
+              playAudio={playAudio}
+              versePlaying={audioUrl ? versePlaying : null}
+              hideVerse={true}
+            />
+        ))}
+      {audioUrl ? (<AudioBar audioFile={audioUrl} incrementVerseAudio={incrementVerseAudio} decrementVerseAudio={decrementVerseAudio}/>) : null}
+        
+      <div style={{ marginTop: '5em' }}></div>
       </div>
-      {verseText ? (
-        <>
-          <div style={{ marginTop: '2em' }}></div>
-          <VerseBox
-            verseText={verseText}
-            readMorePressed={expandPressed}
-            chapterNumber={firstVerse?.chapterNumber}
-            verseNumber={firstVerse?.verseNumber}
-            viewVerseNumber={showVerseNumbers}
-            onViewVerseNumberChange={onViewVerseNumberChange}
-            playAudio={playAudio}
-          />
-
-          {readMore && secondVerseText ?  (
-            <>
-              <VerseBox
-                verseText={secondVerseText}
-                chapterNumber={firstVerse?.chapterNumber}
-                verseNumber={firstVerse?.verseNumber + 1}
-                viewVerseNumber={showVerseNumbers}
-                onViewVerseNumberChange={onViewVerseNumberChange}
-                playAudio={playAudio}
-                hideVerse={true}
-              />
-            </>
-          ) : <></>}
-          {readMore && thirdVerseText ?  (
-            <>
-              <VerseBox
-                verseText={thirdVerseText}
-                chapterNumber={firstVerse?.chapterNumber}
-                verseNumber={firstVerse?.verseNumber + 2}
-                viewVerseNumber={showVerseNumbers}
-                onViewVerseNumberChange={onViewVerseNumberChange}
-                playAudio={playAudio}
-                hideVerse={true}
-              />
-              {!showRestOfChapter && 
-                <p>
-                  <button className='text-link' onClick={handleReadRestOfChapter}>
-                    Read rest of chapter
-                  </button>
-                </p>
-              }
-            </>
-          ) : <></>}
-        </>
-      ) : <></>} 
-
-      {showRestOfChapter && readMore &&
-        restOfVerses.map((verseInfo) => (
-          <VerseBox
-            key={`${verseInfo.chapter}-${verseInfo.verse}`}
-            verseText={verseInfo.text}
-            chapterNumber={verseInfo.chapter}
-            verseNumber={verseInfo.verse}
-            viewVerseNumber={showVerseNumbers}
-            onViewVerseNumberChange={onViewVerseNumberChange}
-            playAudio={playAudio}
-            hideVerse={true}
-          />
-      ))}
-    {audioUrl ? (<AudioBar audioFile={audioUrl} incrementVerseAudio={incrementVerseAudio} decrementVerseAudio={decrementVerseAudio}/>) : null}
-      
-    <div style={{ marginTop: '5em' }}></div>
-    </div>
     
   );
 }

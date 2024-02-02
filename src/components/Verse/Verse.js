@@ -6,7 +6,7 @@ const Verse = ({ verseText, hideVerse }) => {
     const [verse, setVerse] = useState(verseText);
     const [isContentHidden, setIsContentHidden] = useState(false);
 
-    const makeContentVisibility = () => {
+    const makeContentVisibile = () => {
         setIsContentHidden(false);
     };
 
@@ -30,7 +30,7 @@ const Verse = ({ verseText, hideVerse }) => {
         //     </h1>
         // </div>}
         // </>
-        <div className={`verse ${isContentHidden ? 'placeholder blur' : ''}`} onClick={makeContentVisibility}>
+        <div className={`verse ${isContentHidden ? 'placeholder blur' : ''}`} onClick={makeContentVisibile}>
             <h1 dir="rtl">
                 {verse}
             </h1>

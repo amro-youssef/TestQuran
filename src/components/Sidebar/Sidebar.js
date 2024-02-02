@@ -123,7 +123,7 @@ export default function SwipeableTemporaryDrawer({ setReciterNumber }) {
             {<ChevronRightIcon />}
         </IconButton> */}
         <h2>Audio:</h2>
-        <FormControlLabel checked={autoPlayAudio} onChange={handleAutoPlayChange} control={<Checkbox />} label="Auto-play audio" />
+        <FormControlLabel checked={autoPlayAudio} onChange={handleAutoPlayChange} control={<Checkbox />} label="Auto-play audio on randomize" />
         <FormControlLabel checked={continuePlayingAudio} onChange={handleContinuePlayingChange} control={<Checkbox />} label="Continue playing audio" />
 
         <div style={{margin: '5px'}}/>
@@ -158,7 +158,7 @@ export default function SwipeableTemporaryDrawer({ setReciterNumber }) {
         </Dialog>
 
         <h2>Verse:</h2>
-        <FormControlLabel control={<Checkbox />} label="Always show verse number" />
+        {/* <FormControlLabel control={<Checkbox />} label="Always show verse number" /> */}
         <FormControlLabel checked={alwaysHideText} onChange={handleAlwaysHideText} control={<Checkbox />} label="Hide verse text" />
 
     </Box>

@@ -1,16 +1,15 @@
-import {React, useState, useEffect} from 'react';
+import {React, useState, useEffect, useRef} from 'react';
 import { Button } from '@mui/material';
 import {getChapterName} from './../../backend.js'
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import VolumeUp from '@mui/icons-material/VolumeUp';
-import InfoIcon from '@mui/icons-material/Info';
 
 import Verse from '../Verse/Verse.js';
 import './VerseBox.css';
 
-const VerseBox = ({ verseText, readMorePressed, chapterNumber, verseNumber, viewVerseNumber, onViewVerseNumberChange, playAudio, hideVerse }) => {
+const VerseBox = ({ verseText, readMorePressed, chapterNumber, chapterName, verseNumber, viewVerseNumber, onViewVerseNumberChange, playAudio, hideVerse, versePlaying}) => {
 
     const [verse, setVerse] = useState(verseText);
     const [buttonText, setButtonText] = useState(<VisibilityIcon />);
@@ -18,16 +17,17 @@ const VerseBox = ({ verseText, readMorePressed, chapterNumber, verseNumber, view
     const [expanded, setExpanded] = useState(false);
 
     const showVerseNumber = async () => {
-        const chapterName = await getChapterName(chapterNumber);
+        // console.time("chapterName" + verseNumber);
+        // const chapterName = await getChapterName(chapterNumber);
+        // console.timeEnd("chapterName" + verseNumber);
+        if (!chapterName) {
+            chapterName = await getChapterName(chapterNumber);
+        }
         setButtonText(`${chapterNumber}:${verseNumber}\n${chapterName}`);
     }
 
     const hideVerseNumber = () => {
         setButtonText(<VisibilityIcon />);
-    }
-
-    const toggleView = () => {
-        onViewVerseNumberChange();
     }
 
     const toggleExpandIcon = () => {
@@ -75,20 +75,40 @@ const VerseBox = ({ verseText, readMorePressed, chapterNumber, verseNumber, view
         }
     }, []);
 
+    let divRef = useRef();
+    // scrolls to make the verse playing in the centre of the screen
+    useEffect(() => {
+        if (isVersePlaying()) {
+            const windowHeight = window.innerHeight;
+            const componentHeight = divRef.current.clientHeight;
+            const scrollAmount = divRef.current.offsetTop - (windowHeight - componentHeight) / 2;
+
+            window.scrollTo({
+            top: scrollAmount,
+            behavior: 'smooth'
+            });
+        }
+    }, [versePlaying])
+
     const expandDivStyle = {
         position: 'absolute',
         left: leftPosition,
     };
+    console.log("verseplaying", versePlaying)
+
+    const isVersePlaying = () => {
+        return versePlaying && versePlaying.chapterNumber == chapterNumber && versePlaying.verseNumber == verseNumber
+    }
 
     return (
-        <div className="verse-container">
+        <div ref={divRef} className={`verse-container ${isVersePlaying() ? 'selected': ''}`}>
             <Verse verseText={verseText} hideVerse={hideVerse} />
             <div style={{display: 'flex', flexDirection: 'row', margin: '0 auto'}}>
                 <div style = {{display: 'flex', flexDirection: 'row'}} id="left-div">
                     <Button
                         size="medium"
                         style={{display: 'flex', justifyContent: 'flex-start'}}
-                        onClick={toggleView}
+                        onClick={onViewVerseNumberChange}
                         sx={{ borderRadius: 24 }}
                         id="verse-number">
                             {buttonText}
@@ -108,8 +128,8 @@ const VerseBox = ({ verseText, readMorePressed, chapterNumber, verseNumber, view
                         // document.removeEventListener('click', playAudio);
                         // };
                             }}
-                            >
-                            {<VolumeUp/>}
+                    >
+                        {<VolumeUp/>}
                     </Button>
                 </div>
                 <div style={expandDivStyle} id="expand-div">
