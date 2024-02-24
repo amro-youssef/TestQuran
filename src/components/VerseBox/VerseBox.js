@@ -94,7 +94,6 @@ const VerseBox = ({ verseText, readMorePressed, chapterNumber, chapterName, vers
         position: 'absolute',
         left: leftPosition,
     };
-    console.log("verseplaying", versePlaying)
 
     const isVersePlaying = () => {
         return versePlaying && versePlaying.chapterNumber == chapterNumber && versePlaying.verseNumber == verseNumber

@@ -5,17 +5,6 @@
   overflow-x: hidden;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
 .text-link {
   background: none;
   border: none;
@@ -46,21 +35,12 @@
 
 
 .dark {
-  /* background-color: #333; */
-  background: radial-gradient(rgb(19, 30, 37) 24.5%, rgb(19, 30, 37) 66%);
+  background-color: #242526;
+  /* background: radial-gradient(rgb(1, 14, 23) 24.5%, rgb(19, 30, 37) 66%); */
 
   color: #e7e9ea;
 }
 
-
-/* .css-1jy569b-MuiFormLabel-root-MuiInputLabel-root {
-  color: rgb(255 255 255 / 76%) !important
-}
-
-.MuiAutocomplete-hasPopupIcon.css-1h51icj-MuiAutocomplete-root .MuiOutlinedInput-root, .MuiAutocomplete-hasClearIcon.css-1h51icj-MuiAutocomplete-root .MuiOutlinedInput-root {
-  color: white
-
-} */
 ::-webkit-scrollbar {
   width: 12px; /* Adjust as needed */
 }
@@ -85,12 +65,3 @@ html, body {
   color: #333; /* Set text color to a darker shade for readability */
 }
 
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}

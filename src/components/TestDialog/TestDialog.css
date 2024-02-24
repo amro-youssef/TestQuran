@@ -1,0 +1,45 @@
+/* Style for the number input to make it similar to mui */
+input[type=number] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+    width: 50%;
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 2px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    display: block;
+  }
+  
+  /* Style for the number input when focused */
+  input[type=number]:focus {
+    outline: none;
+    border-color: #4caf50;
+    box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.25);
+  }
+  
+  /* Style for the number input when hovered */
+  input[type=number]:hover {
+    border-color: #6c757d;
+  }
+
+  #formlabel {
+    font-size: 1em;
+  }
+
+  #number-of-questions-div {
+    margin: 0px 0px 0px 10px;
+  }
+  
+  
+  @media screen and (max-width: 480px) {
+    #formlabel {
+      font-size: 1.2em;
+    }
+  }
+
+  @media screen and (max-width: 359px) {
+    #formlabel {
+      font-size: 1em;
+    }
+  }

@@ -1,0 +1,76 @@
+.App {
+    text-align: center;
+    margin: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  
+  .text-link {
+    background: none;
+    border: none;
+    color: blue; /* Adjust the color to your preference */
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+    font-size: inherit;
+    font-family: inherit;
+    margin: 0;
+  }
+  
+  .App-header {
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    /* color: white; */
+  }
+  
+  .App-link {
+    color: #61dafb;
+  }
+  
+  
+  
+  .dark {
+    background-color: #242526;
+    /* background: radial-gradient(rgb(1, 14, 23) 24.5%, rgb(19, 30, 37) 66%); */
+  
+    color: #e7e9ea;
+  }
+  
+  
+  /* .css-1jy569b-MuiFormLabel-root-MuiInputLabel-root {
+    color: rgb(255 255 255 / 76%) !important
+  }
+  
+  .MuiAutocomplete-hasPopupIcon.css-1h51icj-MuiAutocomplete-root .MuiOutlinedInput-root, .MuiAutocomplete-hasClearIcon.css-1h51icj-MuiAutocomplete-root .MuiOutlinedInput-root {
+    color: white
+  
+  } */
+  ::-webkit-scrollbar {
+    width: 12px; /* Adjust as needed */
+  }
+  
+  html, body {
+    scroll-behavior: smooth;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #a5a2a2da; /* Color of the thumb */
+    border-radius: 6px; /* Make it rounded */
+    /* height: 24px; */
+    min-height: 50px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background-color: #f2f2f2; /* Color of the track */
+  }
+  
+  .light {
+    background-color: #faf5f5;
+    color: #333; /* Set text color to a darker shade for readability */
+  }
+  

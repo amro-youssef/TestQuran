@@ -8,7 +8,7 @@
   }
   
   .selected {
-    box-shadow: 0 0 5px 5px rgba(0, 0, 255, 0.171); /* Adjust the color and spread as needed */
+    box-shadow: 0 0 5px 5px rgba(0, 0, 255, 0.05);
   }
 
   #expand-div {
