@@ -1,6 +1,6 @@
 import {React, useState, useEffect} from 'react';
 import {getAudioUrl, getNumberVerses, getVerseText, getChapterName} from './../../backend.js';
-import { Button } from '@mui/material';
+import { Button, CircularProgress } from '@mui/material';
 import ProgressBar from "@ramonak/react-progress-bar";
 import VerseBox from './../../components/VerseBox/VerseBox';
 import AudioBar from './../../components/AudioBar/AudioBar';
@@ -27,7 +27,10 @@ const Test = ( {goHome, state} ) => {
     const [numberCorrectAnswers ,setNumberCorrectAnswers] = useState(0);
     const [correctSelected, setCorrectSelected] = useState();
 
+    const [isLoading, setIsLoading] = useState(false);
+
     const loadVerses = async () => {
+      setIsLoading(true);
       const versesList = await getVersesList(parseInt(state.startChapterNumber), parseInt(state.startVerseNumber),
         parseInt(state.endChapterNumber), parseInt(state.endVerseNumber));
       if (versesList.some(element => element === null)) {
@@ -50,6 +53,7 @@ const Test = ( {goHome, state} ) => {
           setThirdVerseText(thirdVerseText);
         }
       }
+      setIsLoading(false);
       
       // setChapterName(await getChapterName(randomVerse?.chapterNumber));
   
@@ -64,7 +68,6 @@ const Test = ( {goHome, state} ) => {
       }
       if (currentQuestionNumber >= state.numQuestions) {
         // TODO handle
-
         alert(`number correct answers: ${correctSelected ? numberCorrectAnswers + 1 : numberCorrectAnswers}`)
         goHome();
         // return;
@@ -165,7 +168,12 @@ const Test = ( {goHome, state} ) => {
         </div>
         <Button height="30px" size="medium" onClick={goHome}>Home</Button>
         <div style={{ marginTop: '2em' }}></div>
-        <VerseBox
+        {isLoading ? 
+          <div className="loading-spinner">
+            <CircularProgress />
+          </div> :
+          <>
+            <VerseBox
               verseText={firstVerseText}
               readMorePressed={expandPressed}
               chapterNumber={firstVerse?.chapterNumber}
@@ -267,6 +275,110 @@ const Test = ( {goHome, state} ) => {
       </div>
     : <></>
   }
+          </>
+        }
+        {/* <VerseBox
+              verseText={firstVerseText}
+              readMorePressed={expandPressed}
+              chapterNumber={firstVerse?.chapterNumber}
+              verseNumber={firstVerse?.verseNumber}
+              chapterName={chapterName}
+              viewVerseNumber={showVerseNumbers}
+              onViewVerseNumberChange={onViewVerseNumberChange}
+              // playAudio={playAudio}
+              playAudio={() => {}} //TODO
+              // versePlaying={audioUrl ? versePlaying : null}
+              versePlaying={false}
+            />
+
+        {showOtherVerses && secondVerseText ?  (
+          <>
+            <VerseBox
+              verseText={secondVerseText}
+              chapterNumber={firstVerse?.chapterNumber}
+              verseNumber={firstVerse?.verseNumber + 1}
+              chapterName={chapterName}
+              viewVerseNumber={showVerseNumbers}
+              onViewVerseNumberChange={onViewVerseNumberChange}
+              // playAudio={playAudio}
+              playAudio={() => {}} //TODO
+              // versePlaying={audioUrl ? versePlaying : null}
+              versePlaying={false}
+              hideVerse={true}
+            />
+          </>
+        ) : <></>}
+
+        {showOtherVerses && thirdVerseText ?  (
+          <>
+            <VerseBox
+              verseText={thirdVerseText}
+              chapterNumber={firstVerse?.chapterNumber}
+              verseNumber={firstVerse?.verseNumber + 1}
+              chapterName={chapterName}
+              viewVerseNumber={showVerseNumbers}
+              onViewVerseNumberChange={onViewVerseNumberChange}
+              // playAudio={playAudio}
+              playAudio={() => {}} //TODO
+              // versePlaying={audioUrl ? versePlaying : null}
+              versePlaying={false}
+              hideVerse={true}
+            />
+          </>
+        ) : <></>}
+
+    {showOtherVerses ?  
+      <div className='bottom-div'>
+        <p className='question-text'>Were you correct:  </p>
+        <div style={{padding: '0px 20px 0px 0px'}}></div>
+
+        <Button
+          variant="contained"
+          style={{
+            borderRadius: '50%', // Make the button circular
+            minWidth: 0, // Ensure the button doesn't have extra padding
+            width: 48, // Set the width and height to make it circular
+            height: 48,
+            // backgroundColor: correctSelected === true ? '#3de33d' : '#E0E0E0'
+            backgroundColor: correctSelected === false ? '#E0E0E0' : '#3de33d'
+          }}
+          onClick={() => setCorrectSelected(true)}
+          >
+          <DoneIcon />
+        </Button>
+
+        <div style={{padding: '0px 20px 0px 0px'}}></div>
+
+        <Button
+          variant="contained"
+          style={{
+            borderRadius: '50%', // Make the button circular
+            minWidth: 0, // Ensure the button doesn't have extra padding
+            width: 48, // Set the width and height to make it circular
+            height: 48,
+            // backgroundColor: correctSelected === false ? '#fc4242' : '#E0E0E0' 
+            backgroundColor: correctSelected === true ? '#E0E0E0' : '#fc4242' 
+          }}
+          onClick={() => setCorrectSelected(false)}
+          >
+          <CloseIcon />
+        </Button>
+
+        <div style={{padding: '0px 20px 0px 0px'}}></div>
+
+        <Button
+          variant="contained"
+          onClick={nextQuestionPressed}
+          disabled={
+          (correctSelected !== true && correctSelected !== false) ? true : false}
+        >
+          Next Question
+        </Button>
+
+        <div style={{padding: '100px 0px 0px 0px'}}></div>
+      </div>
+    : <></>
+  } */}
     </div>
     )
 }

@@ -4,7 +4,6 @@ import {getChapterNames, getNumberVerses} from './../../backend.js'
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import InputLabel from '@mui/material/InputLabel';
-import Paper from "@mui/material/Paper";
 import './VersePicker.css'
 import { Select } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';

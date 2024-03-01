@@ -21,7 +21,6 @@ const getChapterNames = async () => {
     }
 
     if (getChapterNames.cache["chapterNames"]) {
-        console.log("hi im a cache")
         return getChapterNames.cache["chapterNames"];
     }
     const response = await getChapters();
