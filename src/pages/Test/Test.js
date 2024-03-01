@@ -6,15 +6,10 @@ import VerseBox from './../../components/VerseBox/VerseBox';
 import AudioBar from './../../components/AudioBar/AudioBar';
 import DoneIcon from '@mui/icons-material/Done';
 import CloseIcon from '@mui/icons-material/Close';
-import './Test.css'
+import './Test.css';
+import { DarkModeSwitch } from 'react-toggle-dark-mode';
 
-const Test = ( {goHome, state} ) => {
-
-    // state.startChapterNumber,
-    // state.startVerseNumber,
-    // state.endChapterNumber,
-    // state.endVerseNumber,
-    // state.numQuestions
+const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
     const [firstVerse, setFirstVerse] = useState();
     const [firstVerseText, setFirstVerseText] = useState();
     const [secondVerseText, setSecondVerseText] = useState();
@@ -151,10 +146,14 @@ const Test = ( {goHome, state} ) => {
     }
 
     return (
-        <div className="App light">
+        <div className="App">
         <h1>Memorization Test</h1>
         <h3>Question {currentQuestionNumber} out of {state.numQuestions}</h3>
-
+        <DarkModeSwitch
+            checked={darkMode}
+            onChange={toggleDarkMode}
+            style={{marginBottom: "10px"}}
+            />
         <div style={{ width: '80%', margin: 'auto' }}>
         <ProgressBar 
             completed={100 * (currentQuestionNumber / state.numQuestions)}
@@ -268,117 +267,15 @@ const Test = ( {goHome, state} ) => {
           disabled={
           (correctSelected !== true && correctSelected !== false) ? true : false}
         >
-          Next Question
+          {currentQuestionNumber === state.numQuestions ? <div>End Quiz</div> : <div>Next Question</div>}
         </Button>
 
         <div style={{padding: '100px 0px 0px 0px'}}></div>
       </div>
     : <></>
-  }
+    }
           </>
         }
-        {/* <VerseBox
-              verseText={firstVerseText}
-              readMorePressed={expandPressed}
-              chapterNumber={firstVerse?.chapterNumber}
-              verseNumber={firstVerse?.verseNumber}
-              chapterName={chapterName}
-              viewVerseNumber={showVerseNumbers}
-              onViewVerseNumberChange={onViewVerseNumberChange}
-              // playAudio={playAudio}
-              playAudio={() => {}} //TODO
-              // versePlaying={audioUrl ? versePlaying : null}
-              versePlaying={false}
-            />
-
-        {showOtherVerses && secondVerseText ?  (
-          <>
-            <VerseBox
-              verseText={secondVerseText}
-              chapterNumber={firstVerse?.chapterNumber}
-              verseNumber={firstVerse?.verseNumber + 1}
-              chapterName={chapterName}
-              viewVerseNumber={showVerseNumbers}
-              onViewVerseNumberChange={onViewVerseNumberChange}
-              // playAudio={playAudio}
-              playAudio={() => {}} //TODO
-              // versePlaying={audioUrl ? versePlaying : null}
-              versePlaying={false}
-              hideVerse={true}
-            />
-          </>
-        ) : <></>}
-
-        {showOtherVerses && thirdVerseText ?  (
-          <>
-            <VerseBox
-              verseText={thirdVerseText}
-              chapterNumber={firstVerse?.chapterNumber}
-              verseNumber={firstVerse?.verseNumber + 1}
-              chapterName={chapterName}
-              viewVerseNumber={showVerseNumbers}
-              onViewVerseNumberChange={onViewVerseNumberChange}
-              // playAudio={playAudio}
-              playAudio={() => {}} //TODO
-              // versePlaying={audioUrl ? versePlaying : null}
-              versePlaying={false}
-              hideVerse={true}
-            />
-          </>
-        ) : <></>}
-
-    {showOtherVerses ?  
-      <div className='bottom-div'>
-        <p className='question-text'>Were you correct:  </p>
-        <div style={{padding: '0px 20px 0px 0px'}}></div>
-
-        <Button
-          variant="contained"
-          style={{
-            borderRadius: '50%', // Make the button circular
-            minWidth: 0, // Ensure the button doesn't have extra padding
-            width: 48, // Set the width and height to make it circular
-            height: 48,
-            // backgroundColor: correctSelected === true ? '#3de33d' : '#E0E0E0'
-            backgroundColor: correctSelected === false ? '#E0E0E0' : '#3de33d'
-          }}
-          onClick={() => setCorrectSelected(true)}
-          >
-          <DoneIcon />
-        </Button>
-
-        <div style={{padding: '0px 20px 0px 0px'}}></div>
-
-        <Button
-          variant="contained"
-          style={{
-            borderRadius: '50%', // Make the button circular
-            minWidth: 0, // Ensure the button doesn't have extra padding
-            width: 48, // Set the width and height to make it circular
-            height: 48,
-            // backgroundColor: correctSelected === false ? '#fc4242' : '#E0E0E0' 
-            backgroundColor: correctSelected === true ? '#E0E0E0' : '#fc4242' 
-          }}
-          onClick={() => setCorrectSelected(false)}
-          >
-          <CloseIcon />
-        </Button>
-
-        <div style={{padding: '0px 20px 0px 0px'}}></div>
-
-        <Button
-          variant="contained"
-          onClick={nextQuestionPressed}
-          disabled={
-          (correctSelected !== true && correctSelected !== false) ? true : false}
-        >
-          Next Question
-        </Button>
-
-        <div style={{padding: '100px 0px 0px 0px'}}></div>
-      </div>
-    : <></>
-  } */}
     </div>
     )
 }

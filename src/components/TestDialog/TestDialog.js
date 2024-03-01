@@ -138,7 +138,7 @@ return (
   <Dialog open={showTestDialog} onClose={closeTestDialog}>
       <DialogTitle>Create Memorization Test</DialogTitle>
       <DialogContent>
-        <div style={{"display": "flex", "flexDirection": "row"}}>
+        <div style={{"display": "flex", "flexDirection": "row", "colorScheme": "dark"}}>
         <FormControl sx={{ m: 1, width: 200 }}>
           <FormLabel id="formlabel">Start Chapter</FormLabel>
           <Select

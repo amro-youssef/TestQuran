@@ -11,8 +11,9 @@ import VerseBox from './../../components/VerseBox/VerseBox';
 import SwipeableTemporaryDrawer from './../../components/Sidebar/Sidebar';
 import AudioBar from './../../components/AudioBar/AudioBar';
 import 'animate.css';
+import { DarkModeSwitch } from 'react-toggle-dark-mode';
 
-const Home = ( {testPressed} ) => { 
+const Home = ( {testPressed, darkMode, toggleDarkMode} ) => { 
   const [startChapterNumber, setStartChapterNumber] = useState(null); 
   const [endChapterNumber, setEndChapterNumber] = useState(null); 
   const [startVerseNumber, setStartVerseNumber] = useState(null); 
@@ -299,11 +300,16 @@ const Home = ( {testPressed} ) => {
 
 
   return (
-      <div className="App light">
+      <div className="App">
         <header style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'row'}}>
-          <div style={{marginRight: '65px', flexShrink: 2}}></div>
+          <div style={{marginRight: '140px', flexShrink: 2}}></div>
           <Header style={{justifyContent: 'center', flexShrink: 2}}/>
           <div style={{display: 'flex', justifyContent: 'right', alignSelf: 'flex-end'}}>
+            <DarkModeSwitch
+            checked={darkMode}
+            onChange={toggleDarkMode}
+            style={{display: 'flex', marginRight: "20px", marginTop: "6px"}}
+            />
             <Button variant="outlined" onClick={testPressed}>Test</Button>
             <SwipeableTemporaryDrawer setReciterNumber={(num) => {setReciterNumber(num)}}/>
           </div>

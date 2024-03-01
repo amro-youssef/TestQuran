@@ -12,7 +12,8 @@
     display: flex; 
     justify-content: center; 
     flex-direction: row; 
-    margin-right: 3em
+    margin-right: 3em;
+    forced-color-adjust: red !important;
 }
 
 .endDiv {

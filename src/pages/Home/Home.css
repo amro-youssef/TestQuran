@@ -34,12 +34,12 @@
   
   
   
-  .dark {
+  /* .dark {
     background-color: #242526;
-    /* background: radial-gradient(rgb(1, 14, 23) 24.5%, rgb(19, 30, 37) 66%); */
+    background: radial-gradient(rgb(1, 14, 23) 24.5%, rgb(19, 30, 37) 66%);
   
-    color: #e7e9ea;
-  }
+    color: #f7f8ed;
+  } */
   
   
   /* .css-1jy569b-MuiFormLabel-root-MuiInputLabel-root {
@@ -70,6 +70,7 @@
   }
   
   .light {
+    color-scheme: light;
     background-color: #faf5f5;
     color: #333; /* Set text color to a darker shade for readability */
   }
