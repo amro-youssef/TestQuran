@@ -13,7 +13,7 @@ import AudioBar from './../../components/AudioBar/AudioBar';
 import 'animate.css';
 import { DarkModeSwitch } from 'react-toggle-dark-mode';
 
-const Home = ( {testPressed, darkMode, toggleDarkMode} ) => { 
+const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => { 
   const [startChapterNumber, setStartChapterNumber] = useState(null); 
   const [endChapterNumber, setEndChapterNumber] = useState(null); 
   const [startVerseNumber, setStartVerseNumber] = useState(null); 
@@ -24,7 +24,6 @@ const Home = ( {testPressed, darkMode, toggleDarkMode} ) => {
   const [firstVerse, setFirstVerse] = useState(null);
   const [readMore, setReadMore] = useState(false);
   const [showVerseNumbers, setShowVerseNumbers] = useState(false);
-  const [reciterNumber, setReciterNumber] = useState(1);
   const [audioUrl, setAudioUrl] = useState(null);
 
   const [secondVerseText, setSecondVerseText] = useState(null);
@@ -302,17 +301,7 @@ const Home = ( {testPressed, darkMode, toggleDarkMode} ) => {
   return (
       <div className="App">
         <header style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'row'}}>
-          <div style={{marginRight: '140px', flexShrink: 2}}></div>
           <Header style={{justifyContent: 'center', flexShrink: 2}}/>
-          <div style={{display: 'flex', justifyContent: 'right', alignSelf: 'flex-end'}}>
-            <DarkModeSwitch
-            checked={darkMode}
-            onChange={toggleDarkMode}
-            style={{display: 'flex', marginRight: "20px", marginTop: "6px"}}
-            />
-            <Button variant="outlined" onClick={testPressed}>Test</Button>
-            <SwipeableTemporaryDrawer setReciterNumber={(num) => {setReciterNumber(num)}}/>
-          </div>
         </header>
         <Title />
         <div style={{ display: 'flex', justifyContent: 'space-evenly', flexWrap: 'wrap' }}>
@@ -370,7 +359,7 @@ const Home = ( {testPressed, darkMode, toggleDarkMode} ) => {
                 />
                 {!showRestOfChapter && 
                   <p>
-                    <button className='text-link' onClick={handleReadRestOfChapter}>
+                    <button className={`${localStorage.getItem('darkMode') === 'true' ? 'dark-text-link' : ''} text-link`} onClick={handleReadRestOfChapter}>
                       Read rest of chapter
                     </button>
                   </p>

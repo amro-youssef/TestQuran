@@ -17,6 +17,10 @@
   margin: 0;
 }
 
+.dark-text-link {
+  color: #90caf9;
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;

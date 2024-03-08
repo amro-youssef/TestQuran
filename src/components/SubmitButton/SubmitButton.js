@@ -11,6 +11,8 @@ const SubmitButton = ( {onClick, loading} ) => {
             variant="contained"
             onClick={onClick}
             disabled={loading}
+            sx={{width: '120px', height: '48px', // Set the desired height
+            minHeight: '48px',}}
         >
             {loading ? <CircularProgress width={32}/> : "Randomize"}
         </Button>

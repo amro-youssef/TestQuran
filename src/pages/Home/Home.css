@@ -5,18 +5,6 @@
     overflow-x: hidden;
   }
   
-  .text-link {
-    background: none;
-    border: none;
-    color: blue; /* Adjust the color to your preference */
-    text-decoration: underline;
-    cursor: pointer;
-    padding: 0;
-    font-size: inherit;
-    font-family: inherit;
-    margin: 0;
-  }
-  
   .App-header {
     background-color: #282c34;
     min-height: 100vh;
@@ -31,25 +19,18 @@
   .App-link {
     color: #61dafb;
   }
+
   
-  
-  
-  /* .dark {
-    background-color: #242526;
-    background: radial-gradient(rgb(1, 14, 23) 24.5%, rgb(19, 30, 37) 66%);
-  
-    color: #f7f8ed;
-  } */
-  
-  
-  /* .css-1jy569b-MuiFormLabel-root-MuiInputLabel-root {
-    color: rgb(255 255 255 / 76%) !important
+  .left-header-div {
+    margin-right: 22vh;
   }
   
-  .MuiAutocomplete-hasPopupIcon.css-1h51icj-MuiAutocomplete-root .MuiOutlinedInput-root, .MuiAutocomplete-hasClearIcon.css-1h51icj-MuiAutocomplete-root .MuiOutlinedInput-root {
-    color: white
-  
-  } */
+  @media (max-width: 600px) {
+    .left-header-div {
+      margin-right: 12vh;
+    }
+   }
+
   ::-webkit-scrollbar {
     width: 12px; /* Adjust as needed */
   }

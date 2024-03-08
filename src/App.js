@@ -3,6 +3,7 @@ import './App.css';
 import Home from './pages/Home/Home.js';
 import Test from './pages/Test/Test.js';
 import TestDialog from './components/TestDialog/TestDialog.js' 
+import MenuBar from './components/MenuBar/MenuBar.js' 
 import {React, useState} from 'react';
 import { Switch } from '@mui/material'; 
 
@@ -22,6 +23,7 @@ const App = () => {
   const [endChapterNumber, setEndChapterNumber] = useState();
   const [endVerseNumber, setEndVerseNumber] = useState();
   const [numQuestions, setNumQuestions] = useState();
+  const [reciterNumber, setReciterNumber] = useState(1);
 
   const loadState = (startChapter, startVerse, endChapter, endVerse, numQuestions) => {
     setStartChapterNumber(parseInt(startChapter));
@@ -35,7 +37,7 @@ const App = () => {
     setTestPage(true);
   }
 
-  const [darkMode, setDarkMode] = useState(localStorage.getItem("darkMode") === "true"); 
+  const [darkMode, setDarkMode] = useState(localStorage.getItem("darkMode") !== "false"); 
     const darkTheme = createTheme({ 
         palette: { 
             mode: darkMode ? 'dark' : 'light',
@@ -53,9 +55,20 @@ const App = () => {
     <ThemeProvider theme={darkTheme}> 
       <CssBaseline /> 
 
+      <MenuBar 
+        testPressed={() => setTestDialog(true)}
+        isHomePage={!testPage}
+        goHome={() => {
+          setTestPage(false);
+          setTestDialog(false);
+        }} 
+        toggleDarkMode={toggleDarkMode} 
+        darkMode={darkMode} 
+        setReciterNumber={setReciterNumber}>
+      </MenuBar>
       {!testPage ?
       <>
-      <Home className="App light" testPressed={() => setTestDialog(true)} toggleDarkMode={toggleDarkMode} darkMode={darkMode}/> 
+      <Home className="App" testPressed={() => setTestDialog(true)} toggleDarkMode={toggleDarkMode} darkMode={darkMode} reciterNumber={reciterNumber}/> 
       {testDialog ? 
         <TestDialog
           open={true} 

@@ -9,7 +9,6 @@ import 'animate.css';
 
 
 const TestDialog = ({open, closeDialog, loadState, openTestPage}) => { 
-
   const [showTestDialog, setShowTestDialog] = useState(false); // State to control test dialog visibility
   const [startChapters, setStartChapters] = useState([]);
   const [startVerses, setStartVerses] = useState([]);
@@ -25,7 +24,7 @@ const TestDialog = ({open, closeDialog, loadState, openTestPage}) => {
   const [endChapter, setEndChapter] = useState(null);
   const [endVerseNumber, setEndVerseNumber] = useState(null);
 
-  const [numQuestions, setNumQuestions] = useState(1);
+  const [numQuestions, setNumQuestions] = useState(5);
 
   const isMobile = useMediaQuery('(max-width:600px)');
 
@@ -243,7 +242,22 @@ return (
 
         <div id="number-of-questions-div">
         <FormControl><FormLabel id="formlabel">Number of questions</FormLabel>
-          <input type="number" min="1" defaultValue="1" onChange={(e) => {setNumQuestions(e.target.value)}}required/>
+          {/* <TextField type="number" inputProps={{ type: 'number'}} min="1" defaultValue="1" onChange={(e) => {setNumQuestions(e.target.value)}}required/> */}
+          <Select
+            onChange={(e) => {setNumQuestions(e.target.value)}}
+            value={numQuestions}
+            defaultValue={5}
+          >
+            {Array.from(Array(99).keys()).map((name) => (
+              <MenuItem
+                key={name+1}
+                value={name+1}
+              >
+                {name+1}
+              </MenuItem>
+            ))}
+
+          </Select>
         </FormControl>
         </div>
       </DialogContent>

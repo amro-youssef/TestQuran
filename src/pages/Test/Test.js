@@ -3,11 +3,11 @@ import {getAudioUrl, getNumberVerses, getVerseText, getChapterName} from './../.
 import { Button, CircularProgress } from '@mui/material';
 import ProgressBar from "@ramonak/react-progress-bar";
 import VerseBox from './../../components/VerseBox/VerseBox';
-import AudioBar from './../../components/AudioBar/AudioBar';
 import DoneIcon from '@mui/icons-material/Done';
 import CloseIcon from '@mui/icons-material/Close';
 import './Test.css';
-import { DarkModeSwitch } from 'react-toggle-dark-mode';
+import TestResultDialog from './../../components/TestResultDialog/TestResultDialog.js'; // Import the new component
+
 
 const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
     const [firstVerse, setFirstVerse] = useState();
@@ -23,6 +23,28 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
     const [correctSelected, setCorrectSelected] = useState();
 
     const [isLoading, setIsLoading] = useState(false);
+    const [showResultDialog, setShowResultDialog] = useState(false);
+    const [correctAnswers, setCorrectAnswers] = useState([]);
+    const [incorrectAnswers, setIncorrectAnswers] = useState([]);
+    const [startTime, setStartTime] = useState(null);
+    const [endTime, setEndTime] = useState(null);
+
+    // Helper function to calculate the time taken
+    const calculateTimeTaken = () => {
+      if (!startTime || !endTime) {
+        return '';
+      }
+
+      const timeDiff = endTime - startTime;
+      const seconds = Math.floor(timeDiff / 1000) % 60;
+      const minutes = Math.floor(timeDiff / (1000 * 60)) % 60;
+      const hours = Math.floor(timeDiff / (1000 * 60 * 60));
+
+      return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    };
+
+    // Call the helper function when startTime or endTime changes
+    const timeTaken = calculateTimeTaken();
 
     const loadVerses = async () => {
       setIsLoading(true);
@@ -62,18 +84,56 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
         return;
       }
       if (currentQuestionNumber >= state.numQuestions) {
+        // Set the end time when the last question is answered
+        setEndTime(new Date().getTime());
         // TODO handle
-        alert(`number correct answers: ${correctSelected ? numberCorrectAnswers + 1 : numberCorrectAnswers}`)
-        goHome();
-        // return;
+        // Update the correct and incorrect answers arrays
+        const currentAnswer = {
+          questionNumber: currentQuestionNumber,
+          correct: correctSelected,
+          verses: [firstVerseText, secondVerseText, thirdVerseText],
+          chapterNumber: firstVerse?.chapterNumber,
+          firstVerseNumber: firstVerse?.verseNumber
+        };
+        if (correctSelected) {
+          setCorrectAnswers([...correctAnswers, currentAnswer]);
+        } else {
+          setIncorrectAnswers([...incorrectAnswers, currentAnswer]);
+        }
+
+        // Open the result dialog
+        setShowResultDialog(true);
+        return;
+        // goHome();
       }
+      const currentAnswer = {
+        questionNumber: currentQuestionNumber,
+        correct: correctSelected,
+        verses: [firstVerseText, secondVerseText, thirdVerseText],
+        chapterNumber: firstVerse?.chapterNumber,
+        firstVerseNumber: firstVerse?.verseNumber
+      };
       if (correctSelected) {
         setNumberCorrectAnswers(numberCorrectAnswers + 1);
+        setCorrectAnswers([...correctAnswers, currentAnswer]);
+      } else {
+        setIncorrectAnswers([...incorrectAnswers, currentAnswer]);
       }
+      // if (correctSelected) {
+      //   setNumberCorrectAnswers(numberCorrectAnswers + 1);
+      //   setCorrectAnswers([...correctAnswers, { questionNumber: currentQuestionNumber }]);
+      // } else {
+      //   setIncorrectAnswers([...incorrectAnswers, { questionNumber: currentQuestionNumber }]);
+      // }
       resetStates();
       loadVerses();
       setCurrentQuetionNumber(currentQuestionNumber + 1);
-    }
+    };
+
+    const handleCloseResultDialog = () => {
+      setShowResultDialog(false);
+      goHome();
+    };
 
     const resetStates = () => {
       setFirstVerse(null);
@@ -87,8 +147,11 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
     }
 
     useEffect(() => {
+      // Set the start time when the component mounts
+      setStartTime(new Date().getTime());
       loadVerses();
-    }, [])
+    }, []);
+    
 
     const getRandomVerse = async (verseList) => {
       const list = await verseList;
@@ -149,11 +212,11 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
         <div className="App">
         <h1>Memorization Test</h1>
         <h3>Question {currentQuestionNumber} out of {state.numQuestions}</h3>
-        <DarkModeSwitch
+        {/* <DarkModeSwitch
             checked={darkMode}
             onChange={toggleDarkMode}
             style={{marginBottom: "10px"}}
-            />
+            /> */}
         <div style={{ width: '80%', margin: 'auto' }}>
         <ProgressBar 
             completed={100 * (currentQuestionNumber / state.numQuestions)}
@@ -165,7 +228,7 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
             style={{"margin":"auto"}}
         />
         </div>
-        <Button height="30px" size="medium" onClick={goHome}>Home</Button>
+        {/* <Button height="30px" size="medium" onClick={goHome}>Home</Button> */}
         <div style={{ marginTop: '2em' }}></div>
         {isLoading ? 
           <div className="loading-spinner">
@@ -209,7 +272,7 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
             <VerseBox
               verseText={thirdVerseText}
               chapterNumber={firstVerse?.chapterNumber}
-              verseNumber={firstVerse?.verseNumber + 1}
+              verseNumber={firstVerse?.verseNumber + 2}
               chapterName={chapterName}
               viewVerseNumber={showVerseNumbers}
               onViewVerseNumberChange={onViewVerseNumberChange}
@@ -276,6 +339,14 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
     }
           </>
         }
+
+    <TestResultDialog
+        open={showResultDialog}
+        handleClose={handleCloseResultDialog}
+        correctAnswers={correctAnswers}
+        incorrectAnswers={incorrectAnswers}
+        timeTaken={timeTaken}
+    />
     </div>
     )
 }
