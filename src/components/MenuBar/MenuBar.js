@@ -87,7 +87,7 @@ export default function MenuBar(props ) {
           <Typography
             variant="h6"
             component="div"
-            sx={{ flexGrow: 1, display: { sm: 'block' } }}
+            sx={{ flexGrow: 1, display: { sm: 'inline' }, width: '25%'}}
           >
             Quran Memorization Tester
           </Typography>

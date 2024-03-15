@@ -1,6 +1,6 @@
 import {React, useState, useEffect, useRef} from 'react';
 import { Button } from '@mui/material';
-import {getChapterName} from './../../backend.js'
+import {getChapterName} from '../../backend.js'
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
@@ -9,7 +9,8 @@ import VolumeUp from '@mui/icons-material/VolumeUp';
 import Verse from '../Verse/Verse.js';
 import './VerseBox.css';
 
-const VerseBox = ({ verseText, readMorePressed, chapterNumber, chapterName, verseNumber, viewVerseNumber, onViewVerseNumberChange, playAudio, hideVerse, versePlaying}) => {
+const VerseBox = (props) => {
+    let { verseText, readMorePressed, chapterNumber, chapterName, verseNumber, viewVerseNumber, onViewVerseNumberChange, playAudio, hideVerse, versePlaying, showAudioButton } = props;
 
     const [verse, setVerse] = useState(verseText);
     const [buttonText, setButtonText] = useState(<VisibilityIcon />);
@@ -112,24 +113,23 @@ const VerseBox = ({ verseText, readMorePressed, chapterNumber, chapterName, vers
                         id="verse-number">
                             {buttonText}
                     </Button>
-                    <Button
-                        size="medium"
-                        style={{display: 'flex', justifyContent: 'flex-start'}}
-                        sx={{ borderRadius: 24 }}
-                        id="audio"
-                        onClick={() => {
-                        //     // Play audio on user interaction (e.g., button click)
-                        // document.addEventListener('click', playAudio);
-                    
-                        playAudio(chapterNumber, verseNumber)
-                        // Cleanup event listener on component unmount
-                        // return () => {
-                        // document.removeEventListener('click', playAudio);
-                        // };
+                    {showAudioButton !== false ? 
+                        (<Button
+                            size="medium"
+                            style={{display: 'flex', justifyContent: 'flex-start'}}
+                            sx={{ borderRadius: 24 }}
+                            id="audio"
+                            onClick={() => {
+                                // document.addEventListener('click', playAudio);
+                        
+                                playAudio(chapterNumber, verseNumber)
+                                // return () => {
+                                // document.removeEventListener('click', playAudio);
+                                // };
                             }}
-                    >
-                        {<VolumeUp/>}
-                    </Button>
+                        >
+                            {<VolumeUp/>}
+                        </Button>) : <></>}
                 </div>
                 <div style={expandDivStyle} id="expand-div">
                     {verse && readMorePressed ? (

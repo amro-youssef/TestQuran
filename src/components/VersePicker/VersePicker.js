@@ -1,6 +1,6 @@
 /* eslint-disable eqeqeq */
 import {React, useState, useEffect} from 'react';
-import {getChapterNames, getNumberVerses} from './../../backend.js'
+import {getChapterNames, getNumberVerses} from '../../backend.js'
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import InputLabel from '@mui/material/InputLabel';

@@ -1,7 +1,7 @@
 import {React, useState, useEffect} from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, OutlinedInput, Button, Select, MenuItem, InputLabel, FormControl, FormLabel } from '@mui/material'; // Import Material-UI components
 import './TestDialog.css';
-import {getChapterNames, getNumberVerses} from './../../backend.js'
+import {getChapterNames, getNumberVerses} from '../../backend.js'
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import useMediaQuery from '@mui/material/useMediaQuery';

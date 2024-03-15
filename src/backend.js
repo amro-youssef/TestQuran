@@ -1,60 +1,52 @@
 /* eslint-disable eqeqeq */
-const getChapters = async () => {
+/**
+ * new backend with most of data now stored locally
+ */
+// import data from './quran_data.json' assert { type: 'json' };
+
+const data = require("./quran_data.json");
+
+const API_BASE_URL = 'https://api.quran.com/api/v4';
+
+const loadLocalData = async () => {
     try {
-        const response = await fetch('https://api.quran.com/api/v4/chapters/', {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json'
-            }
-        });
-        const response_json = await response.json();
-        return response_json?.chapters;
-    } catch (error) {
-        console.log(error);
-        return [];
+        // const response = await fetch('/src/quran_data.json');
+        // const data = await response.json();
+        console.log(data);
+        return data;
+      } catch (err) {
+        console.error('Error reading local data:', err);
+        return null;
+      }
+}
+
+
+const getLocalData = async () => {
+    if (!getLocalData.cache) {
+      getLocalData.cache = await loadLocalData();
     }
+    return getLocalData.cache;
+  };
+
+const getChapters = async () => {
+    const localData = await getLocalData();
+    return localData ? localData.chapters : [];
 }
 
 const getChapterNames = async () => {
-    if (!getChapterNames.cache) {
-        getChapterNames.cache = {};
-    }
-
-    if (getChapterNames.cache["chapterNames"]) {
-        return getChapterNames.cache["chapterNames"];
-    }
-    const response = await getChapters();
-    const names = response.map(chapter => (`${chapter?.id} ${chapter?.name_simple}`));
-    getChapterNames.cache["chapterNames"] = names;
-    return names;
+    const chapters = await getChapters();
+    return chapters.map((chapter) => `${chapter.id} ${chapter.name_simple}`);
 }
 
 const getChapterName = async (chapterNumber) => {
-    if (!getChapterName.cache) {
-        getChapterName.cache = {};
-    }
-
-    if (getChapterName.cache[chapterNumber]) {
-        return getChapterName.cache[chapterNumber];
-    }
-    try {
-        const urlResponse = await fetch(`https://api.quran.com/api/v4/chapters/${chapterNumber}`, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json'
-            }
-        });
-        const data = await urlResponse.json();
-        const chapterName = data.chapter.name_simple;
-        getChapterName.cache[chapterNumber] = chapterName;
-        return chapterName;
-    } catch (error) {
-        console.log(error);
-        return null;
-    }
+    const chapters = await getChapters();
+    const chapter = chapters.find((chapter) => chapter.id === chapterNumber);
+    return chapter ? chapter.name_simple : null;
 }
 
 let audioElement;
+// this is currently the only thing still using the api since retrieving all
+// the urls is a very long process so it was skipped
 const getAudioUrl = async (chapterNumber, verseNumber, reciterNumber) => {
     if (audioElement && !audioElement.paused) {
         audioElement.pause();
@@ -62,7 +54,7 @@ const getAudioUrl = async (chapterNumber, verseNumber, reciterNumber) => {
     }
 
     try {
-        const urlResponse = await fetch(`https://api.quran.com/api/v4/recitations/${parseInt(reciterNumber)}/by_ayah/${chapterNumber}:${verseNumber}`, {
+        const urlResponse = await fetch(`${API_BASE_URL}/recitations/${parseInt(reciterNumber)}/by_ayah/${chapterNumber}:${verseNumber}`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json'
@@ -83,72 +75,31 @@ const getAudioUrl = async (chapterNumber, verseNumber, reciterNumber) => {
 }
 
 const getNumberVerses = async (chapterNumber) => {
-    try {
-        const response = await fetch(`https://api.quran.com/api/v4/chapters/${chapterNumber}`, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json'
-            }
-        });
-        const data = await response.json();
-        return data?.chapter?.verses_count;
-    } catch (error) {
-        console.log(error);
-        return -1;
-    }
+    const localData = await getLocalData();
+    const chapter = localData.allData.find((data) => data.chapter.id === chapterNumber);
+    return chapter ? chapter.verses.length : -1;
 }
 
 const getVerseText = async (chapterNumber, verseNumber) => {
-    try {
-        // const response = await fetch(`https://api.quran.com/api/v4/quran/verses/code_v2`, {
-        //     method: 'GET',
-        //     headers: {
-        //         'Accept': 'application/json'
-        //     }
-        // });
-        // const data = await response.json();
-        // // NOTE: this may be very ineffience
-        // data.verses = data.verses.filter(verse => verse.verse_key == `${chapterNumber}:${verseNumber}`)
-        // return data.verses[0]?.code_v2;
-        if (!getVerseText.cache) {
-            getVerseText.cache = {}
-        }
-        if (getVerseText.cache[chapterNumber + "," + verseNumber]) {
-            return getVerseText.cache[chapterNumber + "," + verseNumber];
-        }
-
-        const response = await fetch(`https://api.quran.com/api/v4/quran/verses/uthmani`, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json'
-            }
-        });
-        const data = await response.json();
-        // NOTE: this may be very ineffience
-        data.verses = data.verses.filter(verse => verse.verse_key == `${chapterNumber}:${verseNumber}`);
-        getVerseText.cache[chapterNumber + "," + verseNumber] = data.verses[0]?.text_uthmani;
-        return data.verses[0]?.text_uthmani
-    } catch (error) {
-        console.log(error);
-        return -1;
-    }
+    const localData = await getLocalData();
+    const data = localData.allData.find((data) => data.chapter.id === chapterNumber);
+    const verseKey = chapterNumber + ":" + verseNumber;
+    const verse = data.verses.find(v => v.verse_key === verseKey);
+    return verse.text_uthmani;
 }
 
 const getReciters = async () => {
-    try {
-        const response = await fetch(`https://api.quran.com/api/v4/resources/recitations`, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json'
-            }
-        });
-        const data = await response.json();
-        return data.recitations;
-    } catch (error) {
-        console.log(error);
-        return -1;
-    }
+    const localData = await getLocalData();
+    console.log("localData.reciters", localData.reciters)
+    return localData.reciters;
 }
+
+const foo = async () => {
+    const verseText = await getVerseText(1, 1)
+    const a = await getChapters();
+    console.log(verseText);
+}
+foo()
 
 module.exports = {
     getChapters,

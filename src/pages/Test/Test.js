@@ -1,5 +1,5 @@
 import {React, useState, useEffect} from 'react';
-import {getAudioUrl, getNumberVerses, getVerseText, getChapterName} from './../../backend.js';
+import {getAudioUrl, getNumberVerses, getVerseText, getChapterName} from '../../backend.js';
 import { Button, CircularProgress } from '@mui/material';
 import ProgressBar from "@ramonak/react-progress-bar";
 import VerseBox from './../../components/VerseBox/VerseBox';
@@ -53,10 +53,15 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
       if (versesList.some(element => element === null)) {
         return;
       }
-      const randomVerse = await getRandomVerse(versesList);
-      setFirstVerse(randomVerse);
+      let randomVerse = await getRandomVerse(versesList);
+      let numberVersesInChapter = await getNumberVerses(randomVerse.chapterNumber);
+      // avoids the last verse in the chapter being chosen, unless this is the only verse specified
+      while (state.startVerseNumber !== state.endVerseNumber && parseInt(randomVerse?.verseNumber) === parseInt(numberVersesInChapter)) {
+        randomVerse = await getRandomVerse(versesList);
+        numberVersesInChapter = await getNumberVerses(randomVerse.chapterNumber);
+      }
       const firstVerseText = await getVerseText(randomVerse?.chapterNumber, randomVerse?.verseNumber);
-      const numberVersesInChapter = await getNumberVerses(randomVerse.chapterNumber);
+      setFirstVerse(randomVerse);
       setChapterName(await getChapterName(randomVerse?.chapterNumber));
 
       if (firstVerseText !== -1) {
@@ -163,7 +168,6 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
     };
 
     const expandPressed = async () => {
-      console.log("expand pressed. showotherVerses: ", showOtherVerses, secondVerseText)
       setShowOtherVerses(!showOtherVerses);
     }
 
@@ -245,6 +249,7 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
               onViewVerseNumberChange={onViewVerseNumberChange}
               // playAudio={playAudio}
               playAudio={() => {}} //TODO
+              showAudioButton={false} // haven't decided whether to have the audio icon available
               // versePlaying={audioUrl ? versePlaying : null}
               versePlaying={false}
             />
@@ -260,6 +265,7 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
               onViewVerseNumberChange={onViewVerseNumberChange}
               // playAudio={playAudio}
               playAudio={() => {}} //TODO
+              showAudioButton={false} // haven't decided whether to have the audio icon available
               // versePlaying={audioUrl ? versePlaying : null}
               versePlaying={false}
               hideVerse={true}
@@ -278,6 +284,7 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
               onViewVerseNumberChange={onViewVerseNumberChange}
               // playAudio={playAudio}
               playAudio={() => {}} //TODO
+              showAudioButton={false} // haven't decided whether to have the audio icon available
               // versePlaying={audioUrl ? versePlaying : null}
               versePlaying={false}
               hideVerse={true}

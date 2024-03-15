@@ -16,7 +16,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
-import {getReciters} from './../../backend.js';
+import {getReciters} from '../../backend.js';
 import './Sidebar.css';
 
 export default function SwipeableTemporaryDrawer({ setReciterNumber }) {
@@ -64,6 +64,7 @@ export default function SwipeableTemporaryDrawer({ setReciterNumber }) {
     const fetchReciters = async () => {
       const reciters = await getReciters();
       setReciterList(reciters);
+      console.log("reciters", reciters);
       for (const reciter of reciters) {
         if (reciter.id == selectedValue) {
           setReciterName(reciter.reciter_name)

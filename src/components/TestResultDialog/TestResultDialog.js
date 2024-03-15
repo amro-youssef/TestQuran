@@ -30,11 +30,6 @@ const TestResultDialog = ({
   timeTaken,
 }) => {
   const totalQuestions = correctAnswers.length + incorrectAnswers.length;
-  console.log(open,
-    handleClose,
-    correctAnswers,
-    incorrectAnswers,
-    timeTaken,)
 const theme = useTheme();
 
 
@@ -68,7 +63,7 @@ const theme = useTheme();
             <AccordionDetails>
                 {/* <Verse verseText={answer.verses[0]}></Verse> */}
                 {answer.verses.map((verse, verseIndex) => (
-                    <ListItem key={index}>
+                    <ListItem key={verseIndex}>
                     <ListItemIcon>
                        {/* <DoneIcon color="success" /> */}
                        {answer.chapterNumber}:{answer.firstVerseNumber + verseIndex}

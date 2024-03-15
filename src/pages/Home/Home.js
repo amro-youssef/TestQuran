@@ -1,6 +1,6 @@
 /* eslint-disable eqeqeq */
 import './Home.css';
-import {getAudioUrl, getNumberVerses, getVerseText, getChapterName} from './../../backend.js';
+import {getAudioUrl, getNumberVerses, getVerseText, getChapterName} from '../../backend.js';
 import {React, useState} from 'react';
 import Title from './../../components/Title/Title';
 import Header from './../../components/Header/Header';
@@ -55,7 +55,14 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
     if (versesList.some(element => element === null)) {
       return;
     }
-    const randomVerse = await getRandomVerse(versesList);
+    let randomVerse = await getRandomVerse(versesList);
+    let numberOfVerses = await getNumberVerses(randomVerse.chapterNumber);
+    // avoids the last verse in the chapter being chosen, unless this is the only verse specified
+    while (startVerseNumber !== endVerseNumber && randomVerse.verseNumber === numberOfVerses) {
+      randomVerse = await getRandomVerse(versesList);
+      numberOfVerses = await getNumberVerses(randomVerse.chapterNumber);
+    }
+
     resetStates();
     setFirstVerse(randomVerse);
     const randomText = await getVerseText(randomVerse?.chapterNumber, randomVerse?.verseNumber);
