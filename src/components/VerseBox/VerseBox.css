@@ -7,8 +7,21 @@
     /* background-color: #e9f2f5; */
   }
   
-  .selected {
-    box-shadow: 0 0 5px 5px rgba(0, 0, 255, 0.05);
+  /* .selected {
+    box-shadow: 0 0 5px 5px rgba(0, 0, 255, 0.07);
+  } */
+
+  .selected.dark{
+    box-shadow: 0 0 7px 7px rgba(100, 100, 255, 0.1);
+    outline: 1px solid rgba(100, 100, 255, 0.2);
+    background-color: #05050546;
+
+  }
+
+  .selected.light{
+    box-shadow: 0 0 7px 7px rgba(0, 0, 255, 0.1);
+    outline: 1px solid rgba(100, 100, 255, 0.15);
+
   }
 
   #expand-div {
@@ -17,14 +30,15 @@
   }
 
   
-  @media (width <= 1224px) {
+  @media (max-width: 1224px) {
     .verse-container {
       width: 85%;
     }
   }
   
-  @media (width < 500px) {
+  @media (max-width: 500px) {
     .verse-container {
-        width: 90%;
+        width: 92%;
+        line-height: 1.75;
     }
   }

@@ -6,8 +6,7 @@ import VerseBox from './../../components/VerseBox/VerseBox';
 import DoneIcon from '@mui/icons-material/Done';
 import CloseIcon from '@mui/icons-material/Close';
 import './Test.css';
-import TestResultDialog from './../../components/TestResultDialog/TestResultDialog.js'; // Import the new component
-
+import TestResultDialog from './../../components/TestResultDialog/TestResultDialog.js';
 
 const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
     const [firstVerse, setFirstVerse] = useState();
@@ -156,6 +155,20 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
       setStartTime(new Date().getTime());
       loadVerses();
     }, []);
+
+    const restartTest = () => {
+      resetStates();
+
+      setCurrentQuetionNumber(1);
+      setNumberCorrectAnswers(0);
+      setShowResultDialog(false);
+      setCorrectAnswers([]);
+      setIncorrectAnswers([]);
+      setEndTime(null);
+      
+      setStartTime(new Date().getTime());
+      loadVerses();
+    }
     
 
     const getRandomVerse = async (verseList) => {
@@ -353,6 +366,7 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
         correctAnswers={correctAnswers}
         incorrectAnswers={incorrectAnswers}
         timeTaken={timeTaken}
+        restart={restartTest}
     />
     </div>
     )

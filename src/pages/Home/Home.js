@@ -212,7 +212,7 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
   }
 
   const handleReadRestOfChapter = () => {
-    setShowRestOfChapter(!showRestOfChapter);
+    setShowRestOfChapter(true);
     getRestOfVerses();
   };
 

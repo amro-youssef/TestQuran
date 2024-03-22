@@ -5,12 +5,27 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    background-color: #e7e0e0;
+    background-color: transparent; /* Change background-color to transparent */
+
     /* color: #fff; */
     padding: 10px;
     text-align: center;
     justify-content: center;
     align-items: center;
+
+  }
+
+  .dark {
+    background-color: #121212;
+    box-shadow: 0px 2px 20px -1px rgba(0,0,0,0.3),0px 4px 15px 0px rgba(0,0,0,0.14),0px 1px 10px 0px rgba(0,0,0,0.12);
+    /* box-shadow: 0px -10px 20px rgba(0,0,0,0.2); Adjust box-shadow properties for the desired effect */
+
+    background-image: linear-gradient(rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.09));
+    backdrop-filter: blur(10px); /* Optional: Add backdrop-filter for a frosted glass effect */
+  }
+
+  .light {
+    background-color: #e7e0e0;
   }
 
   .bottom-bar button {

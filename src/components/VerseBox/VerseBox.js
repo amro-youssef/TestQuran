@@ -101,7 +101,7 @@ const VerseBox = (props) => {
     }
 
     return (
-        <div ref={divRef} className={`verse-container ${isVersePlaying() ? 'selected': ''}`}>
+        <div ref={divRef} className={`verse-container ${isVersePlaying() ? 'selected': ''} ${localStorage.getItem('darkMode') === 'true' ? 'dark' : 'light'}`}>
             <Verse verseText={verseText} hideVerse={hideVerse} />
             <div style={{display: 'flex', flexDirection: 'row', margin: '0 auto'}}>
                 <div style = {{display: 'flex', flexDirection: 'row'}} id="left-div">

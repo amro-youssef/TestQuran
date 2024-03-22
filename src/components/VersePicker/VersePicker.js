@@ -16,7 +16,7 @@ const VersePicker = ({ loadState, bounce1, bounce2, bounce3, bounce4 }) => {
     const [startVerses, setStartVerses] = useState([]);
     const [startChapterNumber, setStartChapterNumber] = useState();
     const [startChapterName, setStartChapterName] = useState(null);
-    const [startChapter, setStartChapter] = useState(null);
+    const [startChapter, setStartChapter] = useState(null); // TODO add default values
     const [startVerseNumber, setStartVerseNumber] = useState(null);
     
     const [endChapters, setEndChapters] = useState([]);
@@ -136,6 +136,7 @@ const VersePicker = ({ loadState, bounce1, bounce2, bounce3, bounce4 }) => {
                     disableClearable
                     id="start-chapter"
                     value={startChapter}
+                    defaultValue="1 Al-Fatihah"
                     options={startChapters}
                     classes="autocomplete"
                     // sx={{ width: '13em', marginRight: '10px' }}
@@ -153,6 +154,7 @@ const VersePicker = ({ loadState, bounce1, bounce2, bounce3, bounce4 }) => {
                     disableClearable
                     id="start-verse"
                     options={startVerses}
+                    defaultValue="1"
                     value = {startVerseNumber}
                     // options={[...Array(numVersesInChapter).keys()].map(item => item + 1)}
                     // sx={{ width: '9.5em', marginLeft: '10px' }}
@@ -181,6 +183,7 @@ const VersePicker = ({ loadState, bounce1, bounce2, bounce3, bounce4 }) => {
                     disableClearable
                     id="end-chapter"
                     options={endChapters}
+                    defaultValue="114 An-Nas"
                     // sx={{ width: '13em', marginRight: '10px' }}
                     renderInput={(params) => <TextField {...params} label="End Chapter" />}
                     style={{ display: 'flex', justifyContent: 'center' }}
@@ -197,6 +200,7 @@ const VersePicker = ({ loadState, bounce1, bounce2, bounce3, bounce4 }) => {
                     id="end-verse"
                     options={endVerses}
                     value = {endVerseNumber}
+                    defaultValue="6"
                     // options={[...Array(numVersesInChapter).keys()].map(item => item + 1)}
                     // sx={{ width: '9.5em', marginLeft: '10px' }}
                     renderInput={(params) => <TextField {...params} label="End Verse" />}

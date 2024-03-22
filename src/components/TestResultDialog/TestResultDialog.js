@@ -28,6 +28,7 @@ const TestResultDialog = ({
   correctAnswers,
   incorrectAnswers,
   timeTaken,
+  restart
 }) => {
   const totalQuestions = correctAnswers.length + incorrectAnswers.length;
 const theme = useTheme();
@@ -152,6 +153,9 @@ const theme = useTheme();
         )}
       </DialogContent>
       <DialogActions>
+        <Button onClick={restart} color="primary">
+          Restart
+        </Button>
         <Button onClick={handleClose} color="primary">
           Close
         </Button>

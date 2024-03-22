@@ -8,7 +8,7 @@
 .text-link {
   background: none;
   border: none;
-  color: blue; /* Adjust the color to your preference */
+  color: blue;
   text-decoration: underline;
   cursor: pointer;
   padding: 0;

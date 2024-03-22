@@ -152,7 +152,7 @@ const AudioBar = ( {audioFile, incrementVerseAudio, decrementVerseAudio} ) => {
   // make verse being reciter be highlighted
   return (
     // <div className="bottom-bar" style={{ position: 'fixed', width: '100%', zIndex: 1000 }}>
-    <div className="bottom-bar">
+    <div className={`bottom-bar ${localStorage.getItem('darkMode') === 'true' ? 'dark' : 'light'}`}>
       <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
         <audio
           ref={audioRef} 

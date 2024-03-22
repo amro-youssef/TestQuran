@@ -12,7 +12,6 @@ const loadLocalData = async () => {
     try {
         // const response = await fetch('/src/quran_data.json');
         // const data = await response.json();
-        console.log(data);
         return data;
       } catch (err) {
         console.error('Error reading local data:', err);
@@ -90,16 +89,8 @@ const getVerseText = async (chapterNumber, verseNumber) => {
 
 const getReciters = async () => {
     const localData = await getLocalData();
-    console.log("localData.reciters", localData.reciters)
     return localData.reciters;
 }
-
-const foo = async () => {
-    const verseText = await getVerseText(1, 1)
-    const a = await getChapters();
-    console.log(verseText);
-}
-foo()
 
 module.exports = {
     getChapters,

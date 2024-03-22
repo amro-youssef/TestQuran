@@ -64,7 +64,6 @@ export default function SwipeableTemporaryDrawer({ setReciterNumber }) {
     const fetchReciters = async () => {
       const reciters = await getReciters();
       setReciterList(reciters);
-      console.log("reciters", reciters);
       for (const reciter of reciters) {
         if (reciter.id == selectedValue) {
           setReciterName(reciter.reciter_name)

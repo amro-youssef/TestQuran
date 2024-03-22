@@ -42,7 +42,7 @@ const App = () => {
         palette: { 
             mode: darkMode ? 'dark' : 'light',
             background: {
-              default: darkMode ? '#242526' : '#f0f0f0', // Adjust to your preferred light/off-white background color
+              default: darkMode ? '#242526' : '#faf5f5', // Adjust to your preferred light/off-white background color
             },
         }, 
     }); 
