@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/quran-memorization-tester/static/css/main.6a9022d8.css",
-    "main.js": "/quran-memorization-tester/static/js/main.081d8c1f.js",
+    "main.css": "/quran-memorization-tester/static/css/main.f01531ad.css",
+    "main.js": "/quran-memorization-tester/static/js/main.bcfe96a1.js",
     "static/js/787.149f990b.chunk.js": "/quran-memorization-tester/static/js/787.149f990b.chunk.js",
     "static/media/p1.ttf": "/quran-memorization-tester/static/media/p1.25801d99193fa20412e0.ttf",
     "static/media/UthmanicHafs_V22.ttf": "/quran-memorization-tester/static/media/UthmanicHafs_V22.53720c7b51224c3f538f.ttf",
     "static/media/p1.woff": "/quran-memorization-tester/static/media/p1.176c0e800f77789527f1.woff",
     "static/media/p1.woff2": "/quran-memorization-tester/static/media/p1.a0320a9ab9c2f7e87742.woff2",
     "index.html": "/quran-memorization-tester/index.html",
-    "main.6a9022d8.css.map": "/quran-memorization-tester/static/css/main.6a9022d8.css.map",
-    "main.081d8c1f.js.map": "/quran-memorization-tester/static/js/main.081d8c1f.js.map",
+    "main.f01531ad.css.map": "/quran-memorization-tester/static/css/main.f01531ad.css.map",
+    "main.bcfe96a1.js.map": "/quran-memorization-tester/static/js/main.bcfe96a1.js.map",
     "787.149f990b.chunk.js.map": "/quran-memorization-tester/static/js/787.149f990b.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.6a9022d8.css",
-    "static/js/main.081d8c1f.js"
+    "static/css/main.f01531ad.css",
+    "static/js/main.bcfe96a1.js"
   ]
 }
