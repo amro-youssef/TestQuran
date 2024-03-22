@@ -1,70 +1,31 @@
-# Getting Started with Create React App
+# Welcome to Quran Memorization Tester
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Designed to help people who are trying to memorize the holy Quran test themselves into order to improve their strength of memorisation
+## Features
+- Generate random verse in given range
+- Reveal/show verse
+- Reveal/show chapter and verse number
+- Play verse audio from 13 different recitations
+- Test mode
 
-## Available Scripts
+### Feature Ideas, Changes or Issues
+- MAJOR: issue in how the app loads some words on mobile. e.g. the word ٱللَّه seems to have missing/misplaced diacretic marks
+- make website format and work better on mobile
+- add audio functionality to test page
+- fix error with audio on mobile where it doesn't play audio until the 'play/pause' button is toggled
+- add skeleton whilst verses are loading
+- make sidebar not take up whole screen on mobile
+- make retrieve all verses retrieve in chunks as you scroll down
+- move sound bar to encompass whole audio bar
+- change autocomplete fields to select component to allow better mobile experience?
+- improve blurring of verses
 
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Secondary Ideas
+- Maybe go forward/back a verse buttons deselects if you can't go forward/back
+- The button to show verse number is slow when there's a lot of verses
+- make the font better
+- Allow changing of fonts
+- Allow more reciters
+- Allow changing font size
+- Store results of tests so that the user can come back and review them
+- add translation?
