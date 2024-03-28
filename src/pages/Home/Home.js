@@ -197,6 +197,10 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
       restOfVerses.push({chapter: firstVerse.chapterNumber, verse: verse, text: text});
       if (verse % 10 === 0) {
         setRestOfVerses(restOfVerses.slice(3));
+        // this sleeps for 0 seconds. This is used because the DOM won't render the restOfVerses so far
+        // without this line
+        await new Promise(r => setTimeout(r, 0));
+
       }
     }
     if (restOfVerses.length > 3) {

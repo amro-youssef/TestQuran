@@ -6,6 +6,7 @@ import TestDialog from './components/TestDialog/TestDialog.js'
 import MenuBar from './components/MenuBar/MenuBar.js' 
 import {React, useState} from 'react';
 import { Switch } from '@mui/material'; 
+import ScrollToTop from "react-scroll-to-top";
 
 
 import { ThemeProvider, createTheme } from '@mui/material/styles'
@@ -66,6 +67,7 @@ const App = () => {
         darkMode={darkMode} 
         setReciterNumber={setReciterNumber}>
       </MenuBar>
+      <ScrollToTop smooth />   {/* This works but I don't love it */}
       {!testPage ?
       <>
       <Home className="App" testPressed={() => setTestDialog(true)} toggleDarkMode={toggleDarkMode} darkMode={darkMode} reciterNumber={reciterNumber}/> 
