@@ -119,6 +119,7 @@ const getVerseText = async (chapterNumber, verseNumber) => {
             return getVerseText.cache[chapterNumber + "," + verseNumber];
         }
 
+        // TODO if we go back to this, use query param ?chapter_number=${surahNumber} 
         const response = await fetch(`${API_BASE_URL}/quran/verses/uthmani`, {
             method: 'GET',
             headers: {

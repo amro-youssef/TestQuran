@@ -21,6 +21,7 @@
     "react-dom": "^18.2.0",
     "react-progress-bar": "^0.1.0",
     "react-scripts": "5.0.1",
+    "react-scroll-to-top": "^3.0.0",
     "react-select": "^5.8.0",
     "react-toggle-dark-mode": "^1.1.1",
     "scss": "^0.2.4",
