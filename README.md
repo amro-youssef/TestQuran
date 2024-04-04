@@ -1,6 +1,6 @@
 # Welcome to Quran Memorization Tester
 
-Designed to help people who are trying to memorize the holy Quran test themselves into order to improve their strength of memorisation
+Designed to help people who are trying to memorize the holy Quran test themselves into order to improve their strength of memorization
 ## Features
 - Generate random verse in given range
 - Reveal/show verse
