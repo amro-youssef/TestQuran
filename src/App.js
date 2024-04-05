@@ -62,7 +62,8 @@ const App = () => {
         goHome={() => {
           setTestPage(false);
           setTestDialog(false);
-        }} 
+        }}
+        style={{height: '10vh'}}
         toggleDarkMode={toggleDarkMode} 
         darkMode={darkMode} 
         setReciterNumber={setReciterNumber}>
