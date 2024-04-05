@@ -28,6 +28,7 @@ export default function MenuBar(props ) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const isMobile = useMediaQuery('(max-width:600px)');
+  const isSmallScreen = useMediaQuery('(max-width:500px)')
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -73,7 +74,7 @@ export default function MenuBar(props ) {
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <HideOnScroll>
-      <AppBar component="nav">
+      <AppBar component="nav" style={{height: '7vh'}}>
         <Toolbar sx={{ backgroundColor: !darkMode ? '#e0e0e0' : 'transparent', color: !darkMode ? 'black' : 'inherit' }}>
           {/* <IconButton
             color="inherit"
@@ -84,12 +85,16 @@ export default function MenuBar(props ) {
           >
             <MenuIcon />
           </IconButton> */}
+          
           <Typography
             variant="h6"
             component="div"
             sx={{ flexGrow: 1, display: { sm: 'inline' }, width: '25%'}}
           >
-            Quran Memorization Tester
+            {!isSmallScreen ? 
+              "Quran Memorization Tester" : "Quran Tester"
+            
+          }
           </Typography>
           <div style={{display: 'flex', justifyContent: 'right'}}>
             <DarkModeSwitch
