@@ -12,6 +12,7 @@ import SwipeableTemporaryDrawer from './../../components/Sidebar/Sidebar';
 import AudioBar from './../../components/AudioBar/AudioBar';
 import 'animate.css';
 import { DarkModeSwitch } from 'react-toggle-dark-mode';
+import ScrollToTop from "react-scroll-to-top";
 
 const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => { 
   const [startChapterNumber, setStartChapterNumber] = useState(null); 
@@ -199,7 +200,7 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
         setRestOfVerses(restOfVerses.slice(3));
         // this sleeps for 0 seconds. This is used because the DOM won't render the restOfVerses so far
         // without this line
-        await new Promise(r => setTimeout(r, 0));
+        await new Promise(r => setTimeout(r, 1));
 
       }
     }
@@ -397,6 +398,7 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
         ))}
       {audioUrl ? (<AudioBar audioFile={audioUrl} incrementVerseAudio={incrementVerseAudio} decrementVerseAudio={decrementVerseAudio}/>) : null}
         
+      <ScrollToTop smooth />   {/* This works but I don't love it */}
       <div style={{ marginTop: '5em' }}></div>
       </div>
     

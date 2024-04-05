@@ -28,7 +28,7 @@
 }
 
 .Autocomplete.verse {
-    width: 9.5em;
+    width: 16vh;
     margin-left: 10px;
 }
 
@@ -64,7 +64,7 @@
     }
     
     .Autocomplete.verse {
-        width: 6.5em;
+        /* width: 16.5vh; */
         margin-left: 10px;
     }
 
@@ -94,7 +94,7 @@
     }
     
     .Autocomplete.verse {
-        width: 6em;
+        /* width: 6em; */
         margin-left: 10px;
     }
 }
@@ -106,7 +106,7 @@
     }
     
     .Autocomplete.verse {
-        width: 6em;
+        /* width: 6em; */
         margin-left: 10px;
     }
 }

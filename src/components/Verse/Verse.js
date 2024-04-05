@@ -31,7 +31,7 @@ const Verse = ({ verseText, hideVerse }) => {
         // </div>}
         // </>
         <div dir="rtl" className={`verse ${isContentHidden ? 'placeholder blur' : ''}`} onClick={makeContentVisibile}>
-            <div style={{fontSize: '32px'}}dir="rtl">
+            <div className='verseText' dir="rtl">
                 {verse}
             </div>
         </div>

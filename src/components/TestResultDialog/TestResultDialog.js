@@ -5,6 +5,7 @@ import {
   DialogContent,
   DialogActions,
   Button,
+  Divider,
   List,
   ListItem,
   ListItemIcon,
@@ -64,6 +65,7 @@ const theme = useTheme();
             <AccordionDetails>
                 {/* <Verse verseText={answer.verses[0]}></Verse> */}
                 {answer.verses.map((verse, verseIndex) => (
+                  <>
                     <ListItem key={verseIndex}>
                     <ListItemIcon>
                        {/* <DoneIcon color="success" /> */}
@@ -71,13 +73,15 @@ const theme = useTheme();
                     </ListItemIcon>
                     <ListItemText 
                         dir="rtl" 
-                        primary={(verse ? <Verse verseText={verse}></Verse> : <></>)} 
+                        primary={(verse ? <Verse verseText={verse} className='resultDialog'></Verse> : <></>)} 
                         style={{
                             textAlign: 'right',
-                            paddingRight: theme.spacing(2),
+                            // paddingRight: theme.spacing(10),
                         }}
                     />
                   </ListItem>
+                  {verseIndex !== answer.verses.length - 1 && <Divider />}
+                  </>
                 ))}
             </AccordionDetails>
           </Accordion>
@@ -130,6 +134,7 @@ const theme = useTheme();
             <AccordionDetails>
                 {/* <Verse verseText={answer.verses[0]}></Verse> */}
                 {answer.verses.map((verse, verseIndex) => (
+                  <>
                     <ListItem key={index}>
                     <ListItemIcon>
                        {/* <DoneIcon color="success" /> */}
@@ -137,13 +142,16 @@ const theme = useTheme();
                     </ListItemIcon>
                     <ListItemText 
                         dir="rtl" 
-                        primary={(verse ? <Verse verseText={verse}></Verse> : <></>)} 
+                        primary={(verse ? <Verse verseText={verse} style={{class: 'resultDialog'}}></Verse> : <></>)} 
                         style={{
                             textAlign: 'right',
                             paddingRight: theme.spacing(2),
                         }}
                     />
                   </ListItem>
+                    {verseIndex !== answer.verses.length - 1 && <Divider />}
+                  </>
+                  
                 ))}
             </AccordionDetails>
           </Accordion>

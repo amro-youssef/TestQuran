@@ -53,13 +53,31 @@
 
   @media (max-width: 1024px) {
     .verse {
-        font-size: 1em;
+        font-size: 4.3vh;
         /* min-width: 90% */
     }
 }
 
 @media (min-width: 1024px) {
     .verse {
-        font-size: 1.2em;
+      font-size: 4vh;
     }
+
+    .verseText {
+      margin: 15px
+    }
+}
+
+@media (min-width: 600px) {
+  .verse {
+    font-size: 4vh;
+  }
+
+  .verseText {
+    margin: 15px
+  }
+
+  .resultDialog {
+    font-size: 2vh
+  }
 }

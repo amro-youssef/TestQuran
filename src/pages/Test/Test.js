@@ -129,6 +129,13 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
       // } else {
       //   setIncorrectAnswers([...incorrectAnswers, { questionNumber: currentQuestionNumber }]);
       // }
+      // go to top of page
+      // TODO doesnt seem to work
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+
       resetStates();
       loadVerses();
       setCurrentQuetionNumber(currentQuestionNumber + 1);
