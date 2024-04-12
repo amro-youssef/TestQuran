@@ -84,7 +84,7 @@ const getVerseText = async (chapterNumber, verseNumber) => {
     const data = localData.allData.find((data) => data.chapter.id === chapterNumber);
     const verseKey = chapterNumber + ":" + verseNumber;
     const verse = data.verses.find(v => v.verse_key === verseKey);
-    return verse.text_uthmani;
+    return verse ? verse.text_uthmani : verse;
 }
 
 const getReciters = async () => {

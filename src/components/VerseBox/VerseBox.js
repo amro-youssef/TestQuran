@@ -134,6 +134,7 @@ const VerseBox = (props) => {
                         <Button
                             onClick={expandButtonPressed} 
                             variant="outlined" 
+                            id="expand-button"
                             style = {{display: 'flex', justifyContent: 'center'}}
                             sx={ { borderRadius: 24 }}>
                                 {expandIcon}

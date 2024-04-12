@@ -168,10 +168,10 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
   const expandPressed = async () => {
     if (!readMore) {
       const secondVerse = await getVerseText(firstVerse.chapterNumber, firstVerse.verseNumber + 1);
-      const thirdVerse = await getVerseText(firstVerse.chapterNumber, firstVerse.verseNumber + 2);
-      if (secondVerse !== -1) {
+      if (secondVerse) {
         setSecondVerseText(secondVerse);
-        if (thirdVerse !== -1) {
+        const thirdVerse = await getVerseText(firstVerse.chapterNumber, firstVerse.verseNumber + 2);
+        if (thirdVerse) {
           setThirdVerseText(thirdVerse);
         }
       }
@@ -373,7 +373,7 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
                 />
                 {!showRestOfChapter && 
                   <p>
-                    <button className={`${localStorage.getItem('darkMode') === 'true' ? 'dark-text-link' : ''} text-link`} onClick={handleReadRestOfChapter}>
+                    <button id='read-rest-of-chapter' className={`${localStorage.getItem('darkMode') === 'true' ? 'dark-text-link' : ''} text-link`} onClick={handleReadRestOfChapter}>
                       Read rest of chapter
                     </button>
                   </p>

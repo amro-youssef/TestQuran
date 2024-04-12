@@ -35,7 +35,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "e2e": "cypress open"
   },
   "eslintConfig": {
     "extends": [
@@ -67,6 +68,7 @@
     "@storybook/react": "^8.0.8",
     "@storybook/react-webpack5": "^8.0.8",
     "@storybook/test": "^8.0.8",
+    "cypress": "^13.7.3",
     "eslint-plugin-storybook": "^0.8.0",
     "gh-pages": "^6.1.0",
     "prop-types": "^15.8.1",
