@@ -9,6 +9,7 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
+import Input from '@mui/material/Input';
 import FormLabel from '@mui/material/FormLabel';
 import Checkbox from '@mui/material/Checkbox';
 import FormGroup from '@mui/material/FormGroup';
@@ -17,6 +18,9 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import {getReciters} from '../../backend.js';
+import NumberInput from './../NumberInput/NumberInput.js';
+// import NumberInput from './../../components/NumberInput/Sidebar';
+
 import './Sidebar.css';
 
 export default function SwipeableTemporaryDrawer({ setReciterNumber }) {
@@ -160,6 +164,7 @@ export default function SwipeableTemporaryDrawer({ setReciterNumber }) {
         <h2>Verse:</h2>
         {/* <FormControlLabel control={<Checkbox />} label="Always show verse number" /> */}
         <FormControlLabel checked={alwaysHideText} onChange={handleAlwaysHideText} control={<Checkbox />} label="Hide verse text" />
+        {/* <Input type="number">Font Size</Input> */}
 
     </Box>
   );

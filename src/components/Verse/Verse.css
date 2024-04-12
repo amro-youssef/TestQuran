@@ -14,6 +14,19 @@
     src: url(./fonts/UthmaniHafs.woff) format('woff')
   }
 
+  @font-face {
+    font-family: 'Uthman Hafs';
+    src: local('KFGQPC Uthmanic Script HAFS'),
+         url(https://raw.githubusercontent.com/mustafa0x/qpc-fonts/f93bf5f3/various-woff2/UthmanicHafs1%20Ver09.woff2) format('woff2'),
+         url(https://raw.githubusercontent.com/mustafa0x/qpc-fonts/f93bf5f3/various-woff/UthmanicHafs1%20Ver09.woff) format('woff');
+  }
+
+  @font-face {
+    font-family: 'Mushaf Ligatures';
+    src: local('QCF_BSML'),
+         url(https://raw.githubusercontent.com/mustafa0x/qpc-fonts/f93bf5f3/mushaf-v2-woff2/QCF_BSML.woff2) format('woff2'),
+         url(https://raw.githubusercontent.com/mustafa0x/qpc-fonts/f93bf5f3/mushaf-woff/QCF_BSML.woff) format('woff');
+  }
 
 .verse-container {
     /* max-width: '2em'; Set the desired maximum width */
@@ -23,14 +36,8 @@
     
   }
 
-.hideable-div {
-    /* border: 1px solid #ccc;
-    padding: 10px;
-    margin: 10px; */
-    /* Add any other styles you need for your div */
-}
 
-.blur {
+ .blur {
     color: transparent;
     text-shadow: 0 0 18px rgba(0,0,0,0.7);
  }

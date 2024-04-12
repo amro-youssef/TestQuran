@@ -1,26 +1,26 @@
 import {React, useState, useEffect} from 'react';
-import { Button } from '@mui/material';
+import PropTypes from 'prop-types';
 import './Verse.css';
 
 const Verse = ({ verseText, hideVerse }) => {
     const [verse, setVerse] = useState(verseText);
-    const [isContentHidden, setIsContentHidden] = useState(false);
+    const [isContentHidden, setIsContentHidden] = useState(hideVerse === true);
 
     const makeContentVisibile = () => {
         setIsContentHidden(false);
     };
 
-    useEffect(() => {
-        // if (hideVerse) {
-        //     setIsContentHidden(true);
-        // }
-        if (localStorage.getItem('alwaysHideVerse') === "true" && hideVerse) {
-            setIsContentHidden(true);
-        } else {
-            setIsContentHidden(false);
-        }
-        setVerse(verseText);
-    }, [verseText]);
+    // useEffect(() => {
+    //     // if (hideVerse) {
+    //     //     setIsContentHidden(true);
+    //     // }
+    //     if (localStorage.getItem('alwaysHideVerse') === "true" && allowHideVerse) {
+    //         setIsContentHidden(true);
+    //     } else {
+    //         setIsContentHidden(false);
+    //     }
+    //     setVerse(verseText);
+    // }, [verseText]);
     return (
         // <>
         // {isContentHidden && 
@@ -32,10 +32,15 @@ const Verse = ({ verseText, hideVerse }) => {
         // </>
         <div dir="rtl" className={`verse ${isContentHidden ? 'placeholder blur' : ''}`} onClick={makeContentVisibile}>
             <div className='verseText' dir="rtl">
-                {verse}
+                {verseText}
             </div>
         </div>
     )
+}
+
+Verse.propTypes = {
+    verseText: PropTypes.string,
+    hideVerse: PropTypes.bool
 }
 
 export default Verse;

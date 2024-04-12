@@ -14,17 +14,17 @@ import 'animate.css';
 const VersePicker = ({ loadState, bounce1, bounce2, bounce3, bounce4 }) => {
     const [startChapters, setStartChapters] = useState([]);
     const [startVerses, setStartVerses] = useState([]);
-    const [startChapterNumber, setStartChapterNumber] = useState();
-    const [startChapterName, setStartChapterName] = useState(null);
-    const [startChapter, setStartChapter] = useState(null); // TODO add default values
-    const [startVerseNumber, setStartVerseNumber] = useState(null);
+    const [startChapterNumber, setStartChapterNumber] = useState(1);
+    const [startChapterName, setStartChapterName] = useState("Al-Fatihah");
+    const [startChapter, setStartChapter] = useState("1 Al-Fatihah"); // TODO add default values
+    const [startVerseNumber, setStartVerseNumber] = useState(1);
     
     const [endChapters, setEndChapters] = useState([]);
     const [endVerses, setEndVerses] = useState([]);
-    const [endChapterNumber, setEndChapterNumber] = useState();
-    const [endChapterName, setEndChapterName] = useState(null);
-    const [endChapter, setEndChapter] = useState(null);
-    const [endVerseNumber, setEndVerseNumber] = useState(null);
+    const [endChapterNumber, setEndChapterNumber] = useState(114);
+    const [endChapterName, setEndChapterName] = useState("An-Nas");
+    const [endChapter, setEndChapter] = useState("114 An-Nas");
+    const [endVerseNumber, setEndVerseNumber] = useState(6);
 
     const isMobile = useMediaQuery('(max-width:600px)');
     

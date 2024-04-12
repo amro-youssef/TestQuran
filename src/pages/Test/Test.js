@@ -288,7 +288,7 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
               showAudioButton={false} // haven't decided whether to have the audio icon available
               // versePlaying={audioUrl ? versePlaying : null}
               versePlaying={false}
-              hideVerse={true}
+              allowHideVerse={true}
             />
           </>
         ) : <></>}

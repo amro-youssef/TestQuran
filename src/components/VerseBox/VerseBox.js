@@ -5,12 +5,13 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import VolumeUp from '@mui/icons-material/VolumeUp';
+import PropTypes from 'prop-types';
 
 import Verse from '../Verse/Verse.js';
 import './VerseBox.css';
 
 const VerseBox = (props) => {
-    let { verseText, readMorePressed, chapterNumber, chapterName, verseNumber, viewVerseNumber, onViewVerseNumberChange, playAudio, hideVerse, versePlaying, showAudioButton } = props;
+    let { verseText, readMorePressed, chapterNumber, chapterName, verseNumber, viewVerseNumber, onViewVerseNumberChange, playAudio, versePlaying, showAudioButton, hideVerse } = props;
 
     const [verse, setVerse] = useState(verseText);
     const [buttonText, setButtonText] = useState(<VisibilityIcon />);
@@ -18,9 +19,6 @@ const VerseBox = (props) => {
     const [expanded, setExpanded] = useState(false);
 
     const showVerseNumber = async () => {
-        // console.time("chapterName" + verseNumber);
-        // const chapterName = await getChapterName(chapterNumber);
-        // console.timeEnd("chapterName" + verseNumber);
         if (!chapterName) {
             chapterName = await getChapterName(chapterNumber);
         }
@@ -145,6 +143,21 @@ const VerseBox = (props) => {
             </div>
         </div>
     )
+}
+
+VerseBox.propTypes = {
+    verseText: PropTypes.string,
+    readMorePressed: PropTypes.bool,
+    chapterNumber: PropTypes.number,
+    chapterName: PropTypes.string,
+    verseNumber: PropTypes.number,
+    viewVerseNumber: PropTypes.bool,
+    onViewVerseNumberChange: PropTypes.func,
+    playAudio: PropTypes.func,
+    allowHideVerse: PropTypes.bool,
+    versePlaying: PropTypes.bool,
+    showAudioButton: PropTypes.bool,
+    hideVerse: PropTypes.bool
 }
 
 export default VerseBox;

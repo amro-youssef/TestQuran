@@ -74,7 +74,7 @@ export default function MenuBar(props ) {
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <HideOnScroll>
-      <AppBar component="nav" style={{height: '7vh'}}>
+      <AppBar component="nav" style={{height: '8vh'}}>
         <Toolbar sx={{ backgroundColor: !darkMode ? '#e0e0e0' : 'transparent', color: !darkMode ? 'black' : 'inherit' }}>
           {/* <IconButton
             color="inherit"

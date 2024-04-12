@@ -94,34 +94,6 @@ const App = () => {
     ></Test>}
     </ThemeProvider> 
 
-
-
-
-    // !testPage ?
-    //   <>
-    //   <Home className="App light" testPressed={() => setTestDialog(true)}/> 
-    //   {testDialog ? 
-    //     <TestDialog
-    //       open={true} 
-    //       closeDialog={() => setTestDialog(false)} 
-    //       loadState={(a,b,c,d,e) => loadState(a,b,c,d,e)} 
-    //       openTestPage={openTestPage}/>
-    //       : <></>}
-    //   </>
-    // : <Test goHome={() => {
-    //     setTestPage(false);
-    //     setTestDialog(false);
-    //     }}
-    //     state={{
-    //       startChapterNumber: startChapterNumber,
-    //       startVerseNumber: startVerseNumber,
-    //       endChapterNumber: endChapterNumber,
-    //       endVerseNumber: endVerseNumber,
-    //       numQuestions: numQuestions
-    //     }}
-    
-    // ></Test>
   );
 }
-/* : <Test goHome={() => setTestPage(false)}/> */
 export default App;

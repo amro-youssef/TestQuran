@@ -82,31 +82,32 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
    * @return whether there are empty fields
    */
   const checkEmptyFields = () => {
-    if (!startChapterNumber) {
-      setBounce1(true);
-      setTimeout(() => {
-        setBounce1(false);
-      }, 1000);
-      return true;
-    } if (!startVerseNumber) {
-      setBounce2(true);
-      setTimeout(() => {
-        setBounce2(false);
-      }, 1000);
-      return true;
-    } if (!endChapterNumber) {
-      setBounce3(true);
-      setTimeout(() => {
-        setBounce3(false);
-      }, 1000);
-      return true;
-    } if (!endVerseNumber) {
-      setBounce4(true);
-      setTimeout(() => {
-        setBounce4(false);
-      }, 1000);
-      return true;
-    }
+    // replaced by having default values 
+    // if (!startChapterNumber) {
+    //   setBounce1(true);
+    //   setTimeout(() => {
+    //     setBounce1(false);
+    //   }, 1000);
+    //   return true;
+    // } if (!startVerseNumber) {
+    //   setBounce2(true);
+    //   setTimeout(() => {
+    //     setBounce2(false);
+    //   }, 1000);
+    //   return true;
+    // } if (!endChapterNumber) {
+    //   setBounce3(true);
+    //   setTimeout(() => {
+    //     setBounce3(false);
+    //   }, 1000);
+    //   return true;
+    // } if (!endVerseNumber) {
+    //   setBounce4(true);
+    //   setTimeout(() => {
+    //     setBounce4(false);
+    //   }, 1000);
+    //   return true;
+    // }
   }
 
   const resetStates = () => {
@@ -339,6 +340,7 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
               onViewVerseNumberChange={onViewVerseNumberChange}
               playAudio={playAudio}
               versePlaying={audioUrl ? versePlaying : null}
+              hideVerse = {localStorage.getItem('alwaysHideVerse') === "true"} // TODO make this update dynamically rather than needing refresh for it to apply
             />
 
             {readMore && secondVerseText ?  (
@@ -352,7 +354,7 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
                   onViewVerseNumberChange={onViewVerseNumberChange}
                   playAudio={playAudio}
                   versePlaying={audioUrl ? versePlaying : null}
-                  hideVerse={true}
+                  hideVerse = {localStorage.getItem('alwaysHideVerse') === "true"}
                 />
               </>
             ) : <></>}
@@ -367,7 +369,7 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
                   onViewVerseNumberChange={onViewVerseNumberChange}
                   playAudio={playAudio}
                   versePlaying={audioUrl ? versePlaying : null}
-                  hideVerse={true}
+                  hideVerse = {localStorage.getItem('alwaysHideVerse') === "true"}
                 />
                 {!showRestOfChapter && 
                   <p>
@@ -393,7 +395,7 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
               onViewVerseNumberChange={onViewVerseNumberChange}
               playAudio={playAudio}
               versePlaying={audioUrl ? versePlaying : null}
-              hideVerse={true}
+              hideVerse = {localStorage.getItem('alwaysHideVerse') === "true"}
             />
         ))}
       {audioUrl ? (<AudioBar audioFile={audioUrl} incrementVerseAudio={incrementVerseAudio} decrementVerseAudio={decrementVerseAudio}/>) : null}
