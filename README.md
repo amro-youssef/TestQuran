@@ -9,9 +9,8 @@ Designed to help people who are trying to memorize the holy Quran test themselve
 - Test mode
 
 ### Feature Ideas, Changes or Issues
-- MAJOR: issue in how the app loads some words on mobile. e.g. the word ٱللَّه seems to have missing/misplaced diacretic marks
-- make website format and work better on mobile
-- add audio functionality to test page
+- Fix fonts issues
+- add audio functionality to test page?
 - fix error with audio on mobile where it doesn't play audio until the 'play/pause' button is toggled
 - add skeleton whilst verses are loading
 - make sidebar not take up whole screen on mobile
