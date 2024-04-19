@@ -234,7 +234,7 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
 
     return (
         <div className="App">
-        <h1>Memorization Test</h1>
+        {/* <h1>Memorization Test</h1> */}
         <h3>Question {currentQuestionNumber} out of {state.numQuestions}</h3>
         {/* <DarkModeSwitch
             checked={darkMode}

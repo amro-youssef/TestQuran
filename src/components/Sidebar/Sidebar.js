@@ -52,18 +52,6 @@ export default function SwipeableTemporaryDrawer({ setReciterNumber }) {
     setState({ ...state, [anchor]: !state[anchor] });
   };
 
-  // const CollapsiblePanel = ({ isOpen, children }) => {
-  //   return (
-  //     <div style={{ height: isOpen ? 'auto' : 0, overflow: 'hidden', transition: 'height 0.3s ease-in-out' }}>
-  //       {children}
-  //     </div>
-  //   );
-  // };
-
-  // const handleDrawerClose = () => {
-  //   setState({...state, ['right']: false});
-  // };
-
   useEffect(() => {
     const fetchReciters = async () => {
       const reciters = await getReciters();

@@ -6,12 +6,9 @@ import Title from './../../components/Title/Title';
 import Header from './../../components/Header/Header';
 import VersePicker from './../../components/VersePicker/VersePicker';
 import SubmitButton from './../../components/SubmitButton/SubmitButton';
-import Button from '@mui/material/Button';
 import VerseBox from './../../components/VerseBox/VerseBox';
-import SwipeableTemporaryDrawer from './../../components/Sidebar/Sidebar';
 import AudioBar from './../../components/AudioBar/AudioBar';
 import 'animate.css';
-import { DarkModeSwitch } from 'react-toggle-dark-mode';
 import ScrollToTop from "react-scroll-to-top";
 
 const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => { 
@@ -313,9 +310,9 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
 
   return (
       <div className="App">
-        <header style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'row'}}>
+        {/* <header style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'row'}}>
           <Header style={{justifyContent: 'center', flexShrink: 2}}/>
-        </header>
+        </header> */}
         <Title />
         <div style={{ display: 'flex', justifyContent: 'space-evenly', flexWrap: 'wrap' }}>
           <VersePicker 

@@ -3,6 +3,9 @@
   margin: 0;
   min-height: 100vh;
   overflow-x: hidden;
+  /* makes sure that the content is below the menu bar */
+  margin-top: 70px; 
+  color-scheme: dark light;
 }
 
 .text-link {

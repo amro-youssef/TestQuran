@@ -4,15 +4,12 @@ import Home from './pages/Home/Home.js';
 import Test from './pages/Test/Test.js';
 import TestDialog from './components/TestDialog/TestDialog.js' 
 import MenuBar from './components/MenuBar/MenuBar.js' 
+import Footer from './components/Footer/Footer.js'
 import {React, useState} from 'react';
-import { Switch } from '@mui/material'; 
-
 
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
-
 import 'animate.css';
-import { DarkModeSwitch } from 'react-toggle-dark-mode';
 
 const App = () => { 
   const [testDialog, setTestDialog] = useState(false);
@@ -69,7 +66,7 @@ const App = () => {
       </MenuBar>
       {!testPage ?
       <>
-      <Home className="App" testPressed={() => setTestDialog(true)} toggleDarkMode={toggleDarkMode} darkMode={darkMode} reciterNumber={reciterNumber}/> 
+      <Home style={{marginTop: '50px'}} className="App" testPressed={() => setTestDialog(true)} toggleDarkMode={toggleDarkMode} darkMode={darkMode} reciterNumber={reciterNumber}/> 
       {testDialog ? 
         <TestDialog
           open={true} 
@@ -92,6 +89,8 @@ const App = () => {
         toggleDarkMode={toggleDarkMode}
         darkMode={darkMode}
     ></Test>}
+
+    <Footer />
     </ThemeProvider> 
 
   );
