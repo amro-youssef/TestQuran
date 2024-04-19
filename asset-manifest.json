@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/quran-memorization-tester/static/css/main.cfa4b21c.css",
-    "main.js": "/quran-memorization-tester/static/js/main.24cc9d89.js",
-    "static/js/453.8185eb47.chunk.js": "/quran-memorization-tester/static/js/453.8185eb47.chunk.js",
-    "static/media/p1.ttf": "/quran-memorization-tester/static/media/p1.25801d99193fa20412e0.ttf",
-    "static/media/UthmaniHafs.woff": "/quran-memorization-tester/static/media/UthmaniHafs.9c89891f2a65fd130deb.woff",
-    "static/media/p1.woff": "/quran-memorization-tester/static/media/p1.176c0e800f77789527f1.woff",
-    "static/media/p1.woff2": "/quran-memorization-tester/static/media/p1.a0320a9ab9c2f7e87742.woff2",
-    "index.html": "/quran-memorization-tester/index.html",
-    "main.cfa4b21c.css.map": "/quran-memorization-tester/static/css/main.cfa4b21c.css.map",
-    "main.24cc9d89.js.map": "/quran-memorization-tester/static/js/main.24cc9d89.js.map",
-    "453.8185eb47.chunk.js.map": "/quran-memorization-tester/static/js/453.8185eb47.chunk.js.map"
+    "main.css": "/www.testquran.com/static/css/main.cfdf4b5f.css",
+    "main.js": "/www.testquran.com/static/js/main.ec377f50.js",
+    "static/js/453.8185eb47.chunk.js": "/www.testquran.com/static/js/453.8185eb47.chunk.js",
+    "static/media/p1.ttf": "/www.testquran.com/static/media/p1.25801d99193fa20412e0.ttf",
+    "static/media/UthmaniHafs.woff": "/www.testquran.com/static/media/UthmaniHafs.9c89891f2a65fd130deb.woff",
+    "static/media/p1.woff": "/www.testquran.com/static/media/p1.176c0e800f77789527f1.woff",
+    "static/media/p1.woff2": "/www.testquran.com/static/media/p1.a0320a9ab9c2f7e87742.woff2",
+    "index.html": "/www.testquran.com/index.html",
+    "main.cfdf4b5f.css.map": "/www.testquran.com/static/css/main.cfdf4b5f.css.map",
+    "main.ec377f50.js.map": "/www.testquran.com/static/js/main.ec377f50.js.map",
+    "453.8185eb47.chunk.js.map": "/www.testquran.com/static/js/453.8185eb47.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.cfa4b21c.css",
-    "static/js/main.24cc9d89.js"
+    "static/css/main.cfdf4b5f.css",
+    "static/js/main.ec377f50.js"
   ]
 }
