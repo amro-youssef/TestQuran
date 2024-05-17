@@ -2,14 +2,14 @@
     width: 400px
 }
 
-@media (width < 850px) {
+@media (max-width: 850px) {
     .box {
-        width: 250px
+      width: 250px;
     }
+  }
+  
+@media (max-width: 600px) {
+.box {
+    width: 150px;
 }
-
-@media (width < 600px) {
-    .box {
-        width: 150px
-    }
 }
