@@ -89,10 +89,7 @@ export default function MenuBar(props ) {
             component="div"
             sx={{ flexGrow: 1, display: { sm: 'inline' }, width: '25%'}}
           >
-            {!isSmallScreen ? 
-              "Quran Memorization Tester" : "Quran Tester"
-            
-          }
+            Test Quran
           </Typography>
           <div style={{display: 'flex', justifyContent: 'right'}}>
             <DarkModeSwitch

@@ -54,7 +54,7 @@ const App = () => {
   return (
     <>
 
-    <title>Quran Memorization Tester</title>
+    <title>Test Quran</title>
     <ThemeProvider theme={darkTheme}> 
       <CssBaseline /> 
 

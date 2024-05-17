@@ -65,6 +65,7 @@ const theme = useTheme();
             <AccordionDetails>
                 {/* <Verse verseText={answer.verses[0]}></Verse> */}
                 {answer.verses.map((verse, verseIndex) => (
+                  verse ?
                   <>
                     <ListItem key={verseIndex}>
                     <ListItemIcon>
@@ -81,7 +82,7 @@ const theme = useTheme();
                     />
                   </ListItem>
                   {verseIndex !== answer.verses.length - 1 && <Divider />}
-                  </>
+                  </> : <></>
                 ))}
             </AccordionDetails>
           </Accordion>
@@ -107,6 +108,7 @@ const theme = useTheme();
                 <AccordionDetails>
                     {/* <Verse verseText={answer.verses[0]}></Verse> */}
                     {answer.verses.map((verse, verseIndex) => (
+                      verse ?
                       <>
                         <ListItem key={index}>
                         <ListItemIcon>
@@ -123,7 +125,7 @@ const theme = useTheme();
                         />
                       </ListItem>
                         {verseIndex !== answer.verses.length - 1 && <Divider />}
-                      </>
+                      </> : <></>
                       
                     ))}
                 </AccordionDetails>

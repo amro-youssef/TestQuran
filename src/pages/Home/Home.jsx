@@ -136,7 +136,11 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
         const thirdVerse = await getVerseText(firstVerse.chapterNumber, firstVerse.verseNumber + 2);
         if (thirdVerse) {
           setThirdVerseText(thirdVerse);
+        } else {
+          setThirdVerseText(null);
         }
+      } else {
+        setSecondVerseText(null);
       }
       // setSecondChapterNumber(parseInt(firstVerse.chapterNumber));
       // setSecondVerseNumber(parseInt(firstVerse.verseNumber + 1));
