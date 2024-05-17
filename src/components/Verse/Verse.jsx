@@ -10,29 +10,22 @@ const Verse = ({ verseText, hideVerse }) => {
         setIsContentHidden(false);
     };
 
-    // useEffect(() => {
-    //     // if (hideVerse) {
-    //     //     setIsContentHidden(true);
-    //     // }
-    //     if (localStorage.getItem('alwaysHideVerse') === "true" && allowHideVerse) {
-    //         setIsContentHidden(true);
-    //     } else {
-    //         setIsContentHidden(false);
-    //     }
-    //     setVerse(verseText);
-    // }, [verseText]);
+    // credit to https://github.com/AShaaban0109/QuranType
+    function processAyah(text) {
+        let ayah = text
+    
+        // handle iqlab. 
+        ayah = ayah.replace(/\u064B\u06E2/g, '\u064E\u06E2'); // fathateen then meen, to fatha then meen.
+        ayah = ayah.replace(/\u064C\u06E2/g, '\u064F\u06E2'); // dammateen then meen, to damma then meen.
+        ayah = ayah.replace(/\u064D\u06ED/g, '\u0650\u06ED'); // kasrateen then meen, to kasra then meen.
+    
+        return ayah
+    }
+    
     return (
-        // <>
-        // {isContentHidden && 
-        // <div className={`verse ${isContentHidden ? 'placeholder' : ''}`} onClick={toggleContentVisibility}>
-        //     <h1 dir="rtl">
-        //         {verse}
-        //     </h1>
-        // </div>}
-        // </>
         <div dir="rtl" className={`verse ${isContentHidden ? 'placeholder blur' : ''}`} onClick={makeContentVisibile}>
             <div className='verseText' dir="rtl">
-                {verseText}
+                {processAyah(verseText)}
             </div>
         </div>
     )
