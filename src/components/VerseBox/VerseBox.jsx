@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import {React, useState, useEffect, useRef} from 'react';
 import { Button } from '@mui/material';
 import {getChapterName} from '../../backend.js'
@@ -119,15 +120,29 @@ const VerseBox = (props) => {
                             id="audio"
                             onClick={() => {
                                 // document.addEventListener('click', playAudio);
-                        
+                                // const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
                                 playAudio(chapterNumber, verseNumber)
+                                // if (false) {
+                                //     // this.addEventListener('click', playAudio(chapterNumber, verseNumber))
+                                //     playAudio(chapterNumber, verseNumber)
+                                // } else {
+                                //     navigator.mediaDevices
+                                //         .getUserMedia({ audio: true })
+                                //         .then((stream) => {
+                                //             playAudio(chapterNumber, verseNumber, stream);
+                                //         })
+                                //         .catch((error) => {
+                                //         console.error('Error requesting audio permission:', error);
+                                //     // Handle the case where the user denies permission
+                                //     });
+                                // }
                                 // return () => {
                                 // document.removeEventListener('click', playAudio);
                                 // };
                             }}
                         >
                             {<VolumeUp/>}
-                        </Button>) : <></>}
+                        </Button>) : <div></div>}
                 </div>
                 <div style={expandDivStyle} id="expand-div">
                     {verse && readMorePressed ? (

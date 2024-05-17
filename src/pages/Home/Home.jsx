@@ -2,13 +2,10 @@
 import './Home.css';
 import {getAudioUrl, getNumberVerses, getVerseText, getChapterName} from '../../backend.js';
 import {React, useState} from 'react';
-import Title from '../../components/Title/Title.jsx';
-import Header from '../../components/Header/Header.jsx';
 import VersePicker from '../../components/VersePicker/VersePicker.jsx';
 import SubmitButton from '../../components/SubmitButton/SubmitButton.jsx';
 import VerseBox from '../../components/VerseBox/VerseBox.jsx';
 import AudioBar from '../../components/AudioBar/AudioBar.jsx';
-import 'animate.css';
 import ScrollToTop from "react-scroll-to-top";
 
 const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => { 
@@ -29,11 +26,6 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
 
   const [showRestOfChapter, setShowRestOfChapter] = useState(false);
   const [restOfVerses, setRestOfVerses] = useState([]);
-
-  const [bounce1, setBounce1] = useState(false);
-  const [bounce2, setBounce2] = useState(false);
-  const [bounce3, setBounce3] = useState(false);
-  const [bounce4, setBounce4] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [versePlaying, setVersePlaying] = useState();
@@ -79,32 +71,6 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
    * @return whether there are empty fields
    */
   const checkEmptyFields = () => {
-    // replaced by having default values 
-    // if (!startChapterNumber) {
-    //   setBounce1(true);
-    //   setTimeout(() => {
-    //     setBounce1(false);
-    //   }, 1000);
-    //   return true;
-    // } if (!startVerseNumber) {
-    //   setBounce2(true);
-    //   setTimeout(() => {
-    //     setBounce2(false);
-    //   }, 1000);
-    //   return true;
-    // } if (!endChapterNumber) {
-    //   setBounce3(true);
-    //   setTimeout(() => {
-    //     setBounce3(false);
-    //   }, 1000);
-    //   return true;
-    // } if (!endVerseNumber) {
-    //   setBounce4(true);
-    //   setTimeout(() => {
-    //     setBounce4(false);
-    //   }, 1000);
-    //   return true;
-    // }
   }
 
   const resetStates = () => {
@@ -221,6 +187,14 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
 
   const playAudio = async (chapterNumber, verseNumber) => {
     const url = await getAudioUrl(chapterNumber, verseNumber, reciterNumber);
+
+    // const audio = new Audio();
+    // setTimeout(async () => {
+    //   const nextUrl = await getAudioUrl(chapterNumber, verseNumber + 1, reciterNumber);
+    //   audio.src = nextUrl;
+    //   audio.load();
+    // }, 100)
+
     // this is used to fix an error where pressing the play button next to a verse
     // for a verse already loaded in the audio bar not playing. It's not ideal as
     // it causes the audio bar to disappear then reappear
@@ -310,17 +284,10 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
 
   return (
       <div className="App">
-        {/* <header style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'row'}}>
-          <Header style={{justifyContent: 'center', flexShrink: 2}}/>
-        </header> */}
-        <Title />
+        <h3 className='title'>Pick the range of verses you would like to be tested on:</h3>
         <div style={{ display: 'flex', justifyContent: 'space-evenly', flexWrap: 'wrap' }}>
           <VersePicker 
             loadState={loadState} 
-            bounce1={bounce1}
-            bounce2={bounce2}
-            bounce3={bounce3}
-            bounce4={bounce4}
           />
           <SubmitButton onClick={onClick} loading={loading}/>
         </div>
@@ -370,7 +337,7 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
                 />
                 {!showRestOfChapter && 
                   <p>
-                    <button id='read-rest-of-chapter' className={`${localStorage.getItem('darkMode') === 'true' ? 'dark-text-link' : ''} text-link`} onClick={handleReadRestOfChapter}>
+                    <button id='read-rest-of-chapter' className={`${localStorage.getItem('darkMode') === 'false' ? '' : 'dark-text-link'} text-link`} onClick={handleReadRestOfChapter}>
                       Read rest of chapter
                     </button>
                   </p>

@@ -4,7 +4,7 @@
   min-height: 100vh;
   overflow-x: hidden;
   /* makes sure that the content is below the menu bar */
-  margin-top: 70px; 
+  margin-top: 60px; 
   color-scheme: dark light;
 }
 

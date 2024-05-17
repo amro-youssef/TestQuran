@@ -30,6 +30,9 @@ input[type=number] {
   #number-of-questions-div {
     margin: 0px 0px 0px 10px;
   }
+  #test-mode-control {
+    margin: 10px 0px 0px 10px;
+  }
   
   
   @media screen and (max-width: 480px) {

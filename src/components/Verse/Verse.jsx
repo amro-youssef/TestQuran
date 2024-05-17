@@ -13,6 +13,9 @@ const Verse = ({ verseText, hideVerse }) => {
     // credit to https://github.com/AShaaban0109/QuranType
     function processAyah(text) {
         let ayah = text
+        if (!ayah || ayah === "") {
+            return ayah;
+        }
     
         // handle iqlab. 
         ayah = ayah.replace(/\u064B\u06E2/g, '\u064E\u06E2'); // fathateen then meen, to fatha then meen.
@@ -21,7 +24,7 @@ const Verse = ({ verseText, hideVerse }) => {
     
         return ayah
     }
-    
+
     return (
         <div dir="rtl" className={`verse ${isContentHidden ? 'placeholder blur' : ''}`} onClick={makeContentVisibile}>
             <div className='verseText' dir="rtl">

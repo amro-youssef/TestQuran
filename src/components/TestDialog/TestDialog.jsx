@@ -1,12 +1,18 @@
 import {React, useState, useEffect} from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions, OutlinedInput, Button, Select, MenuItem, InputLabel, FormControl, FormLabel } from '@mui/material'; // Import Material-UI components
+import { Dialog, DialogTitle, DialogContent, DialogActions, OutlinedInput, Button, Select, MenuItem, InputLabel, FormControl, FormLabel, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import './TestDialog.css';
 import {getChapterNames, getNumberVerses} from '../../backend.js'
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import 'animate.css';
 
+// import {Box as JoyBox} from '@mui/joy';
+// import {Radio as JoyRadio} from '@mui/joy';
+// import {RadioGroup as JoyRadioGroup} from '@mui/joy';
+// import {Typography as JoyTypography} from '@mui/joy';
+
+// import FormLabel from '@mui/joy/FormLabel';
+// import { radioClasses } from '@mui/joy/Radio';
+// import Sheet from '@mui/joy/Sheet';
+// import Done from '@mui/icons-material/Done';
 
 const TestDialog = ({open, closeDialog, loadState, openTestPage}) => { 
   const [showTestDialog, setShowTestDialog] = useState(false); // State to control test dialog visibility
@@ -25,12 +31,12 @@ const TestDialog = ({open, closeDialog, loadState, openTestPage}) => {
   const [endVerseNumber, setEndVerseNumber] = useState(null);
 
   const [numQuestions, setNumQuestions] = useState(5);
+  const [testMode, setTestMode] = useState('guessNextVerse');
 
   const isMobile = useMediaQuery('(max-width:600px)');
 
   useEffect(() => {
     if (open) {
-
       setShowTestDialog(true);
       setStartChapter("1 Al-Fatihah");
       setStartChapterName("Al Fatihah");
@@ -52,8 +58,8 @@ const TestDialog = ({open, closeDialog, loadState, openTestPage}) => {
   }, []);
 
   useEffect(() => {
-      loadState(startChapterNumber, startVerseNumber, endChapterNumber, endVerseNumber, numQuestions)
-  }, [startChapterNumber, startVerseNumber, endChapterNumber, endVerseNumber, numQuestions])
+      loadState(startChapterNumber, startVerseNumber, endChapterNumber, endVerseNumber, numQuestions, testMode)
+  }, [startChapterNumber, startVerseNumber, endChapterNumber, endVerseNumber, numQuestions, testMode])
 
   // updates the end chapter value
   useEffect(() => {
@@ -68,7 +74,6 @@ const TestDialog = ({open, closeDialog, loadState, openTestPage}) => {
               setEndChapterName(startChapterName);
               setEndChapterNumber(startChapterNumber);
               setEndVerseNumber(null)
-              
             }
       });
   }, [startChapterName]);
@@ -150,8 +155,6 @@ return (
                   setStartVerses([])
               } catch {}
               }}
-            // input={<OutlinedInput label="Name" />}
-            // MenuProps={MenuProps}
             >
             {startChapters.map((name) => (
               <MenuItem
@@ -199,11 +202,8 @@ return (
                   setEndVerses([])
               } catch {
               }
-              //setNumVersesInChapter(getNumberVerses(parseInt(chapterName.split(' ')[0])))
           }}
             value={endChapter}
-            // input={<OutlinedInput label="Name" />}
-            // MenuProps={MenuProps}
           >
             {endChapters.map((name) => (
               <MenuItem
@@ -215,7 +215,6 @@ return (
             ))}
           </Select>
         </FormControl>
-
 
         <FormControl sx={{ m: 1, width: 200 }}>
           <FormLabel id="formlabel">End Verse</FormLabel>
@@ -260,15 +259,42 @@ return (
           </Select>
         </FormControl>
         </div>
+        {/* <FormControl id="test-mode-control">
+          <FormLabel>Test Mode</FormLabel>
+          <TestTypeRadio setTestMode={setTestMode}/>
+        </FormControl> */}
+        {/* <ExampleProductAttributes/> */}
       </DialogContent>
       <DialogActions>
-        {/* Cancel button */}
         <Button onClick={closeTestDialog}>Cancel</Button>
-        {/* Start test button */}
         <Button disabled={!startChapter || !startVerseNumber || !endChapter || !endVerseNumber || !numQuestions} onClick={openTestPage}>Start Test</Button>
       </DialogActions>
     </Dialog>
   );
 }
+
+const TestTypeRadio = ({setTestMode}) => {
+  const [mode, setMode] = useState('guessNextVerse');
+
+  const handleChange = (event, newMode) => {
+    setMode(newMode);
+    setTestMode(newMode);
+  };
+
+  return (
+    <ToggleButtonGroup
+      color="primary"
+      id="toggleButtonGroup"
+      value={mode}
+      exclusive
+      onChange={handleChange}
+      aria-label="Platform"
+    >
+      <ToggleButton value="guessNextVerse">Guess next verse</ToggleButton>
+      <ToggleButton value="guessChapter">Guess Chapter</ToggleButton>
+    </ToggleButtonGroup>
+  )
+}
+
 
 export default TestDialog;

@@ -21,13 +21,16 @@ const App = () => {
   const [endVerseNumber, setEndVerseNumber] = useState();
   const [numQuestions, setNumQuestions] = useState();
   const [reciterNumber, setReciterNumber] = useState(1);
+  const [testMode, setTestMode] = useState();
 
-  const loadState = (startChapter, startVerse, endChapter, endVerse, numQuestions) => {
+  const loadState = (startChapter, startVerse, endChapter, endVerse, numQuestions, testMode) => {
     setStartChapterNumber(parseInt(startChapter));
     setStartVerseNumber(parseInt(startVerse));
     setEndChapterNumber(parseInt(endChapter));
     setEndVerseNumber(parseInt(endVerse));
     setNumQuestions(parseInt(numQuestions));
+    setTestMode(testMode);
+    console.log(testMode)
   }
 
   const openTestPage = () => {
@@ -49,6 +52,9 @@ const App = () => {
     };
 
   return (
+    <>
+
+    <title>Quran Memorization Tester</title>
     <ThemeProvider theme={darkTheme}> 
       <CssBaseline /> 
 
@@ -71,7 +77,7 @@ const App = () => {
         <TestDialog
           open={true} 
           closeDialog={() => setTestDialog(false)} 
-          loadState={(a,b,c,d,e) => loadState(a,b,c,d,e)} 
+          loadState={(a,b,c,d,e,f) => loadState(a,b,c,d,e,f)} 
           openTestPage={openTestPage}/>
           : <></>}
       </>
@@ -92,6 +98,8 @@ const App = () => {
 
     <Footer />
     </ThemeProvider> 
+    </>
+
 
   );
 }

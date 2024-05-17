@@ -9,12 +9,10 @@ import VolumeDown from '@mui/icons-material/VolumeDown';
 import VolumeUp from '@mui/icons-material/VolumeUp';
 import Slider from '@mui/material/Slider';
 import Stack from '@mui/material/Stack';
-import excludeVariablesFromRoot from '@mui/material/styles/excludeVariablesFromRoot';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 
 const AudioBar = ( {audioFile, incrementVerseAudio, decrementVerseAudio} ) => {
-  // not that audio bar doesnt show fully on mobiles
   const [isPlaying, setPlaying] = useState(false);
   const audioRef = useRef(null);
   const windowSmall = useMediaQuery('(max-width:950px)')
@@ -52,7 +50,9 @@ const AudioBar = ( {audioFile, incrementVerseAudio, decrementVerseAudio} ) => {
       // audioRef.current.load();
       audioRef.current.currentTime = 0;
       setPlaying(true);
-      audioRef.current.play();
+      audioRef.current.play().then(() => {
+        
+      });
     }
   }, [audioFile]);
 
