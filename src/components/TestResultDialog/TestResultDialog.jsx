@@ -21,7 +21,7 @@ import {
 import DoneIcon from '@mui/icons-material/Done';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CloseIcon from '@mui/icons-material/Close';
-import Verse from '../Verse/Verse.js';
+import Verse from '../Verse/Verse.jsx';
 
 const TestResultDialog = ({
   open,

@@ -1,10 +1,10 @@
 /* eslint-disable eqeqeq */
 import './App.css';
-import Home from './pages/Home/Home.js';
-import Test from './pages/Test/Test.js';
-import TestDialog from './components/TestDialog/TestDialog.js' 
-import MenuBar from './components/MenuBar/MenuBar.js' 
-import Footer from './components/Footer/Footer.js'
+import Home from './pages/Home/Home.jsx';
+import Test from './pages/Test/Test.jsx';
+import TestDialog from './components/TestDialog/TestDialog.jsx' 
+import MenuBar from './components/MenuBar/MenuBar.jsx' 
+import Footer from './components/Footer/Footer.jsx'
 import {React, useState} from 'react';
 
 import { ThemeProvider, createTheme } from '@mui/material/styles'

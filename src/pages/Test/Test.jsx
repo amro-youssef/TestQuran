@@ -2,11 +2,11 @@ import {React, useState, useEffect} from 'react';
 import {getAudioUrl, getNumberVerses, getVerseText, getChapterName} from '../../backend.js';
 import { Button, CircularProgress } from '@mui/material';
 import ProgressBar from "@ramonak/react-progress-bar";
-import VerseBox from './../../components/VerseBox/VerseBox';
+import VerseBox from '../../components/VerseBox/VerseBox.jsx';
 import DoneIcon from '@mui/icons-material/Done';
 import CloseIcon from '@mui/icons-material/Close';
 import './Test.css';
-import TestResultDialog from './../../components/TestResultDialog/TestResultDialog.js';
+import TestResultDialog from '../../components/TestResultDialog/TestResultDialog.jsx';
 
 const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
     const [firstVerse, setFirstVerse] = useState();

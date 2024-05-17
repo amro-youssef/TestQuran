@@ -1,7 +1,7 @@
-import Verse from '../components/Verse/Verse.js'
+import Verse from '../components/Verse/Verse.jsx'
 export default {
     title: "Verse",
     component: Verse
 }
 
-export const bismillah = props => <Verse {...props}></Verse>
+export const Bismillah = props => <Verse {...props}></Verse>

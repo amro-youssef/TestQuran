@@ -2,12 +2,12 @@
 import './Home.css';
 import {getAudioUrl, getNumberVerses, getVerseText, getChapterName} from '../../backend.js';
 import {React, useState} from 'react';
-import Title from './../../components/Title/Title';
-import Header from './../../components/Header/Header';
-import VersePicker from './../../components/VersePicker/VersePicker';
-import SubmitButton from './../../components/SubmitButton/SubmitButton';
-import VerseBox from './../../components/VerseBox/VerseBox';
-import AudioBar from './../../components/AudioBar/AudioBar';
+import Title from '../../components/Title/Title.jsx';
+import Header from '../../components/Header/Header.jsx';
+import VersePicker from '../../components/VersePicker/VersePicker.jsx';
+import SubmitButton from '../../components/SubmitButton/SubmitButton.jsx';
+import VerseBox from '../../components/VerseBox/VerseBox.jsx';
+import AudioBar from '../../components/AudioBar/AudioBar.jsx';
 import 'animate.css';
 import ScrollToTop from "react-scroll-to-top";
 
