@@ -4,7 +4,7 @@ import viteJsconfigPaths from 'vite-jsconfig-paths'
 
 export default defineConfig({
     // depending on your application, base can also be "/"
-    base: '/quran-memorization-tester',
+    base: '/testquran.com/',
     plugins: [react(), viteJsconfigPaths()],
     server: {    
         // this ensures that the browser opens upon server start
