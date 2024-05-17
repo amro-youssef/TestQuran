@@ -4,7 +4,8 @@
  */
 // import data from './quran_data.json' assert { type: 'json' };
 
-const data = require("./quran_data.json");
+// const data = require("./quran_data.json");
+import data from "./quran_data.json";
 
 const API_BASE_URL = 'https://api.quran.com/api/v4';
 
@@ -92,7 +93,18 @@ const getReciters = async () => {
     return localData.reciters;
 }
 
-module.exports = {
+// module.exports = {
+//     getChapters,
+//     getChapterNames,
+//     getNumberVerses,
+//     getVerseText,
+//     getAudioUrl,
+//     getReciters,
+//     getChapterName
+// };
+// 
+// 
+export {
     getChapters,
     getChapterNames,
     getNumberVerses,

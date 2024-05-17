@@ -13,7 +13,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Slide from '@mui/material/Slide';
-import SwipeableTemporaryDrawer from './../../components/Sidebar/Sidebar';
+import SwipeableTemporaryDrawer from '../Sidebar/Sidebar';
 import { DarkModeSwitch } from 'react-toggle-dark-mode';
 import useMediaQuery from '@mui/material/useMediaQuery';
 

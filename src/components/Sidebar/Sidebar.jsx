@@ -18,7 +18,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import {getReciters} from '../../backend.js';
-import NumberInput from './../NumberInput/NumberInput.js';
+// import NumberInput from '../NumberInput/NumberInput.jsx';
 // import NumberInput from './../../components/NumberInput/Sidebar';
 
 import './Sidebar.css';

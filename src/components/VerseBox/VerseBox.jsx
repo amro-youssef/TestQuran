@@ -7,7 +7,7 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import VolumeUp from '@mui/icons-material/VolumeUp';
 import PropTypes from 'prop-types';
 
-import Verse from '../Verse/Verse.js';
+import Verse from '../Verse/Verse.jsx';
 import './VerseBox.css';
 
 const VerseBox = (props) => {

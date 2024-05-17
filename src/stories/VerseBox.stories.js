@@ -1,4 +1,4 @@
-import VerseBox from '../components/VerseBox/VerseBox.js'
+import VerseBox from '../components/VerseBox/VerseBox.jsx'
 export default {
     title: "Verse Box",
     component: VerseBox
@@ -14,6 +14,11 @@ Bismillah.args = {
 export const Alhamdullilah = Template.bind({});
 Alhamdullilah.args = {
     verseText: "ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَـٰلَمِينَ "
+}
+
+export const Sirat = Template.bind({});
+Sirat.args = {
+    verseText: "ٱهْدِنَا ٱلصِّرَٰطَ ٱلْمُسْتَقِيمَ"
 }
 
 export const HiddenVerse = Template.bind({});
