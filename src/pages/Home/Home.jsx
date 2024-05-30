@@ -39,7 +39,7 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
       setEndVerseNumber(parseInt(endVerse));
   }
 
-  const onClick = async () => {
+  const onSubmitClick = async () => {
     if (checkEmptyFields()) return;
     setLoading(true);
     const versesList = await getVersesList(parseInt(startChapterNumber), parseInt(startVerseNumber),
@@ -151,21 +151,22 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
           }
         } else {
           setThirdVerseText(null);
-          setLastVerseIsOnScreen(true);
+          // if no third verse was found, this means the last verse is on the screen
+          // setLastVerseIsOnScreen(true);
         }
       } else {
         setSecondVerseText(null);
+        // setLastVerseIsOnScreen(true);
+      }
+      
+      const numberVerses = await getNumberVerses(firstVerse.chapterNumber);
+      if (firstVerse.verseNumber + 2 >= numberVerses) {
         setLastVerseIsOnScreen(true);
       }
-      // setSecondChapterNumber(parseInt(firstVerse.chapterNumber));
-      // setSecondVerseNumber(parseInt(firstVerse.verseNumber + 1));
-      // setThirdChapterNumber(parseInt(firstVerse.chapterNumber));
-      // setThirdVerseNumber(parseInt(firstVerse.verseNumber + 2));
 
     } else {
       setSecondVerseText(null);
       setThirdVerseText(null);
-      // await generateVerseBoxes(firstVerse.chapterNumber, firstVerse.verseNumber, firstVerse.chapterNumber, firstVerse.verseNumber, expandPressed)
     }
     setReadMore(!readMore);
   }
@@ -331,7 +332,7 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
           <VersePicker 
             loadState={loadState} 
           />
-          <SubmitButton onClick={onClick} loading={loading}/>
+          <SubmitButton onClick={onSubmitClick} loading={loading}/>
         </div>
         {verseText ? (
           <>
