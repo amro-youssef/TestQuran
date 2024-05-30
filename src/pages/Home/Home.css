@@ -20,6 +20,12 @@
     color: #61dafb;
   }
 
+  /* makes next verse and rest of chapter buttons appear side by side with a little space inbetween */
+  .bottom-button-div {
+    gap: 8vw;
+    display: flex;
+    justify-content: center;
+  }
   
   .left-header-div {
     margin-right: 22vh;

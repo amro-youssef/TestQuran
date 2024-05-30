@@ -20,12 +20,14 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
   const [readMore, setReadMore] = useState(false);
   const [showVerseNumbers, setShowVerseNumbers] = useState(false);
   const [audioUrl, setAudioUrl] = useState(null);
+  const [lastVerseOnScreen, setLastVerseOnScreen] = useState(null);
 
   const [secondVerseText, setSecondVerseText] = useState(null);
   const [thirdVerseText, setThirdVerseText] = useState(null);
 
   const [showRestOfChapter, setShowRestOfChapter] = useState(false);
   const [restOfVerses, setRestOfVerses] = useState([]);
+  const [lastVerseIsOnScreen, setLastVerseIsOnScreen] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [versePlaying, setVersePlaying] = useState();
@@ -51,6 +53,10 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
     while (startVerseNumber !== endVerseNumber && randomVerse.verseNumber === numberOfVerses) {
       randomVerse = await getRandomVerse(versesList);
       numberOfVerses = await getNumberVerses(randomVerse.chapterNumber);
+    }
+
+    if (numberOfVerses === randomVerse.verseNumber) {
+      setLastVerseIsOnScreen(true);
     }
 
     resetStates();
@@ -79,7 +85,8 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
     setReadMore(false);
     setAudioUrl(null);
     setShowRestOfChapter(false);
-    setRestOfVerses([])
+    setRestOfVerses([]);
+    setLastVerseIsOnScreen(false);
   }
 
   const getRandomVerse = async (verseList) => {
@@ -133,14 +140,22 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
       const secondVerse = await getVerseText(firstVerse.chapterNumber, firstVerse.verseNumber + 1);
       if (secondVerse) {
         setSecondVerseText(secondVerse);
+        if (!lastVerseOnScreen) {
+          setLastVerseOnScreen(firstVerse.verseNumber + 1);
+        }
         const thirdVerse = await getVerseText(firstVerse.chapterNumber, firstVerse.verseNumber + 2);
         if (thirdVerse) {
           setThirdVerseText(thirdVerse);
+          if (!lastVerseOnScreen) {
+            setLastVerseOnScreen(firstVerse.verseNumber + 2);
+          }
         } else {
           setThirdVerseText(null);
+          setLastVerseIsOnScreen(true);
         }
       } else {
         setSecondVerseText(null);
+        setLastVerseIsOnScreen(true);
       }
       // setSecondChapterNumber(parseInt(firstVerse.chapterNumber));
       // setSecondVerseNumber(parseInt(firstVerse.verseNumber + 1));
@@ -152,7 +167,6 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
       setThirdVerseText(null);
       // await generateVerseBoxes(firstVerse.chapterNumber, firstVerse.verseNumber, firstVerse.chapterNumber, firstVerse.verseNumber, expandPressed)
     }
-
     setReadMore(!readMore);
   }
 
@@ -178,6 +192,30 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
       return [];
     }
     setRestOfVerses(restOfVerses);
+    setLastVerseIsOnScreen(true);
+  }
+
+  const getNextVerse = async () => {
+    const numVerses = await getNumberVerses(firstVerse.chapterNumber);
+    const lastVerseOnScreen = getLastVerseOnScreen();
+    const text = await getVerseText(firstVerse.chapterNumber, lastVerseOnScreen + 1);
+    if (!text) {
+      // we are at last verse
+      setLastVerseIsOnScreen(true);
+      return;
+    }
+    const list = restOfVerses ? restOfVerses : [];
+    list.push({chapter: firstVerse.chapterNumber, verse: lastVerseOnScreen + 1, text: text});
+    setRestOfVerses(list);
+    setLastVerseOnScreen(lastVerse => lastVerse + 1);
+
+    // if next verse or current verse is the last, set lastVerseIsOnScreen to true, which removes the
+    // "read rest of chapter" and "next verse" buttons
+    if (numVerses <= lastVerseOnScreen + 1) {
+      setLastVerseIsOnScreen(true);
+    } else {
+      setLastVerseIsOnScreen(false);
+    }
   }
 
   const onViewVerseNumberChange = () => {
@@ -339,19 +377,19 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
                   versePlaying={audioUrl ? versePlaying : null}
                   hideVerse = {localStorage.getItem('alwaysHideVerse') === "true"}
                 />
-                {!showRestOfChapter && 
+                {/* {!showRestOfChapter && 
                   <p>
                     <button id='read-rest-of-chapter' className={`${localStorage.getItem('darkMode') === 'false' ? '' : 'dark-text-link'} text-link`} onClick={handleReadRestOfChapter}>
                       Read rest of chapter
                     </button>
                   </p>
-                }
+                } */}
               </>
             ) : <></>}
           </>
         ) : <></>} 
 
-        {showRestOfChapter && readMore &&
+        {restOfVerses && restOfVerses.length > 0 && readMore &&
           restOfVerses.map((verseInfo) => (
             <VerseBox
               key={`${verseInfo.chapter}-${verseInfo.verse}`}
@@ -366,6 +404,43 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
               hideVerse = {localStorage.getItem('alwaysHideVerse') === "true"}
             />
         ))}
+        {readMore && thirdVerseText ?  (
+              <>
+                {/* <VerseBox
+                  verseText={thirdVerseText}
+                  chapterNumber={firstVerse?.chapterNumber}
+                  verseNumber={firstVerse?.verseNumber + 2}
+                  chapterName={chapterName}
+                  viewVerseNumber={showVerseNumbers}
+                  onViewVerseNumberChange={onViewVerseNumberChange}
+                  playAudio={playAudio}
+                  versePlaying={audioUrl ? versePlaying : null}
+                  hideVerse = {localStorage.getItem('alwaysHideVerse') === "true"}
+                /> */}
+                {!lastVerseIsOnScreen && 
+                  <div className={'bottom-button-div'}>
+                    <p>
+                      <button id='next-verse' className={`${localStorage.getItem('darkMode') === 'false' ? '' : 'dark-text-link'} text-link`} onClick={getNextVerse}>
+                        Next Verse
+                      </button>
+                    </p>
+                    <p>
+                      <button id='read-rest-of-chapter' className={`${localStorage.getItem('darkMode') === 'false' ? '' : 'dark-text-link'} text-link`} onClick={handleReadRestOfChapter}>
+                        Read rest of chapter
+                      </button>
+                    </p>
+                  </div>
+                }
+                {/* {!showRestOfChapter && 
+                  <p>
+                    <button id='read-rest-of-chapter' className={`${localStorage.getItem('darkMode') === 'false' ? '' : 'dark-text-link'} text-link`} onClick={handleReadRestOfChapter}>
+                      Read rest of chapter
+                    </button>
+                  </p>
+                } */}
+              </>
+            ) : <></>}
+        
       {audioUrl ? (<AudioBar audioFile={audioUrl} incrementVerseAudio={incrementVerseAudio} decrementVerseAudio={decrementVerseAudio}/>) : null}
         
       <ScrollToTop smooth />   {/* This works but I don't love it */}
