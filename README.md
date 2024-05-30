@@ -1,4 +1,4 @@
-# Welcome to Quran Memorization Tester
+# Welcome to TestQuran
 
 Designed to help people who are trying to memorize the holy Quran test themselves into order to improve their strength of memorization
 ## Features
