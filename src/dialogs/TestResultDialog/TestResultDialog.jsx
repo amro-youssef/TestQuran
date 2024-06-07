@@ -21,7 +21,7 @@ import {
 import DoneIcon from '@mui/icons-material/Done';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CloseIcon from '@mui/icons-material/Close';
-import Verse from '../Verse/Verse.jsx';
+import Verse from '../../components/Verse/Verse.jsx';
 
 const TestResultDialog = ({
   open,
@@ -63,13 +63,11 @@ const theme = useTheme();
                 <div style={{marginRight: "8px"}}></div>Question {answer.questionNumber}
             </AccordionSummary>
             <AccordionDetails>
-                {/* <Verse verseText={answer.verses[0]}></Verse> */}
                 {answer.verses.map((verse, verseIndex) => (
                   verse ?
                   <>
                     <ListItem key={verseIndex}>
                     <ListItemIcon>
-                       {/* <DoneIcon color="success" /> */}
                        {answer.chapterNumber}:{answer.firstVerseNumber + verseIndex}
                     </ListItemIcon>
                     <ListItemText 

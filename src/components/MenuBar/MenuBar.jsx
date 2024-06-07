@@ -13,7 +13,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Slide from '@mui/material/Slide';
-import SwipeableTemporaryDrawer from '../Sidebar/Sidebar';
+import Sidebar from '../Sidebar/Sidebar';
 import { DarkModeSwitch } from 'react-toggle-dark-mode';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
@@ -22,7 +22,7 @@ const navItems = ['Home', 'About', 'Contact'];
 
 
 export default function MenuBar(props ) {
-  const {testPressed, darkMode, toggleDarkMode, setReciterNumber, isHomePage, goHome} = props;
+  const {testPressed, darkMode, toggleDarkMode, setReciterNumber, isHomePage, goHome, showResultsPage} = props;
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const isMobile = useMediaQuery('(max-width:600px)');
@@ -100,7 +100,7 @@ export default function MenuBar(props ) {
 
 
             <Button variant="outlined" onClick={isHomePage ? testPressed : goHome}>{isHomePage ? 'Test' : 'Home'}</Button>
-            <SwipeableTemporaryDrawer setReciterNumber={(num) => {setReciterNumber(num)}}/>
+            <Sidebar setReciterNumber={(num) => {setReciterNumber(num)}} showResultsPage={showResultsPage}/>
           </div>
           {/* <Box sx={{ display: {sm: 'block' } }}>
             {navItems.map((item) => (

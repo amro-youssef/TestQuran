@@ -2,28 +2,25 @@ import {React, useState, useEffect, Fragment} from 'react';
 import Box from '@mui/material/Box';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import CloseIcon from '@mui/icons-material/Close';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
-import Input from '@mui/material/Input';
-import FormLabel from '@mui/material/FormLabel';
 import Checkbox from '@mui/material/Checkbox';
-import FormGroup from '@mui/material/FormGroup';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import {getReciters} from '../../backend.js';
-// import NumberInput from '../NumberInput/NumberInput.jsx';
-// import NumberInput from './../../components/NumberInput/Sidebar';
 
 import './Sidebar.css';
 
-export default function SwipeableTemporaryDrawer({ setReciterNumber }) {
+export default function Sidebar({ setReciterNumber, showResultsPage }) {
   const [state, setState] = useState({
     top: false,
     left: false,
@@ -108,12 +105,14 @@ export default function SwipeableTemporaryDrawer({ setReciterNumber }) {
     <Box
       className="box"
       style={{display: 'flex', flexDirection: 'column', margin: '15px'}}
-      // sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
       role="presentation"
     >
         {/* <IconButton onClick={handleDrawerClose}>
             {<ChevronRightIcon />}
         </IconButton> */}
+        <IconButton onClick={toggleDrawer('right', false)} style={{position: 'absolute', top: '5px', right: '5px', padding: '5px'}}>
+          <CloseIcon fontSize="medium"/>
+        </IconButton>
         <h2>Audio:</h2>
         <FormControlLabel checked={autoPlayAudio} onChange={handleAutoPlayChange} control={<Checkbox />} label="Auto-play audio on randomize" />
         <FormControlLabel checked={continuePlayingAudio} onChange={handleContinuePlayingChange} control={<Checkbox />} label="Continue playing audio" />
@@ -150,10 +149,9 @@ export default function SwipeableTemporaryDrawer({ setReciterNumber }) {
         </Dialog>
 
         <h2>Verse:</h2>
-        {/* <FormControlLabel control={<Checkbox />} label="Always show verse number" /> */}
         <FormControlLabel checked={alwaysHideText} onChange={handleAlwaysHideText} control={<Checkbox />} label="Hide verse text" />
-        {/* <Input type="number">Font Size</Input> */}
 
+        <Button variant="outlined" style={{top: '30px'}} onClick={() => {toggleDrawer('right', false); showResultsPage();}}>Test Results</Button>
     </Box>
   );
 

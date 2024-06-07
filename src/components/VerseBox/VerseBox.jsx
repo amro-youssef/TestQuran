@@ -9,6 +9,8 @@ import VolumeUp from '@mui/icons-material/VolumeUp';
 import PropTypes from 'prop-types';
 
 import Verse from '../Verse/Verse.jsx';
+import InfoButton from '../InfoButton/InfoButton.jsx';
+
 import './VerseBox.css';
 
 const VerseBox = (props) => {
@@ -23,7 +25,7 @@ const VerseBox = (props) => {
         if (!chapterName) {
             chapterName = await getChapterName(chapterNumber);
         }
-        setButtonText(`${chapterNumber}:${verseNumber}\n${chapterName}`);
+        setButtonText(`v${verseNumber}\n${chapterName}`);
     }
 
     const hideVerseNumber = () => {
@@ -104,9 +106,10 @@ const VerseBox = (props) => {
             <Verse verseText={verseText} hideVerse={hideVerse} />
             <div style={{display: 'flex', flexDirection: 'row', margin: '0 auto'}}>
                 <div style = {{display: 'flex', flexDirection: 'row'}} id="left-div">
+                    {/* <InfoButton/> */}
                     <Button
                         size="medium"
-                        style={{display: 'flex', justifyContent: 'flex-start'}}
+                        style={{display: 'flex', justifyContent: 'flex-start', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', maxWidth: '28vw'}}
                         onClick={onViewVerseNumberChange}
                         sx={{ borderRadius: 24 }}
                         id="verse-number">

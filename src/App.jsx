@@ -2,7 +2,8 @@
 import './App.css';
 import Home from './pages/Home/Home.jsx';
 import Test from './pages/Test/Test.jsx';
-import TestDialog from './components/TestDialog/TestDialog.jsx' 
+import TestResults from './pages/TestResults/TestResults.jsx';
+import TestDialog from './dialogs/TestDialog/TestDialog.jsx' 
 import MenuBar from './components/MenuBar/MenuBar.jsx' 
 import Footer from './components/Footer/Footer.jsx'
 import {React, useState} from 'react';
@@ -22,6 +23,7 @@ const App = () => {
   const [numQuestions, setNumQuestions] = useState();
   const [reciterNumber, setReciterNumber] = useState(1);
   const [testMode, setTestMode] = useState();
+  const [showResultsPage, setShowResultsPage] = useState(false);
 
   const loadState = (startChapter, startVerse, endChapter, endVerse, numQuestions, testMode) => {
     setStartChapterNumber(parseInt(startChapter));
@@ -60,41 +62,72 @@ const App = () => {
 
       <MenuBar 
         testPressed={() => setTestDialog(true)}
-        isHomePage={!testPage}
+        isHomePage={!testPage && !showResultsPage}
         goHome={() => {
           setTestPage(false);
           setTestDialog(false);
+          setShowResultsPage(false);
         }}
         style={{height: '10vh'}}
         toggleDarkMode={toggleDarkMode} 
         darkMode={darkMode} 
-        setReciterNumber={setReciterNumber}>
+        setReciterNumber={setReciterNumber}
+        showResultsPage={() => {setShowResultsPage(true)}}
+        >
       </MenuBar>
-      {!testPage ?
-      <>
-      <Home style={{marginTop: '50px'}} className="App" testPressed={() => setTestDialog(true)} toggleDarkMode={toggleDarkMode} darkMode={darkMode} reciterNumber={reciterNumber}/> 
-      {testDialog ? 
-        <TestDialog
-          open={true} 
-          closeDialog={() => setTestDialog(false)} 
-          loadState={(a,b,c,d,e,f) => loadState(a,b,c,d,e,f)} 
-          openTestPage={openTestPage}/>
-          : <></>}
-      </>
-    : <Test goHome={() => {
-        setTestPage(false);
-        setTestDialog(false);
-        }}
-        state={{
-          startChapterNumber: startChapterNumber,
-          startVerseNumber: startVerseNumber,
-          endChapterNumber: endChapterNumber,
-          endVerseNumber: endVerseNumber,
-          numQuestions: numQuestions
-        }}
-        toggleDarkMode={toggleDarkMode}
-        darkMode={darkMode}
-    ></Test>}
+
+      {showResultsPage ? (
+        <>
+          {/* <Home style={{marginTop: '50px'}} className="App" testPressed={() => setTestDialog(true)} toggleDarkMode={toggleDarkMode} darkMode={darkMode} reciterNumber={reciterNumber}/> 
+          {testDialog ? 
+            <TestDialog
+              open={true} 
+              closeDialog={() => setTestDialog(false)} 
+              loadState={(a,b,c,d,e,f) => loadState(a,b,c,d,e,f)} 
+              openTestPage={openTestPage}/>
+              : <></>} */}
+          <TestResults 
+              // Pass any necessary props for TestResults
+          />
+        </>
+      ) : (
+        <>
+          {testPage ? (
+            <Test 
+              goHome={() => {
+                setTestPage(false);
+                setTestDialog(false);
+                setShowResultsPage(false);
+              }}
+              state={{
+                startChapterNumber: startChapterNumber,
+                startVerseNumber: startVerseNumber,
+                endChapterNumber: endChapterNumber,
+                endVerseNumber: endVerseNumber,
+                numQuestions: numQuestions,
+                testMode: testMode,
+              }}
+              toggleDarkMode={toggleDarkMode}
+              darkMode={darkMode}
+              setShowResultsPage={setShowResultsPage}
+            />
+          ) : (
+            <>
+            <Home style={{marginTop: '50px'}} className="App" testPressed={() => setTestDialog(true)} toggleDarkMode={toggleDarkMode} darkMode={darkMode} reciterNumber={reciterNumber}/> 
+            {testDialog ? 
+              <TestDialog
+                open={true} 
+                closeDialog={() => setTestDialog(false)} 
+                loadState={(a,b,c,d,e,f) => loadState(a,b,c,d,e,f)} 
+                openTestPage={openTestPage}/>
+                : <></>}
+            </>
+            // <TestResults 
+            //   // Pass any necessary props for TestResults
+            // />
+          )}
+        </>
+      )}
 
     <Footer />
     </ThemeProvider> 

@@ -6,7 +6,8 @@ import VerseBox from '../../components/VerseBox/VerseBox.jsx';
 import DoneIcon from '@mui/icons-material/Done';
 import CloseIcon from '@mui/icons-material/Close';
 import './Test.css';
-import TestResultDialog from '../../components/TestResultDialog/TestResultDialog.jsx';
+import TestResultDialog from '../../dialogs/TestResultDialog/TestResultDialog.jsx';
+import TestResults from '../TestResults/TestResults.jsx';
 
 const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
     const [firstVerse, setFirstVerse] = useState();
@@ -90,7 +91,6 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
       if (currentQuestionNumber >= state.numQuestions) {
         // Set the end time when the last question is answered
         setEndTime(new Date().getTime());
-        // TODO handle
         // Update the correct and incorrect answers arrays
         const currentAnswer = {
           questionNumber: currentQuestionNumber,
@@ -100,8 +100,10 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
           firstVerseNumber: firstVerse?.verseNumber
         };
         if (correctSelected) {
+          storeResults([...correctAnswers, currentAnswer], [...incorrectAnswers], new Date().getTime() - startTime);
           setCorrectAnswers([...correctAnswers, currentAnswer]);
         } else {
+          storeResults([...correctAnswers], [...incorrectAnswers, currentAnswer], new Date().getTime() - startTime);
           setIncorrectAnswers([...incorrectAnswers, currentAnswer]);
         }
 
@@ -123,14 +125,6 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
       } else {
         setIncorrectAnswers([...incorrectAnswers, currentAnswer]);
       }
-      // if (correctSelected) {
-      //   setNumberCorrectAnswers(numberCorrectAnswers + 1);
-      //   setCorrectAnswers([...correctAnswers, { questionNumber: currentQuestionNumber }]);
-      // } else {
-      //   setIncorrectAnswers([...incorrectAnswers, { questionNumber: currentQuestionNumber }]);
-      // }
-      // go to top of page
-      // TODO doesnt seem to work
       window.scrollTo({
         top: 0,
         behavior: 'smooth',
@@ -140,6 +134,44 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
       loadVerses();
       setCurrentQuetionNumber(currentQuestionNumber + 1);
     };
+
+    /**
+     * Stores test results in local storage. only the chapter number and verse number of the first verse are store in order
+     * to reduce amount of data stored, as well as time taken and date of test
+     */
+    const storeResults = (correctAnswers, incorrectAnswers, timeTaken) => {
+      let results = localStorage.getItem('results');
+      if (results === null) {
+        results = [];
+      } else {
+        results = JSON.parse(results);
+      }
+
+      const testResult = {
+      }
+
+      testResult.correctAnswers = correctAnswers.map(answer => ({
+        chapterNumber: answer.chapterNumber,
+        verseNumber: answer.firstVerseNumber
+      }))
+
+      testResult.incorrectAnswers = incorrectAnswers.map(answer => ({
+        chapterNumber: answer.chapterNumber,
+        verseNumber: answer.firstVerseNumber
+      }))
+
+      testResult.timeTaken = timeTaken;
+      testResult.isoDate = new Date().toISOString();
+
+      testResult.startChapterNumber = state.startChapterNumber;
+      testResult.endChapterNumber = state.endChapterNumber;
+      testResult.endChapterNumber = state.endChapterNumber;
+      testResult.endVerseNumber = state.endVerseNumber;
+
+      results.push(testResult);
+
+      localStorage.setItem('results', JSON.stringify(results));
+    }
 
     const handleCloseResultDialog = () => {
       setShowResultDialog(false);

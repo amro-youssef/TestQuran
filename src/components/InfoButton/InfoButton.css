@@ -1,0 +1,37 @@
+.info-button-container {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .info-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .info-dialog {
+    position: absolute;
+    bottom: 100%;
+    left: 60%;
+    transform: translateX(-50%);
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    padding: 8px;
+    z-index: 1;
+    white-space: nowrap;
+  }
+  
+  .info-dialog::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: white transparent transparent transparent;
+  }
+  
