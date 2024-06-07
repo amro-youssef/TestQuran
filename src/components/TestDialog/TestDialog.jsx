@@ -4,16 +4,6 @@ import './TestDialog.css';
 import {getChapterNames, getNumberVerses} from '../../backend.js'
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-// import {Box as JoyBox} from '@mui/joy';
-// import {Radio as JoyRadio} from '@mui/joy';
-// import {RadioGroup as JoyRadioGroup} from '@mui/joy';
-// import {Typography as JoyTypography} from '@mui/joy';
-
-// import FormLabel from '@mui/joy/FormLabel';
-// import { radioClasses } from '@mui/joy/Radio';
-// import Sheet from '@mui/joy/Sheet';
-// import Done from '@mui/icons-material/Done';
-
 const TestDialog = ({open, closeDialog, loadState, openTestPage}) => { 
   const [showTestDialog, setShowTestDialog] = useState(false); // State to control test dialog visibility
   const [startChapters, setStartChapters] = useState([]);
@@ -141,9 +131,9 @@ const TestDialog = ({open, closeDialog, loadState, openTestPage}) => {
 return (
   <Dialog open={showTestDialog} onClose={closeTestDialog}>
       <DialogTitle>Create Memorization Test</DialogTitle>
-      <DialogContent>
-        <div style={{"display": "flex", "flexDirection": "row", "colorScheme": "dark"}}>
-        <FormControl sx={{ m: 1, width: 200 }}>
+      <DialogContent className='testDialogContent'>
+        <div style={{"display": "flex", "flexDirection": "row",}}>
+        <FormControl sx={{ m: 0.5, width: 255 }}>
           <FormLabel id="formlabel">Start Chapter</FormLabel>
           <Select
             value={startChapter}
@@ -167,7 +157,7 @@ return (
           </Select>
         </FormControl>
 
-        <FormControl sx={{ m: 1, width: 200 }}>
+        <FormControl sx={{ m: 0.5, width: 160 }}>
           <FormLabel id="formlabel">Start Verse</FormLabel>
           <Select
             value={startVerseNumber}
@@ -190,7 +180,7 @@ return (
         </div>
 
         <div style={{"display": "flex", "flexDirection": "row"}}>
-        <FormControl sx={{ m: 1, width: 200 }}>
+        <FormControl sx={{ m: 0.5, width: 255 }}>
           <FormLabel id="formlabel">End Chapter</FormLabel>
           <Select
             onChange={(event) => {
@@ -216,7 +206,7 @@ return (
           </Select>
         </FormControl>
 
-        <FormControl sx={{ m: 1, width: 200 }}>
+        <FormControl sx={{ m: 0.5, width: 160 }}>
           <FormLabel id="formlabel">End Verse</FormLabel>
           <Select
             onChange={(event) => {

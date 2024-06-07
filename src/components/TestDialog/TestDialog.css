@@ -28,7 +28,7 @@ input[type=number] {
   }
 
   #number-of-questions-div {
-    margin: 0px 0px 0px 10px;
+    margin: 0px 0px 0px 5px;
   }
   #test-mode-control {
     margin: 10px 0px 0px 10px;
@@ -36,13 +36,13 @@ input[type=number] {
   
   
   @media screen and (max-width: 480px) {
-    #formlabel {
-      font-size: 1.2em;
+    .testDialogContent #formlabel {
+      font-size: 1.1em;
     }
   }
 
-  @media screen and (max-width: 359px) {
-    #formlabel {
-      font-size: 1em;
+  @media screen and (max-width: 369px) {
+    .testDialogContent #formlabel {
+      font-size: 0.9em;
     }
   }

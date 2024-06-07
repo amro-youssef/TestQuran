@@ -7,6 +7,8 @@ import SubmitButton from '../../components/SubmitButton/SubmitButton.jsx';
 import VerseBox from '../../components/VerseBox/VerseBox.jsx';
 import AudioBar from '../../components/AudioBar/AudioBar.jsx';
 import ScrollToTop from "react-scroll-to-top";
+import useMediaQuery from '@mui/material/useMediaQuery';
+import VersePickerMobile from '../../components/VersePicker/VersePickerMobile.jsx';
 
 const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => { 
   const [startChapterNumber, setStartChapterNumber] = useState(null); 
@@ -31,6 +33,8 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
 
   const [loading, setLoading] = useState(false);
   const [versePlaying, setVersePlaying] = useState();
+
+  const isMobile = useMediaQuery('(max-width:600px)');
 
   const loadState = (startChapter, startVerse, endChapter, endVerse) => {
       setStartChapterNumber(parseInt(startChapter));
@@ -329,9 +333,14 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
       <div className="App">
         <h3 className='title'>Pick the range of verses you would like to be tested on:</h3>
         <div style={{ display: 'flex', justifyContent: 'space-evenly', flexWrap: 'wrap' }}>
+          {!isMobile ? 
           <VersePicker 
             loadState={loadState} 
+          /> : 
+          <VersePickerMobile
+            loadState={loadState}
           />
+          }
           <SubmitButton onClick={onSubmitClick} loading={loading}/>
         </div>
         {verseText ? (

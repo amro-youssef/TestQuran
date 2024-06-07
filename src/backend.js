@@ -93,17 +93,6 @@ const getReciters = async () => {
     return localData.reciters;
 }
 
-// module.exports = {
-//     getChapters,
-//     getChapterNames,
-//     getNumberVerses,
-//     getVerseText,
-//     getAudioUrl,
-//     getReciters,
-//     getChapterName
-// };
-// 
-// 
 export {
     getChapters,
     getChapterNames,

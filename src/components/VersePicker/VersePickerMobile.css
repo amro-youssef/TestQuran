@@ -1,0 +1,43 @@
+.VersePickerMobile {
+    display: flex;
+    justify-content: center;
+    /* justify-content: space-between;  */
+    flex-wrap: wrap; 
+    margin-left: 10px !important;
+    margin-bottom: 5px;
+}
+
+.startDivMobile {
+    display: flex; 
+    justify-content: center; 
+    flex-direction: row; 
+    /* margin-right: 1em; */
+}
+
+.endDivMobile {
+    display: flex; 
+    /* justify-content: center;  */
+    /* flex-direction: row */
+    justify-content: center; 
+    flex-direction: row; 
+    /* margin-right: 1em; */
+}
+
+.startChapterSelect, .endChapterSelect, .startVerseSelect, .endVerseSelect{
+    text-align: left;
+}
+
+.startVerseSelect, .endVerseSelect{
+}
+
+
+.select-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+  }
+  
+  .select-label {
+    transform: translate(14px, 12px) scale(1);
+    transform-origin: top left;
+  }

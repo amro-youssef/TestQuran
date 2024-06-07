@@ -72,3 +72,6 @@ html, body {
   color: #333; /* Set text color to a darker shade for readability */
 }
 
+.title {
+  margin: 15px 10px 10px
+}
