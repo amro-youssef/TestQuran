@@ -23,7 +23,8 @@ import {
   import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
   import CloseIcon from '@mui/icons-material/Close';
   import Verse from '../../components/Verse/Verse.jsx';
-  import './TestResults.css'
+  import './TestResults.css';
+  import moment from 'moment';
 
 const TestResults = () => {
     const [verseTexts, setVerseTexts] = useState({});
@@ -81,7 +82,7 @@ const TestResults = () => {
               Correct Answers:
             </Typography>
             <List dense>
-                
+                <div className='correctAnswersDiv'>
               {result.correctAnswers.length > 0 && result.correctAnswers.map((answer, index) => (
                 <Accordion>
                 <AccordionSummary
@@ -116,7 +117,9 @@ const TestResults = () => {
                 </AccordionDetails>
               </Accordion>
               ))}
+              </div>
     
+              <div className='incorrectAnswersDiv'>
             {result.incorrectAnswers.length > 0 && (
               <>
                 <Typography variant="subtitle1" gutterBottom>
@@ -164,6 +167,7 @@ const TestResults = () => {
                 </List>
               </>
             )}
+            </div>
             </List>
             </>
         )
@@ -197,7 +201,10 @@ const TestResults = () => {
                         <AccordionDetails>
                             <>
                             <Typography variant="body1" gutterBottom>
-                                Time taken: {new Date(result.isoDate).getDate()}
+                                Date of test: {moment(result.isoDate).format('LLL')}
+                            </Typography>
+                            <Typography variant="body1" gutterBottom>
+                                Time taken: {moment(result.timeTaken).format('mm:ss')}
                             </Typography>
                             {getTestDetails(result)}
                             </>

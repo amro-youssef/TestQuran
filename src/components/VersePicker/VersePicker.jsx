@@ -129,7 +129,7 @@ const VersePicker = ({ loadState, bounce1, bounce2, bounce3, bounce4 }) => {
                     value={startChapter}
                     defaultValue="1 Al-Fatihah"
                     options={startChapters}
-                    classes="autocomplete"
+                    // classes="autocomplete"
                     renderInput={(params) => <TextField {...params} label="Start Chapter" />}
                     style={{ display: 'flex', justifyContent: 'center'}}
                 />
@@ -145,7 +145,7 @@ const VersePicker = ({ loadState, bounce1, bounce2, bounce3, bounce4 }) => {
                     id="start-verse"
                     options={startVerses}
                     defaultValue="1"
-                    value = {startVerseNumber}
+                    value = {startVerseNumber.toString()}
                     renderInput={(params) => <TextField {...params} label="Start Verse" />}
                     style={{ display: 'flex', justifyContent: 'center' }}
                 />
@@ -184,7 +184,7 @@ const VersePicker = ({ loadState, bounce1, bounce2, bounce3, bounce4 }) => {
                     disableClearable
                     id="end-verse"
                     options={endVerses}
-                    value = {endVerseNumber}
+                    value = {endVerseNumber.toString()}
                     defaultValue="6"
                     renderInput={(params) => <TextField {...params} label="End Verse" />}
                     style={{ display: 'flex', justifyContent: 'center' }}

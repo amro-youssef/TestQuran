@@ -165,7 +165,7 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
 
       testResult.startChapterNumber = state.startChapterNumber;
       testResult.endChapterNumber = state.endChapterNumber;
-      testResult.endChapterNumber = state.endChapterNumber;
+      testResult.startVerseNumber = state.startVerseNumber;
       testResult.endVerseNumber = state.endVerseNumber;
 
       results.push(testResult);
@@ -267,7 +267,7 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
     return (
         <div className="App">
         {/* <h1>Memorization Test</h1> */}
-        <h3>Question {currentQuestionNumber} out of {state.numQuestions}</h3>
+        <h3 className='title'>Question {currentQuestionNumber} out of {state.numQuestions}</h3>
         {/* <DarkModeSwitch
             checked={darkMode}
             onChange={toggleDarkMode}

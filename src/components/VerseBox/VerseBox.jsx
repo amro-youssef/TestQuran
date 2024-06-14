@@ -25,7 +25,9 @@ const VerseBox = (props) => {
         if (!chapterName) {
             chapterName = await getChapterName(chapterNumber);
         }
-        setButtonText(`v${verseNumber}\n${chapterName}`);
+        // setButtonText(`v${verseNumber}\n${chapterName}`);
+
+        setButtonText(`${chapterNumber}:${verseNumber}\n${chapterName}`);
     }
 
     const hideVerseNumber = () => {
@@ -166,7 +168,7 @@ const VerseBox = (props) => {
 
 VerseBox.propTypes = {
     verseText: PropTypes.string,
-    readMorePressed: PropTypes.bool,
+    readMorePressed: PropTypes.func,
     chapterNumber: PropTypes.number,
     chapterName: PropTypes.string,
     verseNumber: PropTypes.number,

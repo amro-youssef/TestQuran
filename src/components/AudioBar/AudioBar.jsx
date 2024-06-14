@@ -18,36 +18,8 @@ const AudioBar = ( {audioFile, incrementVerseAudio, decrementVerseAudio} ) => {
   const windowSmall = useMediaQuery('(max-width:950px)')
   const isMobile = useMediaQuery('(max-width:600px)');
 
-  // useEffect(() => {
-  //   if (audioFile) {
-  //     // audioRef.current.load();
-  //     audioRef.current.currentTime = 0;
-  //     setPlaying(true);
-  //     audioRef.current.play();
-  //   }
-  // }, [audioFile]);
-
-  // useEffect(() => {
-  //   const playAudio = () => {
-  //     if (audioFile && !isPlaying) {
-  //       audioRef.current.currentTime = 0;
-  //       audioRef.current.play();
-  //       setPlaying(true);
-  //     }
-  //   };
-  
-  //   // Play audio on user interaction (e.g., button click)
-  //   document.addEventListener('click', playAudio);
-  
-  //   // Cleanup event listener on component unmount
-  //   return () => {
-  //     document.removeEventListener('click', playAudio);
-  //   };
-  // }, [audioFile, isPlaying]);
-
   useEffect(() => {
     if (audioFile) {
-      // audioRef.current.load();
       audioRef.current.currentTime = 0;
       setPlaying(true);
       audioRef.current.play().then(() => {
@@ -75,7 +47,6 @@ const AudioBar = ( {audioFile, incrementVerseAudio, decrementVerseAudio} ) => {
         playPauseHandler();
       }
     };
-    // console.log("is playing", isPlaying)
 
     // Attach the event listener to the window
     window.addEventListener('keydown', handleKeyDown);
@@ -103,8 +74,6 @@ const AudioBar = ( {audioFile, incrementVerseAudio, decrementVerseAudio} ) => {
   }
 
   const onEndedHandler = () => {
-    // setPlaying(false);
-    // setTime(0);
     if (localStorage.getItem('continuePlayingAudio') === null || localStorage.getItem('continuePlayingAudio') === "true") {
       incrementVerseAudio();
       return;
@@ -114,7 +83,6 @@ const AudioBar = ( {audioFile, incrementVerseAudio, decrementVerseAudio} ) => {
   }
 
   const onTimeUpdateHandler = () => {
-    // setTime((audioRef.current.currentTime / audioRef.current.duration) * 100);
     const updateInterval = 0.25;
     const newTime = (audioRef.current.currentTime / audioRef.current.duration) * 100;
 
