@@ -16,6 +16,9 @@ const QuranPageDialog = ({ open, onClose, chapterNumber, verseNumber }) => {
         // Fetch the image URL for the given chapter and verse number
         // Replace this with your actual logic to fetch the image URL
         const fetchImageUrl = async () => {
+            if (!chapterNumber || !verseNumber) {
+                return;
+            }
             const verseKey = `${chapterNumber}:${verseNumber}`;
             const response = await fetch(`https://api.quran.com/api/v4/verses/by_key/${verseKey}`);
             const responseJson = await response.json();

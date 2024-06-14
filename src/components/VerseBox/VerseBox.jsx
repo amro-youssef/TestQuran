@@ -11,8 +11,6 @@ import PropTypes from 'prop-types';
 
 import Verse from '../Verse/Verse.jsx';
 import QuranPageDialog from '../QuranPageDialog/QuranPageDialog.jsx';
-import InfoButton from '../InfoButton/InfoButton.jsx';
-
 import './VerseBox.css';
 
 const VerseBox = (props) => {
@@ -28,8 +26,6 @@ const VerseBox = (props) => {
         if (!chapterName) {
             chapterName = await getChapterName(chapterNumber);
         }
-        // setButtonText(`v${verseNumber}\n${chapterName}`);
-
         setButtonText(`${chapterNumber}:${verseNumber}\n${chapterName}`);
     }
 
@@ -73,7 +69,7 @@ const VerseBox = (props) => {
         else {
             setExpandIcon(<ExpandMoreIcon/>);
         }
-    }, [expanded, verseText])
+    }, [expanded])
 
     useEffect(() => {
         setExpanded(false);
@@ -83,11 +79,13 @@ const VerseBox = (props) => {
 
     // ensures expand button remains central in respect to its parent div
     useEffect(() => {
-        const expandDiv = document.getElementById('expand-div');
-        if (expandDiv) {
-            const newPosition = `calc(50% - ${expandDiv.clientWidth / 2}px)`;
-            setLeftPosition(newPosition);
-        }
+        setTimeout(() => {
+            const expandDiv = document.getElementById('expand-div');
+            if (expandDiv) {
+                const newPosition = `calc(50% - ${expandDiv.clientWidth / 2}px)`;
+                setLeftPosition(newPosition);
+            }
+        }, 0)
     }, []);
 
     let divRef = useRef();
@@ -122,45 +120,15 @@ const VerseBox = (props) => {
                     {/* <InfoButton/> */}
                     <Button
                         size="medium"
-                        style={{display: 'flex', justifyContent: 'flex-start', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', maxWidth: '28vw'}}
+                        style={{display: 'flex', justifyContent: 'flex-start', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', maxWidth: '38vw'}}
                         onClick={onViewVerseNumberChange}
                         sx={{ borderRadius: 24}}
                         id="verse-number">
                             {buttonText}
                     </Button>
-                    {showAudioButton !== false ? 
-                        (<Button
-                            size="medium"
-                            style={{display: 'flex', justifyContent: 'flex-start'}}
-                            sx={{ borderRadius: 24 }}
-                            id="audio"
-                            onClick={() => {
-                                // document.addEventListener('click', playAudio);
-                                // const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-                                playAudio(chapterNumber, verseNumber)
-                                // if (false) {
-                                //     // this.addEventListener('click', playAudio(chapterNumber, verseNumber))
-                                //     playAudio(chapterNumber, verseNumber)
-                                // } else {
-                                //     navigator.mediaDevices
-                                //         .getUserMedia({ audio: true })
-                                //         .then((stream) => {
-                                //             playAudio(chapterNumber, verseNumber, stream);
-                                //         })
-                                //         .catch((error) => {
-                                //         console.error('Error requesting audio permission:', error);
-                                //     // Handle the case where the user denies permission
-                                //     });
-                                // }
-                                // return () => {
-                                // document.removeEventListener('click', playAudio);
-                                // };
-                            }}
-                        >
-                            {<VolumeUp/>}
-                        </Button>) : <div></div>}
                 </div>
-                <div style={expandDivStyle} id="expand-div">
+                {/* <div style={expandDivStyle} id="expand-div"> */}
+                <div style={{ position: 'absolute', left: leftPosition }} id="expand-div">
                     {verse && readMorePressed ? (
                         <Button
                             onClick={expandButtonPressed} 
@@ -172,8 +140,21 @@ const VerseBox = (props) => {
                         </Button>
                     ) : <></>}
                 </div>
+                
 
                 <div style={{ display: 'flex', flexDirection: 'row' }} id="right-div">
+                {showAudioButton !== false ? 
+                    (<Button
+                        size="medium"
+                        style={{display: 'flex', justifyContent: 'flex-start'}}
+                        sx={{ borderRadius: 24 }}
+                        id="audio"
+                        onClick={() => {
+                            playAudio(chapterNumber, verseNumber)
+                        }}
+                    >
+                        {<VolumeUp/>}
+                    </Button>) : <div></div>}
                     <Button
                         size="medium"
                         style={{ display: 'flex', justifyContent: 'flex-start' }}
