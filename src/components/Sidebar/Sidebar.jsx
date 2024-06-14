@@ -151,7 +151,8 @@ export default function Sidebar({ setReciterNumber, showResultsPage }) {
         <h2>Verse:</h2>
         <FormControlLabel checked={alwaysHideText} onChange={handleAlwaysHideText} control={<Checkbox />} label="Hide verse text" />
 
-        <Button variant="outlined" style={{top: '30px'}} onClick={() => {toggleDrawer('right', false); showResultsPage();}}>Test Results</Button>
+        <h2>Test:</h2>
+        <Button variant="outlined" style={{top: '0px'}} onClick={() => {toggleDrawer('right', false); showResultsPage();}}>Test Results</Button>
     </Box>
   );
 

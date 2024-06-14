@@ -22,6 +22,8 @@ import DoneIcon from '@mui/icons-material/Done';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CloseIcon from '@mui/icons-material/Close';
 import Verse from '../../components/Verse/Verse.jsx';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import './TestResultDialog.css'
 
 const TestResultDialog = ({
   open,
@@ -32,8 +34,8 @@ const TestResultDialog = ({
   restart
 }) => {
   const totalQuestions = correctAnswers.length + incorrectAnswers.length;
-const theme = useTheme();
-
+  const theme = useTheme();
+  const isMobile = useMediaQuery('(max-width:500px)');
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
@@ -53,7 +55,7 @@ const theme = useTheme();
         <List dense>
             
           {correctAnswers.length > 0 && correctAnswers.map((answer, index) => (
-            <Accordion>
+            <Accordion className='resultAccordion' sx={{width: "100%"}}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1-content"
@@ -66,8 +68,8 @@ const theme = useTheme();
                 {answer.verses.map((verse, verseIndex) => (
                   verse ?
                   <>
-                    <ListItem key={verseIndex}>
-                    <ListItemIcon>
+                    <ListItem key={verseIndex} style={{paddingLeft: isMobile ? "0px" : "inherit", paddingRight: isMobile ? "0px" : "inherit"}}>
+                    <ListItemIcon >
                        {answer.chapterNumber}:{answer.firstVerseNumber + verseIndex}
                     </ListItemIcon>
                     <ListItemText 
@@ -75,6 +77,7 @@ const theme = useTheme();
                         primary={(verse ? <Verse verseText={verse} className='resultDialog'></Verse> : <></>)} 
                         style={{
                             textAlign: 'right',
+                            width: "80%"
                             // paddingRight: theme.spacing(10),
                         }}
                     />
@@ -94,7 +97,7 @@ const theme = useTheme();
             
             <List dense>
               {incorrectAnswers.map((answer, index) => (
-                <Accordion>
+                <Accordion className='resultAccordion'>
                 <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
                   aria-controls="panel2-content"
@@ -108,7 +111,7 @@ const theme = useTheme();
                     {answer.verses.map((verse, verseIndex) => (
                       verse ?
                       <>
-                        <ListItem key={index}>
+                        <ListItem key={index} style={{paddingLeft: isMobile ? "0px" : "inherit", paddingRight: isMobile ? "0px" : "inherit"}}>
                         <ListItemIcon>
                           {/* <DoneIcon color="success" /> */}
                           {answer.chapterNumber}:{answer.firstVerseNumber + verseIndex}
@@ -118,7 +121,7 @@ const theme = useTheme();
                             primary={(verse ? <Verse verseText={verse} style={{class: 'resultDialog'}}></Verse> : <></>)} 
                             style={{
                                 textAlign: 'right',
-                                paddingRight: theme.spacing(2),
+                                // paddingRight: theme.spacing(2),
                             }}
                         />
                       </ListItem>

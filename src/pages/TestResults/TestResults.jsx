@@ -25,11 +25,14 @@ import {
   import Verse from '../../components/Verse/Verse.jsx';
   import './TestResults.css';
   import moment from 'moment';
+  import useMediaQuery from '@mui/material/useMediaQuery';
+
 
 const TestResults = () => {
     const [verseTexts, setVerseTexts] = useState({});
     const [resultsList, setResultsList] = useState([]);
     const [averageScore, setAverageScore] = useState(0);
+    const isMobile = useMediaQuery('(max-width:500px)');
     // const [averageScore, setAverageScore]
 
     useEffect(() => {
@@ -99,7 +102,7 @@ const TestResults = () => {
                         {chapterNumber: answer.chapterNumber, verseNumber: answer.verseNumber + 2}].map((verse, verseIndex) => (
                       verse ?
                       <>
-                        <ListItem key={verseIndex}>
+                        <ListItem key={verseIndex} style={{paddingLeft: isMobile ? "0px" : "inherit", paddingRight: isMobile ? "0px" : "inherit"}}>
                         <ListItemIcon>
                            {answer.chapterNumber}:{answer.verseNumber + verseIndex}
                         </ListItemIcon>
@@ -176,12 +179,15 @@ const TestResults = () => {
 
     return(
         <div className='outerTestResultsDiv'>
+            <Typography variant="h6" gutterBottom underline>
+                Test Results
+            </Typography>
             <Typography variant="subtitle1" gutterBottom>
                 Average Score: {averageScore}%
             </Typography>
-            <Typography variant="subtitle1" gutterBottom>
+            {/* <Typography variant="subtitle1" gutterBottom>
                 Average Score This Month:
-            </Typography>
+            </Typography> */}
             {
                 resultsList.map(result => {
                     return(

@@ -10,9 +10,8 @@ const Verse = ({ verseText, hideVerse }) => {
         setIsContentHidden(false);
     };
 
-    // credit to https://github.com/AShaaban0109/QuranType
-    function processAyah(text) {
-        let ayah = text
+    // credit to https://github.com/AShaaban0109/QuranType for this function
+    function processAyah(ayah) {
         if (!ayah || ayah === "") {
             return ayah;
         }

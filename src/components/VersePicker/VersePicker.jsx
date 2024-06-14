@@ -145,7 +145,8 @@ const VersePicker = ({ loadState, bounce1, bounce2, bounce3, bounce4 }) => {
                     id="start-verse"
                     options={startVerses}
                     defaultValue="1"
-                    value = {startVerseNumber.toString()}
+                    // value = {startVerseNumber.toString()}
+                    value = {(typeof startVerseNumber === "string") ? startVerseNumber.toString() : startVerseNumber}
                     renderInput={(params) => <TextField {...params} label="Start Verse" />}
                     style={{ display: 'flex', justifyContent: 'center' }}
                 />
@@ -184,7 +185,7 @@ const VersePicker = ({ loadState, bounce1, bounce2, bounce3, bounce4 }) => {
                     disableClearable
                     id="end-verse"
                     options={endVerses}
-                    value = {endVerseNumber.toString()}
+                    value = {(typeof endVerseNumber === "string") ? endVerseNumber.toString() : endVerseNumber}
                     defaultValue="6"
                     renderInput={(params) => <TextField {...params} label="End Verse" />}
                     style={{ display: 'flex', justifyContent: 'center' }}

@@ -41,4 +41,9 @@
         width: 92%;
         line-height: 1.75;
     }
+
+    /* make buttons less wide in mobile */
+    .verse-container button {
+      min-width: 50px !important;
+    }
   }
