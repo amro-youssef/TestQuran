@@ -23,7 +23,7 @@ const QuranPageDialog = ({ open, onClose, chapterNumber, verseNumber }) => {
             const response = await fetch(`https://api.quran.com/api/v4/verses/by_key/${verseKey}`);
             const responseJson = await response.json();
             const pageNumber = responseJson.verse.page_number;
-            const url = `../../resources/quran_pages/page_${pageNumber}.png`;
+            const url = `/quran_pages/page_${pageNumber}.png`;
             setImageUrl(url);
 
         };
