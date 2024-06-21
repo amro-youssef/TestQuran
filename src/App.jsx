@@ -34,37 +34,37 @@ const App = () => {
     console.log(testMode)
   }
 
-  function generateFontFaces(count) {
-    const style = document.createElement('style');
-    let css = '';
+//   function generateFontFaces(count) {
+//     const style = document.createElement('style');
+//     let css = '';
 
-    for (let i = 1; i <= count; i++) {
-        css += `
-            @font-face {
-                font-family: "v2_pg${i}";
-                src: local('v2'),
-                     url(/fonts/v2/woff2/p${i}.woff2) format('woff2'),
-                     url(/fonts/v2/woff/p${i}.woff) format('woff'),
-                     url(/fonts/v2/ttf/p${i}.ttf) format('truetype');
-            }
-        `;
+//     for (let i = 1; i <= count; i++) {
+//         css += `
+//             @font-face {
+//                 font-family: "v2_pg${i}";
+//                 src: local('v2'),
+//                      url(/fonts/v2/woff2/p${i}.woff2) format('woff2'),
+//                      url(/fonts/v2/woff/p${i}.woff) format('woff'),
+//                      url(/fonts/v2/ttf/p${i}.ttf) format('truetype');
+//             }
+//         `;
 
-        css += `
-            @font-face {
-                font-family: "v1_pg${i}";
-                src: local('v1'),
-                     url(/fonts/v1/woff2/p${i}.woff2) format('woff2'),
-                     url(/fonts/v1/woff/p${i}.woff) format('woff'),
-                     url(/fonts/v1/ttf/p${i}.ttf) format('truetype');
-            }
-        `;
-    }
+//         css += `
+//             @font-face {
+//                 font-family: "v1_pg${i}";
+//                 src: local('v1'),
+//                      url(/fonts/v1/woff2/p${i}.woff2) format('woff2'),
+//                      url(/fonts/v1/woff/p${i}.woff) format('woff'),
+//                      url(/fonts/v1/ttf/p${i}.ttf) format('truetype');
+//             }
+//         `;
+//     }
 
-    style.textContent = css;
-    document.head.appendChild(style);
-}
+//     style.textContent = css;
+//     document.head.appendChild(style);
+// }
 
-generateFontFaces(604);
+// generateFontFaces(604);
 
 const openTestPage = () => {
   setTestPage(true);

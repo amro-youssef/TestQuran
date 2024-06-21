@@ -6,7 +6,9 @@ import './Verse.css';
 const Verse = ({ verseText, hideVerse, chapterNumber, verseNumber }) => {
     const [isContentHidden, setIsContentHidden] = useState(hideVerse === true);
     const [fontClass, setFontClass] = useState('');
+    const [fontFamily, setFontFamily] = useState('');
     const [style, setStyle] = useState({});
+    const [isFontLoaded, setIsFontLoaded] = useState(false);
 
     const makeContentVisibile = () => {
         setIsContentHidden(false);
@@ -26,48 +28,55 @@ const Verse = ({ verseText, hideVerse, chapterNumber, verseNumber }) => {
         return ayah
     }
 
+    // get the font file for v1 or v2 fonts
     useEffect(() => {
-        const getFontClass = async () => {
-            const font = localStorage.getItem('selectedFont');
-            // TODO make this conditional on the font user has selected
-            // v1 is the default font
-            let pageNumber;
-            if (!font || font === 'v1') {
-                pageNumber = await getV1PageNumber(chapterNumber, verseNumber);
-            } else if (font === 'v2') {
-                pageNumber = await getV2PageNumber(chapterNumber, verseNumber);
-            } else {
-                setFontClass('uthmanic');
-                return;
+        const font = localStorage.getItem('selectedFont') || 'v1';
+        
+        const loadFont = async () => {
+            try {
+                let pageNumber;
+                if (font.includes('uthmani')) {
+                    setFontFamily('uthmanic');
+                    setStyle({ letterSpacing: '0px' });
+                } else {
+                    pageNumber = font === 'v1' ? 
+                        await getV1PageNumber(chapterNumber, verseNumber) : 
+                        await getV2PageNumber(chapterNumber, verseNumber);
+                    
+                    const fontClass = `${font}_pg${pageNumber}`;
+                    setFontFamily(fontClass);
+
+                    const fontFace = new FontFace(fontClass, `url(/fonts/${font}/woff2/p${pageNumber}.woff2)`);
+                    await fontFace.load();
+                    document.fonts.add(fontFace);
+
+                    setStyle(font === 'v1' && pageNumber !== 1 ? 
+                        { fontSize: '1.1em', letterSpacing: '2px' } : 
+                        { letterSpacing: '0px' }
+                    );
+                }
+                setIsFontLoaded(true);
+            } catch (error) {
+                console.error('Failed to load font:', error);
+                setIsFontLoaded(true); // Set to true to fall back to default font
             }
-            setFontClass(`${font || 'v1'}_pg` + pageNumber);
-        }
+        };
 
-        const getStyle = async () => {
-            const font = localStorage.getItem('selectedFont');
+        loadFont();
+    }, [chapterNumber, verseNumber, verseText]);
 
-            if (font === 'v1' || font === null) {
-                // letters seem too close together in v1 so this separates them a bit
-                setStyle({ fontSize: '1.1em', letterSpacing: '2px' });
-            } else {
-                // having letter spacing to non-zero causes some issues with uthmani font
-                setStyle({ letterSpacing: '0px'});
-            }
-
-        }
-
-        getFontClass();
-        getStyle();
-
-    }, [chapterNumber, verseNumber]);
+    if (!isFontLoaded) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <div dir="rtl" className={`verse ${isContentHidden ? 'placeholder blur' : ''}`} onClick={makeContentVisibile}>
-            <Suspense fallback={<div>Loading...</div>}>
-            <div className={`verseText`} style={{fontFamily: fontClass, ...style}} dir="rtl">
-                {fontClass.includes('uthmani') ? verseText : verseText?.slice(0, -1)}
+            <div className={`verseText`} style={{fontFamily, ...style}} dir="rtl">
+                {isFontLoaded ?
+                    fontClass.includes('uthmani') ? processAyah(verseText) : verseText?.slice(0, -1)
+                    : ''
+                }
             </div>
-            </Suspense>
         </div>
     )
 }

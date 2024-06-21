@@ -87,6 +87,6 @@ html, body {
   and (min-height: 1024px) and (max-height: 1400px)
   and (orientation: portrait) {
     .title {
-      margin: 6vh 10px 10px
+      margin: 4.5vh 10px 10px
     }
 }

@@ -1,4 +1,11 @@
 
+  @font-face {
+    font-family: "v2";
+    src: local('v2'),
+         url(/fonts/v2/woff2/p1.woff2) format('woff2'),
+         url(/fonts/v2/woff/p1.woff) format('woff'),
+         url(/fonts/v2/ttf/p1.ttf) format('truetype')
+  }
 
   @font-face {
     font-family: "uthmanic";
@@ -35,18 +42,30 @@
 
 .verse {
     /* font-family: 'v1'; */
-    /* letter-spacing: 0px !important;  */
+    letter-spacing: 0px !important; 
   }
 
   @media (min-width: 1024px) {
     .verse {
-        font-size: 4.5vh;
-        /* min-width: 90% */
+        /* font-size: 4.5vh; */
+        font-size: 36px;
     }
 
     .verseText {
       margin: 15px
     }
+}
+
+/* for ultrawide screens */
+@media (min-width: 1600px) {
+  .verse {
+    font-size: 40px;
+    /* min-width: 90% */
+  }
+
+  .verseText {
+    margin: 15px
+  }
 }
 
 /* mainly used to account for when website is opened horizontally on mobile */
