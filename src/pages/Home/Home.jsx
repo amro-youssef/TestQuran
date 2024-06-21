@@ -6,11 +6,11 @@ import VersePicker from '../../components/VersePicker/VersePicker.jsx';
 import SubmitButton from '../../components/SubmitButton/SubmitButton.jsx';
 import VerseBox from '../../components/VerseBox/VerseBox.jsx';
 import AudioBar from '../../components/AudioBar/AudioBar.jsx';
-import ScrollToTop from "react-scroll-to-top";
 import { getVerseTextOfFont } from '../../utils.js';
 
 import useMediaQuery from '@mui/material/useMediaQuery';
 import VersePickerMobile from '../../components/VersePicker/VersePickerMobile.jsx';
+import ScrollToTopButton from '../../components/ScrollToTopButton/ScrollToTopButton.jsx';
 
 
 const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => { 
@@ -471,7 +471,7 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
         
       {audioUrl ? (<AudioBar audioFile={audioUrl} incrementVerseAudio={incrementVerseAudio} decrementVerseAudio={decrementVerseAudio}/>) : null}
         
-      <ScrollToTop />   {/* This works but I don't love it */}
+      <ScrollToTopButton/>
       <div style={{ marginTop: '5em' }}></div>
       </div>
     
