@@ -35,6 +35,7 @@ TestQuran is a web application designed to help Quran memorization students test
    ```
    npm install
    ```
+   (Note this may take a while)
 
 4. Start the development server:
    ```
@@ -73,7 +74,7 @@ We welcome contributions to TestQuran! If you'd like to contribute, please follo
 4. Push your changes to your fork.
 5. Submit a pull request to the main repository.
 
-There's a list of known issues in the 'issues' tab. Feel free to work on any of these, or anything else you think could do with improvement
+There's a list of known issues in the 'issues' tab. Feel free to work on any of these, or anything else you think could do with improvement. Note that the repository may be take a while to download.
 
 ## Technology Stack
 
