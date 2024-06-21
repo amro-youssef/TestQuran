@@ -10,7 +10,6 @@ import {React, useState} from 'react';
 
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
-import 'animate.css';
 
 const App = () => { 
   const [testDialog, setTestDialog] = useState(false);
