@@ -88,6 +88,38 @@ const getVerseText = async (chapterNumber, verseNumber) => {
     return verse ? verse.text_uthmani : verse;
 }
 
+const getVerseV1Glyph = async (chapterNumber, verseNumber) => {
+    const localData = await getLocalData();
+    const data = localData.allData.find((data) => data.chapter.id === chapterNumber);
+    const verseKey = chapterNumber + ":" + verseNumber;
+    const verse = data.versesV1.find(v => v.verse_key === verseKey);
+    return verse ? verse.code_v1 : verse;
+}
+
+const getVerseV2Glyph = async (chapterNumber, verseNumber) => {
+    const localData = await getLocalData();
+    const data = localData.allData.find((data) => data.chapter.id === chapterNumber);
+    const verseKey = chapterNumber + ":" + verseNumber;
+    const verse = data.versesV2.find(v => v.verse_key === verseKey);
+    return verse ? verse.code_v2 : verse;
+}
+
+const getV1PageNumber = async (chapterNumber, verseNumber) => {
+    const localData = await getLocalData();
+    const data = localData.allData.find((data) => data.chapter.id === chapterNumber);
+    const verseKey = chapterNumber + ":" + verseNumber;
+    const verse = data.versesV1.find(v => v.verse_key === verseKey);
+    return verse ? verse.v1_page : verse;
+}
+
+const getV2PageNumber = async (chapterNumber, verseNumber) => {
+    const localData = await getLocalData();
+    const data = localData.allData.find((data) => data.chapter.id === chapterNumber);
+    const verseKey = chapterNumber + ":" + verseNumber;
+    const verse = data.versesV2.find(v => v.verse_key === verseKey);
+    return verse ? verse.v2_page : verse;
+}
+
 const getReciters = async () => {
     const localData = await getLocalData();
     return localData.reciters;
@@ -100,5 +132,9 @@ export {
     getVerseText,
     getAudioUrl,
     getReciters,
-    getChapterName
+    getChapterName,
+    getVerseV1Glyph,
+    getVerseV2Glyph,
+    getV1PageNumber,
+    getV2PageNumber
 };

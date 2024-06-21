@@ -4,6 +4,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import {getV1PageNumber} from '../../backend.js';
 
 /**
  * Shows an image of the page which contains the verse inputted
@@ -19,10 +20,7 @@ const QuranPageDialog = ({ open, onClose, chapterNumber, verseNumber }) => {
             if (!chapterNumber || !verseNumber) {
                 return;
             }
-            const verseKey = `${chapterNumber}:${verseNumber}`;
-            const response = await fetch(`https://api.quran.com/api/v4/verses/by_key/${verseKey}`);
-            const responseJson = await response.json();
-            const pageNumber = responseJson.verse.page_number;
+            const pageNumber = await getV1PageNumber(chapterNumber, verseNumber);
             const url = `/quran_pages/page_${pageNumber}.png`;
             setImageUrl(url);
 

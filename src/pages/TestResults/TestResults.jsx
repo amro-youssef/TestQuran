@@ -18,6 +18,7 @@ import {
 
   } from '@mui/material';
   import {getAudioUrl, getNumberVerses, getVerseText, getChapterName} from '../../backend.js';
+  import { getVerseTextOfFont } from '../../utils.js';
   import DoneIcon from '@mui/icons-material/Done';
   import QuizIcon from '@mui/icons-material/Quiz';
   import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -65,10 +66,10 @@ const TestResults = () => {
 
     const fetchVerseTextsForResult = async (verses, texts) => {
         for (const verse of verses) {
-            texts[`${verse.chapterNumber}:${verse.verseNumber}`] = await getVerseText(verse.chapterNumber, verse.verseNumber);
-            const nextVerse = await getVerseText(verse.chapterNumber, verse.verseNumber + 1);
+            texts[`${verse.chapterNumber}:${verse.verseNumber}`] = await getVerseTextOfFont(verse.chapterNumber, verse.verseNumber);
+            const nextVerse = await getVerseTextOfFont(verse.chapterNumber, verse.verseNumber + 1);
             if (nextVerse) texts[`${verse.chapterNumber}:${verse.verseNumber + 1}`] = nextVerse;
-            const thirdVerse = await getVerseText(verse.chapterNumber, verse.verseNumber + 2);
+            const thirdVerse = await getVerseTextOfFont(verse.chapterNumber, verse.verseNumber + 2);
             if (thirdVerse) texts[`${verse.chapterNumber}:${verse.verseNumber + 2}`] = thirdVerse;
         }
     };
@@ -100,7 +101,7 @@ const TestResults = () => {
                     {/* get and show the 3 verses */}
                     {[answer, {chapterNumber: answer.chapterNumber, verseNumber: answer.verseNumber + 1},
                         {chapterNumber: answer.chapterNumber, verseNumber: answer.verseNumber + 2}].map((verse, verseIndex) => (
-                      verse ?
+                      verse && verseTexts[`${verse.chapterNumber}:${verse.verseNumber}`]  ?
                       <>
                         <ListItem key={verseIndex} style={{paddingLeft: isMobile ? "0px" : "inherit", paddingRight: isMobile ? "0px" : "inherit"}}>
                         <ListItemIcon>
@@ -108,7 +109,7 @@ const TestResults = () => {
                         </ListItemIcon>
                         <ListItemText 
                             dir="rtl" 
-                            primary={(verse ? <Verse verseText={verseTexts[`${verse.chapterNumber}:${verse.verseNumber}`]} className='resultDialog'></Verse> : <></>)} 
+                            primary={(<Verse verseText={verseTexts[`${verse.chapterNumber}:${verse.verseNumber}`]} chapterNumber={verse.chapterNumber} verseNumber={verse.verseNumber} className='resultDialog'></Verse>)} 
                             style={{
                                 textAlign: 'right',
                             }}
@@ -141,10 +142,9 @@ const TestResults = () => {
                         <div style={{marginRight: "8px"}}></div> {answer.chapterNumber}:{answer.verseNumber}
                     </AccordionSummary>
                     <AccordionDetails>
-                        {/* <Verse verseText={answer.verses[0]}></Verse> */}
                         {[answer, {chapterNumber: answer.chapterNumber, verseNumber: answer.verseNumber + 1},
                             {chapterNumber: answer.chapterNumber, verseNumber: answer.verseNumber + 2}].map((verse, verseIndex) => (
-                          verse ?
+                          verse && verseTexts[`${verse.chapterNumber}:${verse.verseNumber}`] ?
                           <>
                             <ListItem key={verseIndex}>
                             <ListItemIcon>
@@ -153,7 +153,7 @@ const TestResults = () => {
                             </ListItemIcon>
                             <ListItemText 
                                 dir="rtl" 
-                                primary={(verse ? <Verse verseText={verseTexts[`${verse.chapterNumber}:${verse.verseNumber}`]} className='resultDialog'></Verse> : <></>)} 
+                                primary={(verse ? <Verse verseText={verseTexts[`${verse.chapterNumber}:${verse.verseNumber}`]} chapterNumber={verse.chapterNumber} verseNumber={verse.verseNumber} className='resultDialog'></Verse> : <></>)} 
                                 style={{
                                     textAlign: 'right',
                                     // paddingRight: theme.spacing(2),

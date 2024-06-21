@@ -4,8 +4,6 @@ import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import SettingsIcon from '@mui/icons-material/Settings';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import CloseIcon from '@mui/icons-material/Close';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -16,6 +14,9 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
+import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 import {getReciters} from '../../backend.js';
 
 import './Sidebar.css';
@@ -35,6 +36,7 @@ export default function Sidebar({ setReciterNumber, showResultsPage }) {
   const [reciterComponentList, setReciterComponentList] = useState();
   const [reciterList, setReciterList] = useState([]);
   const [reciterName, setReciterName] = useState();
+  const [selectedFont, setSelectedFont] = useState(localStorage.getItem('selectedFont') || 'v1');
 
   useEffect(() => {
     for (const reciter of reciterList) {
@@ -70,6 +72,11 @@ export default function Sidebar({ setReciterNumber, showResultsPage }) {
   useEffect(() => {
     renderReciters()
   }, []);
+
+  const handleFontChange = (event) => {
+    setSelectedFont(event.target.value);
+    localStorage.setItem('selectedFont', event.target.value);
+  };
 
   const renderReciters = async () => {
     const reciters = await getReciters();
@@ -150,6 +157,22 @@ export default function Sidebar({ setReciterNumber, showResultsPage }) {
 
         <h2>Verse:</h2>
         <FormControlLabel checked={alwaysHideText} onChange={handleAlwaysHideText} control={<Checkbox />} label="Hide verse text" />
+
+        <FormControl fullWidth style={{marginTop: '10px'}} label="Font">
+          <InputLabel id="font-select-label">Font:</InputLabel>
+          <Select
+            labelId="font-select-label"
+            value={selectedFont}
+            onChange={handleFontChange}
+            label="Font:"
+            displayEmpty
+            inputProps={{ 'aria-label': 'Without label' }}
+          >
+            <MenuItem value="v1">King Fahad Complex V1</MenuItem>
+            <MenuItem value="v2">King Fahad Complex V2</MenuItem>
+            <MenuItem value="uthmani">QPC Uthmani Hafs</MenuItem>
+          </Select>
+        </FormControl>
 
         <h2>Test:</h2>
         <Button variant="outlined" style={{top: '0px'}} onClick={() => {toggleDrawer('right', false); showResultsPage();}}>Test Results</Button>

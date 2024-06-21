@@ -35,16 +35,48 @@ const App = () => {
     console.log(testMode)
   }
 
-  const openTestPage = () => {
-    setTestPage(true);
-  }
+  function generateFontFaces(count) {
+    const style = document.createElement('style');
+    let css = '';
+
+    for (let i = 1; i <= count; i++) {
+        css += `
+            @font-face {
+                font-family: "v2_pg${i}";
+                src: local('v2'),
+                     url(/fonts/v2/woff2/p${i}.woff2) format('woff2'),
+                     url(/fonts/v2/woff/p${i}.woff) format('woff'),
+                     url(/fonts/v2/ttf/p${i}.ttf) format('truetype');
+            }
+        `;
+
+        css += `
+            @font-face {
+                font-family: "v1_pg${i}";
+                src: local('v1'),
+                     url(/fonts/v1/woff2/p${i}.woff2) format('woff2'),
+                     url(/fonts/v1/woff/p${i}.woff) format('woff'),
+                     url(/fonts/v1/ttf/p${i}.ttf) format('truetype');
+            }
+        `;
+    }
+
+    style.textContent = css;
+    document.head.appendChild(style);
+}
+
+generateFontFaces(604);
+
+const openTestPage = () => {
+  setTestPage(true);
+}
 
   const [darkMode, setDarkMode] = useState(localStorage.getItem("darkMode") !== "false"); 
     const darkTheme = createTheme({ 
         palette: { 
             mode: darkMode ? 'dark' : 'light',
             background: {
-              default: darkMode ? '#242526' : '#f5f5f5', // Adjust to your preferred light/off-white background color
+              default: darkMode ? '#242526' : '#f5f5f5',
             },
         }, 
     }); 
@@ -78,14 +110,6 @@ const App = () => {
 
       {showResultsPage ? (
         <>
-          {/* <Home style={{marginTop: '50px'}} className="App" testPressed={() => setTestDialog(true)} toggleDarkMode={toggleDarkMode} darkMode={darkMode} reciterNumber={reciterNumber}/> 
-          {testDialog ? 
-            <TestDialog
-              open={true} 
-              closeDialog={() => setTestDialog(false)} 
-              loadState={(a,b,c,d,e,f) => loadState(a,b,c,d,e,f)} 
-              openTestPage={openTestPage}/>
-              : <></>} */}
           <TestResults 
               // Pass any necessary props for TestResults
           />
