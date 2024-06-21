@@ -14,7 +14,8 @@ import QuranPageDialog from '../QuranPageDialog/QuranPageDialog.jsx';
 import './VerseBox.css';
 
 const VerseBox = (props) => {
-    let { verseText, readMorePressed, chapterNumber, chapterName, verseNumber, viewVerseNumber, onViewVerseNumberChange, playAudio, versePlaying, showAudioButton, hideVerse } = props;
+    let {verseText, readMorePressed, chapterNumber, chapterName, verseNumber, viewVerseNumber,
+         onViewVerseNumberChange, playAudio, versePlaying, showAudioButton, hideVerse } = props;
 
     const [verse, setVerse] = useState(verseText);
     const [showImageDialog, setShowImageDialog] = useState(false);
@@ -85,7 +86,7 @@ const VerseBox = (props) => {
                 const newPosition = `calc(50% - ${expandDiv.clientWidth / 2}px)`;
                 setLeftPosition(newPosition);
             }
-        }, 0)
+        }, 100)
     }, []);
 
     let divRef = useRef();
@@ -114,7 +115,7 @@ const VerseBox = (props) => {
 
     return (
         <div ref={divRef} className={`verse-container ${isVersePlaying() ? 'selected': ''} ${localStorage.getItem('darkMode') === 'false' ? 'light' : 'dark'}`}>
-            <Verse verseText={verseText} hideVerse={hideVerse} />
+            <Verse verseText={verseText} hideVerse={hideVerse} chapterNumber={chapterNumber} verseNumber={verseNumber} />
             <div style={{display: 'flex', flexDirection: 'row', margin: '0 auto', justifyContent: 'space-between'}}>
                 <div style = {{display: 'flex', flexDirection: 'row'}} id="left-div">
                     {/* <InfoButton/> */}

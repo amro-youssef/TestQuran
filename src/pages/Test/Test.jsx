@@ -5,6 +5,7 @@ import ProgressBar from "@ramonak/react-progress-bar";
 import VerseBox from '../../components/VerseBox/VerseBox.jsx';
 import DoneIcon from '@mui/icons-material/Done';
 import CloseIcon from '@mui/icons-material/Close';
+import { getVerseTextOfFont } from '../../utils.js';
 import './Test.css';
 import TestResultDialog from '../../dialogs/TestResultDialog/TestResultDialog.jsx';
 import TestResults from '../TestResults/TestResults.jsx';
@@ -60,7 +61,7 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
         randomVerse = await getRandomVerse(versesList);
         numberVersesInChapter = await getNumberVerses(randomVerse.chapterNumber);
       }
-      const firstVerseText = await getVerseText(randomVerse?.chapterNumber, randomVerse?.verseNumber);
+      const firstVerseText = await getVerseTextOfFont(randomVerse?.chapterNumber, randomVerse?.verseNumber);
       setFirstVerse(randomVerse);
       setChapterName(await getChapterName(randomVerse?.chapterNumber));
 
@@ -68,10 +69,10 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
         setFirstVerseText(firstVerseText);
       }
       if (randomVerse?.verseNumber + 1 <= numberVersesInChapter) {
-        const secondVerseText = await getVerseText(randomVerse?.chapterNumber, randomVerse?.verseNumber + 1);
+        const secondVerseText = await getVerseTextOfFont(randomVerse?.chapterNumber, randomVerse?.verseNumber + 1);
         setSecondVerseText(secondVerseText);
         if (randomVerse?.verseNumber + 2 <= numberVersesInChapter) {
-          const thirdVerseText = await getVerseText(randomVerse?.chapterNumber, randomVerse?.verseNumber + 2);
+          const thirdVerseText = await getVerseTextOfFont(randomVerse?.chapterNumber, randomVerse?.verseNumber + 2);
           setThirdVerseText(thirdVerseText);
         }
       }

@@ -36,6 +36,18 @@ const fetchAllVerses = async (chapterNumber) => {
   return data.verses;
 };
 
+// Fetch the v1 glyph codes of all the verses
+const fetchAllVersesV1 = async (chapterNumber) => {
+  const data = await fetchData(`/quran/verses/code_v1?chapter_number=${chapterNumber}`);
+  return data.verses;
+};
+
+// Fetch the v1 glyph codes of all the verses
+const fetchAllVersesV2 = async (chapterNumber) => {
+  const data = await fetchData(`/quran/verses/code_v2?chapter_number=${chapterNumber}`);
+  return data.verses;
+};
+
 // Fetch all reciters
 const fetchAllReciters = async () => {
   const data = await fetchData('/resources/recitations');
@@ -65,7 +77,9 @@ const fetchAllData = async () => {
 
   for (const chapter of chapters) {
     const verses = await fetchAllVerses(chapter.id);
-    allData.push({ chapter, verses });
+    const versesV1 = await fetchAllVersesV1(chapter.id);
+    const versesV2 = await fetchAllVersesV2(chapter.id);
+    allData.push({ chapter, verses, versesV1, versesV2 });
   }
 
   // this bit is incredibly slow

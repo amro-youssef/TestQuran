@@ -74,7 +74,13 @@ const TestResultDialog = ({
                     </ListItemIcon>
                     <ListItemText 
                         dir="rtl" 
-                        primary={(verse ? <Verse verseText={verse} className='resultDialog'></Verse> : <></>)} 
+                        primary={(verse 
+                          ? <Verse
+                               verseText={verse} 
+                               className='resultDialog' 
+                               chapterNumber={answer.chapterNumber} 
+                               verseNumber={answer.firstVerseNumber + verseIndex}>
+                             </Verse> : <></>)} 
                         style={{
                             textAlign: 'right',
                             width: "80%"
@@ -107,7 +113,6 @@ const TestResultDialog = ({
                     <div style={{marginRight: "8px"}}></div>Question {answer.questionNumber}
                 </AccordionSummary>
                 <AccordionDetails>
-                    {/* <Verse verseText={answer.verses[0]}></Verse> */}
                     {answer.verses.map((verse, verseIndex) => (
                       verse ?
                       <>
@@ -118,7 +123,13 @@ const TestResultDialog = ({
                         </ListItemIcon>
                         <ListItemText 
                             dir="rtl" 
-                            primary={(verse ? <Verse verseText={verse} style={{class: 'resultDialog'}}></Verse> : <></>)} 
+                            primary={(verse 
+                              ? <Verse
+                                   verseText={verse} 
+                                   style={{class: 'resultDialog'}}
+                                   chapterNumber={answer.chapterNumber}
+                                   verseNumber={answer.firstVerseNumber + verseIndex}
+                                ></Verse> : <></>)} 
                             style={{
                                 textAlign: 'right',
                                 // paddingRight: theme.spacing(2),

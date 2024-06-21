@@ -1,12 +1,4 @@
 
-  @font-face {
-    font-family: "v2";
-    src: local('v2'),
-         url(./fonts/woff2/p1.woff2) format('woff2'),
-         url(./fonts/woff/p1.woff) format('woff'),
-         url(./fonts/ttf/p1.ttf) format('truetype')
-         /* url(./fonts/UthmaniHafs.woff) format('woff') */
-  }
 
   @font-face {
     font-family: "uthmanic";
@@ -14,19 +6,6 @@
     src: url(./fonts/UthmaniHafs.woff) format('woff')
   }
 
-  @font-face {
-    font-family: 'Uthman Hafs';
-    src: local('KFGQPC Uthmanic Script HAFS'),
-         url(https://raw.githubusercontent.com/mustafa0x/qpc-fonts/f93bf5f3/various-woff2/UthmanicHafs1%20Ver09.woff2) format('woff2'),
-         url(https://raw.githubusercontent.com/mustafa0x/qpc-fonts/f93bf5f3/various-woff/UthmanicHafs1%20Ver09.woff) format('woff');
-  }
-
-  @font-face {
-    font-family: 'Mushaf Ligatures';
-    src: local('QCF_BSML'),
-         url(https://raw.githubusercontent.com/mustafa0x/qpc-fonts/f93bf5f3/mushaf-v2-woff2/QCF_BSML.woff2) format('woff2'),
-         url(https://raw.githubusercontent.com/mustafa0x/qpc-fonts/f93bf5f3/mushaf-woff/QCF_BSML.woff) format('woff');
-  }
 
 .verse-container {
     /* max-width: '2em'; Set the desired maximum width */
@@ -55,8 +34,8 @@
 }
 
 .verse {
-    font-family: 'uthmanic';
-    letter-spacing: 0px !important; 
+    /* font-family: 'v1'; */
+    /* letter-spacing: 0px !important;  */
   }
 
   @media (min-width: 1024px) {

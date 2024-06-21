@@ -1,14 +1,17 @@
 /* eslint-disable eqeqeq */
 import './Home.css';
-import {getAudioUrl, getNumberVerses, getVerseText, getChapterName} from '../../backend.js';
+import {getAudioUrl, getNumberVerses, getVerseText, getChapterName, getVerseV1Glyph, getVerseV2Glyph} from '../../backend.js';
 import {React, useState} from 'react';
 import VersePicker from '../../components/VersePicker/VersePicker.jsx';
 import SubmitButton from '../../components/SubmitButton/SubmitButton.jsx';
 import VerseBox from '../../components/VerseBox/VerseBox.jsx';
 import AudioBar from '../../components/AudioBar/AudioBar.jsx';
 import ScrollToTop from "react-scroll-to-top";
+import { getVerseTextOfFont } from '../../utils.js';
+
 import useMediaQuery from '@mui/material/useMediaQuery';
 import VersePickerMobile from '../../components/VersePicker/VersePickerMobile.jsx';
+
 
 const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => { 
   const [startChapterNumber, setStartChapterNumber] = useState(null); 
@@ -43,6 +46,20 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
       setEndVerseNumber(parseInt(endVerse));
   }
 
+  // gets the verse text of the font selected
+  // const getVerseTextOfFont = async (chapterNumber, verseNumber) => {
+  //   // v1 if default font
+  //   const font = localStorage.getItem('selectedFont') || 'v1';
+  //   if (font === 'v1') {
+  //     return await getVerseV1Glyph(chapterNumber, verseNumber);
+  //   } else if (font === 'v2') {
+  //     return await getVerseV2Glyph(chapterNumber, verseNumber);
+  //   } else {
+  //     // uthmanic font uses arabic text to render, whilst v1 and v2 use glyph codes
+  //     return await getVerseText(chapterNumber, verseNumber);
+  //   }
+  // }
+
   const onSubmitClick = async () => {
     if (checkEmptyFields()) return;
     setLoading(true);
@@ -65,7 +82,8 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
 
     resetStates();
     setFirstVerse(randomVerse);
-    const randomText = await getVerseText(randomVerse?.chapterNumber, randomVerse?.verseNumber);
+    // const randomText = await getVerseText(randomVerse?.chapterNumber, randomVerse?.verseNumber);
+    const randomText = await getVerseTextOfFont(randomVerse?.chapterNumber, randomVerse?.verseNumber);
     if (randomText !== -1) {
       setVerseText(randomText);
     }
@@ -141,13 +159,13 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
 
   const expandPressed = async () => {
     if (!readMore) {
-      const secondVerse = await getVerseText(firstVerse.chapterNumber, firstVerse.verseNumber + 1);
+      const secondVerse = await getVerseTextOfFont(firstVerse.chapterNumber, firstVerse.verseNumber + 1);
       if (secondVerse) {
         setSecondVerseText(secondVerse);
         if (!lastVerseOnScreen) {
           setLastVerseOnScreen(firstVerse.verseNumber + 1);
         }
-        const thirdVerse = await getVerseText(firstVerse.chapterNumber, firstVerse.verseNumber + 2);
+        const thirdVerse = await getVerseTextOfFont(firstVerse.chapterNumber, firstVerse.verseNumber + 2);
         if (thirdVerse) {
           setThirdVerseText(thirdVerse);
           if (!lastVerseOnScreen) {
@@ -181,7 +199,7 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
 
     // perhaps do this in chunks in order for the page to appear responsive
     for (let verse = firstVerse.verseNumber; verse <= numVerses; verse++) {
-      const text = await getVerseText(firstVerse.chapterNumber, verse);
+      const text = await getVerseTextOfFont(firstVerse.chapterNumber, verse);
       restOfVerses.push({chapter: firstVerse.chapterNumber, verse: verse, text: text});
       if (verse % 10 === 0) {
         setRestOfVerses(restOfVerses.slice(3));
@@ -203,7 +221,7 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
   const getNextVerse = async () => {
     const numVerses = await getNumberVerses(firstVerse.chapterNumber);
     const lastVerseOnScreen = getLastVerseOnScreen();
-    const text = await getVerseText(firstVerse.chapterNumber, lastVerseOnScreen + 1);
+    const text = await getVerseTextOfFont(firstVerse.chapterNumber, lastVerseOnScreen + 1);
     if (!text) {
       // we are at last verse
       setLastVerseIsOnScreen(true);
@@ -453,7 +471,7 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
         
       {audioUrl ? (<AudioBar audioFile={audioUrl} incrementVerseAudio={incrementVerseAudio} decrementVerseAudio={decrementVerseAudio}/>) : null}
         
-      <ScrollToTop smooth />   {/* This works but I don't love it */}
+      <ScrollToTop />   {/* This works but I don't love it */}
       <div style={{ marginTop: '5em' }}></div>
       </div>
     
