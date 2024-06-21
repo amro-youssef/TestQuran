@@ -6,7 +6,7 @@ import VersePicker from '../../components/VersePicker/VersePicker.jsx';
 import SubmitButton from '../../components/SubmitButton/SubmitButton.jsx';
 import VerseBox from '../../components/VerseBox/VerseBox.jsx';
 import AudioBar from '../../components/AudioBar/AudioBar.jsx';
-import { getVerseTextOfFont } from '../../utils.js';
+import { getVerseTextOfFont, isMobileOrTablet } from '../../utils.js';
 
 import useMediaQuery from '@mui/material/useMediaQuery';
 import VersePickerMobile from '../../components/VersePicker/VersePickerMobile.jsx';
@@ -45,20 +45,6 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
       setEndChapterNumber(parseInt(endChapter));
       setEndVerseNumber(parseInt(endVerse));
   }
-
-  // gets the verse text of the font selected
-  // const getVerseTextOfFont = async (chapterNumber, verseNumber) => {
-  //   // v1 if default font
-  //   const font = localStorage.getItem('selectedFont') || 'v1';
-  //   if (font === 'v1') {
-  //     return await getVerseV1Glyph(chapterNumber, verseNumber);
-  //   } else if (font === 'v2') {
-  //     return await getVerseV2Glyph(chapterNumber, verseNumber);
-  //   } else {
-  //     // uthmanic font uses arabic text to render, whilst v1 and v2 use glyph codes
-  //     return await getVerseText(chapterNumber, verseNumber);
-  //   }
-  // }
 
   const onSubmitClick = async () => {
     if (checkEmptyFields()) return;
@@ -351,13 +337,23 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
       <div className="App">
         <h3 className='title'>Pick the range of verses you would like to be tested on:</h3>
         <div style={{ display: 'flex', justifyContent: 'space-evenly', flexWrap: 'wrap' }}>
-          {!isMobile ? 
+          {/* {!isMobile ? 
           <VersePicker 
             loadState={loadState} 
           /> : 
           <VersePickerMobile
             loadState={loadState}
           />
+          } */}
+
+          {isMobile && isMobileOrTablet() ?
+              <VersePickerMobile
+              loadState={loadState}
+            /> :
+            <VersePicker 
+            loadState={loadState} 
+          />
+        
           }
           <SubmitButton onClick={onSubmitClick} loading={loading}/>
         </div>
