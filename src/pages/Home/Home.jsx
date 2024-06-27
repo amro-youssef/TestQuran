@@ -370,7 +370,7 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
               onViewVerseNumberChange={onViewVerseNumberChange}
               playAudio={playAudio}
               versePlaying={audioUrl ? versePlaying : null}
-              hideVerse = {localStorage.getItem('alwaysHideVerse') === "true"} // TODO make this update dynamically rather than needing refresh for it to apply
+              // hideVerse = {localStorage.getItem('alwaysHideVerse') === "true"} // TODO make this update dynamically rather than needing refresh for it to apply
             />
 
             {readMore && secondVerseText ?  (

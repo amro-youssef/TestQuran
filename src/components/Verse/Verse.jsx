@@ -1,6 +1,7 @@
 import {React, useState, useEffect, Suspense} from 'react';
 import PropTypes from 'prop-types';
 import { getV1PageNumber, getV2PageNumber } from '../../backend';
+import { useTheme } from '@mui/material';
 import './Verse.css';
 
 const Verse = ({ verseText, hideVerse, chapterNumber, verseNumber }) => {
@@ -65,13 +66,21 @@ const Verse = ({ verseText, hideVerse, chapterNumber, verseNumber }) => {
         loadFont();
     }, [chapterNumber, verseNumber, verseText]);
 
+    useEffect(() => {
+        setIsContentHidden(hideVerse === true);
+    }, [verseText]);
+
     if (!isFontLoaded) {
         return <div>Loading...</div>;
     }
 
     return (
-        <div dir="rtl" className={`verse ${isContentHidden ? 'placeholder blur' : ''}`} onClick={makeContentVisibile}>
-            <div className={`verseText`} style={{fontFamily, ...style}} dir="rtl">
+        <div 
+            dir="rtl" 
+            className={`verse ${isContentHidden ? 'placeholder blur' : ''} ${localStorage.getItem('darkMode') !== 'true' ? '' : 'dark'}`} 
+            onClick={makeContentVisibile}
+        >
+            <div className={`verseText`} style={{ fontFamily, ...style }} dir="rtl">
                 {isFontLoaded ?
                     fontClass.includes('uthmani') ? processAyah(verseText) : verseText?.slice(0, -1)
                     : ''
