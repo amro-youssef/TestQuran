@@ -28,7 +28,7 @@
     text-shadow: 0 0 18px rgba(0,0,0,0.7);
  }
 
-.dark.placeholder {
+.darkPlaceholder.placeholder {
     background: linear-gradient(90deg, #2c2c2c 25%, #1e1e1e 50%, #2c2c2c 75%);
     background-size: 200% 100%;
     animation: shimmer 3s infinite;

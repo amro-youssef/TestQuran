@@ -15,7 +15,6 @@ const QuranPageDialog = ({ open, onClose, chapterNumber, verseNumber }) => {
 
     useEffect(() => {
         // Fetch the image URL for the given chapter and verse number
-        // Replace this with your actual logic to fetch the image URL
         const fetchImageUrl = async () => {
             if (!chapterNumber || !verseNumber) {
                 return;
