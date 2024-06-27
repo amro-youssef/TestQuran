@@ -1,7 +1,8 @@
 /* eslint-disable eqeqeq */
 import {React, useState, useEffect} from 'react';
 import {getChapterNames, getNumberVerses} from '../../backend.js'
-import {TextField, MenuItem, Autocomplete, Select, useMediaQuery, FormControl, FormLabel, NativeSelect, InputLabel} from '@mui/material';
+import {MenuItem, Select, FormControl, InputLabel, Box} from '@mui/material';
+
 import './VersePickerMobile.css'
 
 const VersePickerMobile = ({ loadState, bounce1, bounce2, bounce3, bounce4 }) => {
@@ -107,48 +108,37 @@ const VersePickerMobile = ({ loadState, bounce1, bounce2, bounce3, bounce4 }) =>
         });
        }
 
+    const handleLastVerse = async () => {
+        try {
+            if (!endChapterNumber) {
+                return;
+            }
+            const versesCount = await getNumberVerses(endChapterNumber);
+            setEndVerseNumber(versesCount.toString());
+            // setLastVerseOfChapter(versesCount);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleSameChapter = async () => {
+        try {
+            if (!startChapterNumber) {
+                return;
+            }
+            setEndChapter(startChapter);
+            setEndChapterNumber(startChapterNumber);
+
+            const versesCount = await getNumberVerses(startChapterNumber);
+            setEndVerseNumber(versesCount.toString());
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
         <div className='VersePickerMobile'>
             <div className='startDivMobile'>
-                {/* <Autocomplete
-                    onChange={(event, chapterName) => {
-                        try {
-                            setStartChapter(chapterName);
-                            setStartChapterName(chapterName.split(' ').slice(1).join(' '));
-                            setStartChapterNumber(parseInt(chapterName.split(' ')[0]))
-                            setStartVerses([])
-                        } catch {}
-                    }}
-                    className= {`Autocomplete chapter  ${bounce1 ? 'animate__animated animate__bounce' : ''}`}
-                    disablePortal
-                    disableClearable
-                    id="start-chapter"
-                    value={startChapter}
-                    defaultValue="1 Al-Fatihah"
-                    options={startChapters}
-                    classes="autocomplete"
-                    renderInput={(params) => <TextField {...params} label="Start Chapter" />}
-                    style={{ display: 'flex', justifyContent: 'center'}}
-                />
-                <Autocomplete
-                    onChange={(event, verseNumber) => {
-                        try {
-                            setStartVerseNumber(verseNumber);
-                        } catch {}
-                    }}
-                    className={`Autocomplete verse  ${bounce2 ? 'animate__animated animate__bounce' : ''}`}
-                    disablePortal
-                    disableClearable
-                    id="start-verse"
-                    options={startVerses}
-                    defaultValue="1"
-                    value = {startVerseNumber}
-                    renderInput={(params) => <TextField {...params} label="Start Verse" />}
-                    style={{ display: 'flex', justifyContent: 'center' }}
-                /> */}
-                {/* <label htmlFor="start-chapter-native" className="select-label">
-                    Start Chapter
-                </label> */}
                 <FormControl sx={{ width: '52vw' , m: 0.5}}>
                 <InputLabel id="formlabel">Start Chapter</InputLabel>
                 <Select
@@ -208,98 +198,93 @@ const VersePickerMobile = ({ loadState, bounce1, bounce2, bounce3, bounce4 }) =>
             </div>
 
             <div className='endDivMobile'>
-                {/* <Autocomplete
-                    onChange={(event, chapterName) => {
+                <Box>
+                    <FormControl sx={{ width: "52vw", m: 0.5 }}>
+                    <InputLabel id="formlabel">End Chapter</InputLabel>
+                    <Select
+                        // className={`Autocomplete chapter  ${bounce3 ? 'animate__animated animate__bounce' : ''}`}
+                        id="end-chapter"
+                        className="endChapterSelect"
+                        label="End Chapter"
+                        onChange={(event) => {
                         // change to an if
                         try {
-                            setEndChapter(chapterName);
-                            setEndChapterName(chapterName.split(' ').slice(1).join(' '));
-                            setEndChapterNumber(parseInt(chapterName.split(' ')[0]))
+                            setEndChapter(event.target.value);
+                            setEndChapterName(event.target.value.split(' ').slice(1).join(' '));
+                            setEndChapterNumber(parseInt(event.target.value.split(' ')[0]))
                             setEndVerses([])
                         } catch {
                         }
                     }}
-                    className={`Autocomplete chapter  ${bounce3 ? 'animate__animated animate__bounce' : ''}`}
-                    value={endChapter}
-                    disablePortal
-                    disableClearable
-                    id="end-chapter"
-                    options={endChapters}
-                    defaultValue="114 An-Nas"
-                    renderInput={(params) => <TextField {...params} label="End Chapter" />}
-                    style={{ display: 'flex', justifyContent: 'center' }}
-                />
-                <Autocomplete
-                    onChange={(event, verseNumber) => {
-                        try {
-                            setEndVerseNumber(verseNumber);
-                        } catch {}
-                    }}
-                    className={`Autocomplete verse  ${bounce4 ? 'animate__animated animate__bounce' : ''}`}
-                    disablePortal
-                    disableClearable
-                    id="end-verse"
-                    options={endVerses}
-                    value = {endVerseNumber}
-                    defaultValue="6"
-                    renderInput={(params) => <TextField {...params} label="End Verse" />}
-                    style={{ display: 'flex', justifyContent: 'center' }}
-                />  */}
-                <FormControl sx={{ width: "52vw", m: 0.5 }}>
-                <InputLabel id="formlabel">End Chapter</InputLabel>
-                <Select
-                    // className={`Autocomplete chapter  ${bounce3 ? 'animate__animated animate__bounce' : ''}`}
-                    id="end-chapter"
-                    className="endChapterSelect"
-                    label="End Chapter"
-                    onChange={(event) => {
-                    // change to an if
-                    try {
-                        setEndChapter(event.target.value);
-                        setEndChapterName(event.target.value.split(' ').slice(1).join(' '));
-                        setEndChapterNumber(parseInt(event.target.value.split(' ')[0]))
-                        setEndVerses([])
-                    } catch {
-                    }
-                }}
-                    value={endChapter}
-                >
-                    {endChapters.map((name) => (
-                    <MenuItem
-                        key={name}
-                        value={name}
+                        value={endChapter}
                     >
-                        {name}
-                    </MenuItem>
-                    ))}
-                </Select>
-                </FormControl>
+                        {endChapters.map((name) => (
+                        <MenuItem
+                            key={name}
+                            value={name}
+                        >
+                            {name}
+                        </MenuItem>
+                        ))}
+                    </Select>
 
+                    <span 
+                        onClick={handleSameChapter}
+                        className={`${localStorage.getItem('darkMode') === 'false' ? '' : 'dark-text-link'} text-link`}
+                        style={{
+                            cursor: 'pointer',
+                            // color: '#1976d2',
+                            fontSize: '0.9rem',
+                            marginTop: '3px',
+                            userSelect: 'none'
+                        }}
+                    >
+                        Same as start
+                    </span>
+                    </FormControl>
+                </Box>
+
+                <Box>
                 <FormControl sx={{ width: '35vw', m: 0.5 }}>
-                <InputLabel id="formlabel">End Verse</InputLabel>
-                <Select
-                    // className={`Autocomplete verse  ${bounce4 ? 'animate__animated animate__bounce' : ''}`}
-                    id="end-verse"
-                    className="endVerseSelect"
-                    label="End Verse"
-                    onChange={(event) => {
-                    try {
-                        setEndVerseNumber(event.target.value);
-                    } catch {}
-                    }}
-                    value={endVerseNumber}
-                >
-                    {endVerses.map((name) => (
-                    <MenuItem
-                        key={name}
-                        value={name}
+                    <InputLabel id="formlabel">End Verse</InputLabel>
+                    <Select
+                        // className={`Autocomplete verse  ${bounce4 ? 'animate__animated animate__bounce' : ''}`}
+                        id="end-verse"
+                        className="endVerseSelect"
+                        label="End Verse"
+                        onChange={(event) => {
+                        try {
+                            setEndVerseNumber(event.target.value);
+                        } catch {}
+                        }}
+                        value={endVerseNumber}
                     >
-                        {name}
-                    </MenuItem>
-                    ))}
+                        {endVerses.map((name) => (
+                        <MenuItem
+                            key={name}
+                            value={name}
+                        >
+                            {name}
+                        </MenuItem>
+                        ))}
 
-                </Select>
+                    </Select>
+
+                    <span 
+                    onClick={handleLastVerse}
+                    className={`${localStorage.getItem('darkMode') === 'false' ? '' : 'dark-text-link'} text-link`}
+                    style={{
+                        cursor: 'pointer',
+                        // color: '#1976d2',
+                        fontSize: '0.9rem',
+                        marginTop: '3px',
+                        userSelect: 'none'
+                    }}
+                >
+                    Last Verse
+                </span>
                 </FormControl>
+                </Box>
             </div>
         </div>
         

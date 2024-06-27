@@ -103,12 +103,40 @@ const VersePicker = ({ loadState, bounce1, bounce2, bounce3, bounce4 }) => {
     }, [endChapterNumber, startChapterNumber, startVerseNumber]);
 
     // eslint-disable-next-line no-extend-native
-    String.prototype.toIndiaDigits= function(){
-        var id= ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
-        return this.replace(/[0-9]/g, function(w){
-         return id[+w]
-        });
-       }
+    // String.prototype.toIndiaDigits= function(){
+    //     var id= ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+    //     return this.replace(/[0-9]/g, function(w){
+    //      return id[+w]
+    //     });
+    //    }
+
+    const handleLastVerse = async () => {
+        try {
+            if (!endChapterNumber) {
+                return;
+            }
+            const versesCount = await getNumberVerses(endChapterNumber);
+            setEndVerseNumber(versesCount.toString());
+            // setLastVerseOfChapter(versesCount);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    const handleSameChapter = async () => {
+        try {
+            if (!startChapterNumber) {
+                return;
+            }
+            setEndChapter(startChapter);
+            setEndChapterNumber(startChapterNumber);
+
+            const versesCount = await getNumberVerses(startChapterNumber);
+            setEndVerseNumber(versesCount.toString());
+            // setLastVerseOfChapter(versesCount);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <div className='VersePicker'>
@@ -153,6 +181,7 @@ const VersePicker = ({ loadState, bounce1, bounce2, bounce3, bounce4 }) => {
             </div>
 
             <div className='endDiv'>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <Autocomplete
                     onChange={(event, chapterName) => {
                         // change to an if
@@ -174,6 +203,22 @@ const VersePicker = ({ loadState, bounce1, bounce2, bounce3, bounce4 }) => {
                     renderInput={(params) => <TextField {...params} label="End Chapter" />}
                     style={{ display: 'flex', justifyContent: 'center' }}
                 />
+
+                <span 
+                    onClick={handleSameChapter}
+                    className={`${localStorage.getItem('darkMode') === 'false' ? '' : 'dark-text-link'} text-link`}
+                    style={{
+                        cursor: 'pointer',
+                        // color: '#1976d2',
+                        fontSize: '0.9rem',
+                        marginTop: '3px',
+                        userSelect: 'none'
+                    }}
+                >
+                    Same as start
+                </span>
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <Autocomplete
                     onChange={(event, verseNumber) => {
                         try {
@@ -189,7 +234,23 @@ const VersePicker = ({ loadState, bounce1, bounce2, bounce3, bounce4 }) => {
                     defaultValue="6"
                     renderInput={(params) => <TextField {...params} label="End Verse" />}
                     style={{ display: 'flex', justifyContent: 'center' }}
-                /> 
+                />
+
+                <span 
+                    onClick={handleLastVerse}
+                    className={`${localStorage.getItem('darkMode') === 'false' ? '' : 'dark-text-link'} text-link`}
+                    style={{
+                        cursor: 'pointer',
+                        // color: '#1976d2',
+                        fontSize: '0.9rem',
+                        marginTop: '3px',
+                        userSelect: 'none'
+                    }}
+                >
+                    Last Verse
+                </span>
+
+                </div>
             </div>
         </div>
         
