@@ -32,7 +32,7 @@ export default function Sidebar({ setReciterNumber, showResultsPage }) {
   const [selectedValue, setSelectedValue] = useState(localStorage.getItem('reciterId') ? localStorage.getItem('reciterId') : 6);
   const [continuePlayingAudio, setContinuePlayingAudio] = useState(localStorage.getItem('continuePlayingAudio') === 'false' ? false : true);
   const [autoPlayAudio, setAutoPlayAudio] = useState(localStorage.getItem('autoPlayAudio') === 'true' ? true : false);
-  const [alwaysHideText, setAlwaysHideText] = useState(localStorage.getItem('alwaysHideText') === 'true' ? true : false);
+  const [alwaysHideText, setAlwaysHideText] = useState(localStorage.getItem('alwaysHideVerse') === 'true' ? true : false);
   const [reciterComponentList, setReciterComponentList] = useState();
   const [reciterList, setReciterList] = useState([]);
   const [reciterName, setReciterName] = useState();

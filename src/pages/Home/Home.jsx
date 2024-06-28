@@ -99,8 +99,21 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
 
   const getRandomVerse = async (verseList) => {
     const list = await verseList;
-    return list[Math.floor(Math.random()*list.length)];
+    // return list[Math.floor(Math.random()*list.length)];
+    return list[Math.floor(randFloatWithCrypto()*list.length)];
   };
+
+  /**
+* I return a random float between 0 (inclusive) and 1 (exclusive) using the Crypto module.
+*/
+function randFloatWithCrypto() {
+
+	var [ randomInt ] = crypto.getRandomValues( new Uint32Array( 1 ) );
+	var maxInt = 4294967295;
+
+	return ( randomInt / ( maxInt + 1 ) );
+
+}
 
   const getVersesList = async (startChapterNumber, startVerseNumber, endChapterNumber, endVerseNumber) => {
     const verseList = [];

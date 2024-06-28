@@ -92,7 +92,7 @@ const Verse = ({ verseText, hideVerse, chapterNumber, verseNumber }) => {
     return (
         <div 
             dir="rtl" 
-            className={`verse ${isContentHidden ? 'placeholder blur' : ''} ${localStorage.getItem('darkMode') !== 'true' ? '' : 'darkPlaceholder'}`} 
+            className={`verse ${isContentHidden ? 'placeholder blur' : ''} ${localStorage.getItem('darkMode') === 'false' ? '' : 'darkPlaceholder'}`} 
             onClick={makeContentVisibile}
         >
             <div className={`verseText`} style={{ fontFamily, ...style }} dir="rtl">
