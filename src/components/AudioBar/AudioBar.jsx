@@ -12,10 +12,10 @@ import Stack from '@mui/material/Stack';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 
-const AudioBar = ( {audioFile, incrementVerseAudio, decrementVerseAudio} ) => {
+const AudioBar = ({ audioFile, incrementVerseAudio, decrementVerseAudio }) => {
   const [isPlaying, setPlaying] = useState(false);
   const audioRef = useRef(null);
-  const windowSmall = useMediaQuery('(max-width:950px)')
+  const windowSmall = useMediaQuery('(max-width:950px)');
   const isMobile = useMediaQuery('(max-width:600px)');
   const [isLoading, setLoading] = useState(false);
 
@@ -24,7 +24,7 @@ const AudioBar = ( {audioFile, incrementVerseAudio, decrementVerseAudio} ) => {
   //     audioRef.current.currentTime = 0;
   //     setPlaying(true);
   //     audioRef.current.play().then(() => {
-        
+
   //     });
   //   }
   // }, [audioFile]);
@@ -86,9 +86,9 @@ const AudioBar = ( {audioFile, incrementVerseAudio, decrementVerseAudio} ) => {
     const relativeTime = e?.target?.value;
     if (relativeTime && audioRef?.current?.currentTime) {
       setTime(relativeTime);
-      audioRef.current.currentTime = audioRef.current.duration  * (relativeTime / 100);
+      audioRef.current.currentTime = audioRef.current.duration * (relativeTime / 100);
     }
-  }
+  };
 
   const onEndedHandler = () => {
     if (localStorage.getItem('continuePlayingAudio') === null || localStorage.getItem('continuePlayingAudio') === "true") {
@@ -97,7 +97,7 @@ const AudioBar = ( {audioFile, incrementVerseAudio, decrementVerseAudio} ) => {
     }
     setPlaying(false);
     setTime(0);
-  }
+  };
 
   const onTimeUpdateHandler = () => {
     const updateInterval = 0.25;
@@ -121,7 +121,7 @@ const AudioBar = ( {audioFile, incrementVerseAudio, decrementVerseAudio} ) => {
     const minutes = Math.floor(thisTime / 60);
     const seconds = thisTime - minutes * 60;
     return strPadLeft(minutes, '0', 2) + ':' + strPadLeft(seconds, '0', 2);
-  }
+  };
 
   const getEndTime = () => {
     if (!audioRef?.current?.duration) {
@@ -131,55 +131,82 @@ const AudioBar = ( {audioFile, incrementVerseAudio, decrementVerseAudio} ) => {
     const minutes = Math.floor(endTime / 60);
     const seconds = endTime - minutes * 60;
     return strPadLeft(minutes, '0', 2) + ':' + strPadLeft(seconds, '0', 2);
-  }
+  };
 
   return (
     <div className={`bottom-bar ${localStorage.getItem('darkMode') === 'false' ? 'light' : 'dark'}`}>
-      <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
+      <Stack spacing={2} direction={isMobile ? "column" : "row"} sx={{ width: isMobile ? '100% !important' : '300', mb: !isMobile ? 1 : 0 }} alignItems="center">
+        {isMobile && <>
+          <Slider aria-label="timeline" value={time} onChange={timelineChangeHandler} sx={{ width: '100%', padding: '0px !important' }} className="timeline-slider" />
+        </>}
         <audio
-          ref={audioRef} 
-          src={audioFile} 
+          ref={audioRef}
+          src={audioFile}
           onEnded={onEndedHandler}
-          onTimeUpdate={onTimeUpdateHandler}/>
-        <Button onClick={decrementVerseAudio}>
-          <SkipPreviousRoundedIcon/>
-        </Button>
+          onTimeUpdate={onTimeUpdateHandler} />
 
-        <Button
-          size="large"
-          onClick={playPauseHandler}
-          disabled={isLoading}
-        >
-          {isLoading ? (
-            <CircularProgress size={24} />
-          ) : isPlaying ? (
-            <PauseIcon />
-          ) : (
-            <PlayArrowRoundedIcon />
-          )}
-        </Button>
+        {isMobile ?
+          <Stack direction="row">
+            <Button onClick={decrementVerseAudio}>
+              <SkipPreviousRoundedIcon />
+            </Button>
 
-        <Button
-          onClick={incrementVerseAudio}>
-            <SkipNextRoundedIcon/>
-        </Button>
+            <Button
+              size="large"
+              onClick={playPauseHandler}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <CircularProgress size={24} />
+              ) : isPlaying ? (
+                <PauseIcon />
+              ) : (
+                <PlayArrowRoundedIcon />
+              )}
+            </Button>
 
-        {!isMobile && <>
-          <div style={{width: '10px'}}></div>
-          <text>{getCurrentTime()} / {getEndTime()} </text>
-          <Slider aria-label="timeline" value={time} onChange={timelineChangeHandler} sx={{ width: 300}} className="timeline-slider"/>
+            <Button
+              onClick={incrementVerseAudio}>
+              <SkipNextRoundedIcon />
+            </Button>
+          </Stack> :
 
-          {/* <div style={{width: '20px'}}></div>
-          <VolumeDown color="inherit"/>
-          <Slider aria-label="Volume" value={volume} onChange={volumeChangeHandler} sx={{ width: 150 }} className="volume-slider"/>
-          <VolumeUp color="inherit"/> */}
-        </>}
-        {!windowSmall && <>
-          <div style={{width: '20px'}}></div>
-          <VolumeDown color="inherit"/>
-          <Slider aria-label="Volume" value={volume} onChange={volumeChangeHandler} sx={{ width: 150 }} className="volume-slider"/>
-          <VolumeUp color="inherit"/>
-        </>}
+          <>
+            <Button onClick={decrementVerseAudio}>
+              <SkipPreviousRoundedIcon />
+            </Button>
+
+            <Button
+              size="large"
+              onClick={playPauseHandler}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <CircularProgress size={24} />
+              ) : isPlaying ? (
+                <PauseIcon />
+              ) : (
+                <PlayArrowRoundedIcon />
+              )}
+            </Button>
+
+            <Button
+              onClick={incrementVerseAudio}>
+              <SkipNextRoundedIcon />
+            </Button>
+
+            <div style={{ width: '10px' }}></div>
+            <text>{getCurrentTime()} / {getEndTime()} </text>
+            <Slider aria-label="timeline" value={time} onChange={timelineChangeHandler} sx={{ width: 300 }} className="timeline-slider" />
+
+            {!windowSmall && <>
+              <div style={{ width: '20px' }}></div>
+              <VolumeDown color="inherit" />
+              <Slider aria-label="Volume" value={volume} onChange={volumeChangeHandler} sx={{ width: 150 }} className="volume-slider" />
+              <VolumeUp color="inherit" />
+            </>}
+          </>
+        }
       </Stack>
     </div>
   );
