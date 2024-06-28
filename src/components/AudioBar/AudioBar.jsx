@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './AudioBar.css';
-import { Button } from '@mui/material';
+import { Button, CircularProgress } from '@mui/material';
 import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
 import PauseIcon from '@mui/icons-material/Pause';
 import SkipNextRoundedIcon from '@mui/icons-material/SkipNextRounded';
@@ -17,14 +17,31 @@ const AudioBar = ( {audioFile, incrementVerseAudio, decrementVerseAudio} ) => {
   const audioRef = useRef(null);
   const windowSmall = useMediaQuery('(max-width:950px)')
   const isMobile = useMediaQuery('(max-width:600px)');
+  const [isLoading, setLoading] = useState(false);
+
+  // useEffect(() => {
+  //   if (audioFile) {
+  //     audioRef.current.currentTime = 0;
+  //     setPlaying(true);
+  //     audioRef.current.play().then(() => {
+        
+  //     });
+  //   }
+  // }, [audioFile]);
 
   useEffect(() => {
     if (audioFile) {
+      setLoading(true);
       audioRef.current.currentTime = 0;
-      setPlaying(true);
-      audioRef.current.play().then(() => {
-        
-      });
+      audioRef.current.play()
+        .then(() => {
+          setPlaying(true);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error("Error playing audio:", error);
+          setLoading(false);
+        });
     }
   }, [audioFile]);
 
@@ -116,10 +133,7 @@ const AudioBar = ( {audioFile, incrementVerseAudio, decrementVerseAudio} ) => {
     return strPadLeft(minutes, '0', 2) + ':' + strPadLeft(seconds, '0', 2);
   }
 
-  // add audio bar for length of audio clip so you can scroll through
-  // make verse being reciter be highlighted
   return (
-    // <div className="bottom-bar" style={{ position: 'fixed', width: '100%', zIndex: 1000 }}>
     <div className={`bottom-bar ${localStorage.getItem('darkMode') === 'false' ? 'light' : 'dark'}`}>
       <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
         <audio
@@ -130,11 +144,21 @@ const AudioBar = ( {audioFile, incrementVerseAudio, decrementVerseAudio} ) => {
         <Button onClick={decrementVerseAudio}>
           <SkipPreviousRoundedIcon/>
         </Button>
+
         <Button
-          size="large" 
-          onClick={playPauseHandler}>
-            {isPlaying ? <PauseIcon/> : <PlayArrowRoundedIcon/>}
+          size="large"
+          onClick={playPauseHandler}
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <CircularProgress size={24} />
+          ) : isPlaying ? (
+            <PauseIcon />
+          ) : (
+            <PlayArrowRoundedIcon />
+          )}
         </Button>
+
         <Button
           onClick={incrementVerseAudio}>
             <SkipNextRoundedIcon/>

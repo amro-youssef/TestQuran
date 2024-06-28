@@ -65,7 +65,7 @@ const Verse = ({ verseText, hideVerse, chapterNumber, verseNumber }) => {
                     } else if (font === 'v1') {
                         setStyle({ fontSize: '1.1em', letterSpacing: '2px' });
                     } else {
-                        setStyle({ letterSpacing: '0px' })
+                        setStyle({ letterSpacing: '0px', opacity: 1 })
                     }
                 }
                 setIsFontLoaded(true);
@@ -86,7 +86,7 @@ const Verse = ({ verseText, hideVerse, chapterNumber, verseNumber }) => {
     }, [verseText]);
 
     if (!isFontLoaded) {
-        return <div>Loading...</div>;
+        return <div >Loading...</div>;
     }
 
     return (
@@ -95,7 +95,7 @@ const Verse = ({ verseText, hideVerse, chapterNumber, verseNumber }) => {
             className={`verse ${isContentHidden ? 'placeholder blur' : ''} ${localStorage.getItem('darkMode') === 'false' ? '' : 'darkPlaceholder'}`} 
             onClick={makeContentVisibile}
         >
-            <div className={`verseText`} style={{ fontFamily, ...style }} dir="rtl">
+            <div className={`verseText`} style={{ fontFamily, ...style, opacity: isFontLoaded ? 1 : 0, transition: 'opacity 0.3s ease'}} dir="rtl">
                 {
                     fontFamily.includes('uthmani') ? processAyah(verseText) : (isFontLoaded ? verseText?.slice(0, -1) : '')
                 }

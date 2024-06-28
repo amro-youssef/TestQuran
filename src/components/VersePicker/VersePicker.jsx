@@ -102,14 +102,6 @@ const VersePicker = ({ loadState, bounce1, bounce2, bounce3, bounce4 }) => {
         fetchVersesCount();
     }, [endChapterNumber, startChapterNumber, startVerseNumber]);
 
-    // eslint-disable-next-line no-extend-native
-    String.prototype.toIndiaDigits= function(){
-        var id= ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
-        return this.replace(/[0-9]/g, function(w){
-         return id[+w]
-        });
-       }
-
     return (
         <div className='VersePicker'>
             <div className='startDiv'>
@@ -146,7 +138,7 @@ const VersePicker = ({ loadState, bounce1, bounce2, bounce3, bounce4 }) => {
                     options={startVerses}
                     defaultValue="1"
                     // value = {startVerseNumber.toString()}
-                    value = {(typeof startVerseNumber === "string") ? startVerseNumber.toString() : startVerseNumber}
+                    value = {(typeof startVerseNumber === "number") ? startVerseNumber.toString() : startVerseNumber}
                     renderInput={(params) => <TextField {...params} label="Start Verse" />}
                     style={{ display: 'flex', justifyContent: 'center' }}
                 />
@@ -185,7 +177,7 @@ const VersePicker = ({ loadState, bounce1, bounce2, bounce3, bounce4 }) => {
                     disableClearable
                     id="end-verse"
                     options={endVerses}
-                    value = {(typeof endVerseNumber === "string") ? endVerseNumber.toString() : endVerseNumber}
+                    value = {(typeof endVerseNumber === "number") ? endVerseNumber.toString() : endVerseNumber}
                     defaultValue="6"
                     renderInput={(params) => <TextField {...params} label="End Verse" />}
                     style={{ display: 'flex', justifyContent: 'center' }}
