@@ -9,10 +9,23 @@
 
     /* color: #fff; */
     padding: 10px;
+
+    padding-top: 0px;
     text-align: center;
     justify-content: center;
     align-items: center;
+    
+  }
+  @media (max-width: 601px) {
+    .bottom-bar {
+      padding-top: 5px;
+    }
 
+    /* make there be less space between buttons and timeline slider.  */
+    .MuiStack-root.css-m69qwo-MuiStack-root {
+      /* usually 16px */
+      margin-top: 8px !important;
+    }
   }
 
   .dark {
