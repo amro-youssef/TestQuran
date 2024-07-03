@@ -60,7 +60,7 @@ const Verse = ({ verseText, hideVerse, chapterNumber, verseNumber }) => {
 
                     setFontFamily(fontKey);
 
-                    if (font === 'v1' && pageNumber === 1) {
+                    if (font === 'v1' && (pageNumber === 1 || pageNumber === 2)) {
                         setStyle ({ letterSpacing: '0px', fontSize: '1.3em' });
                     } else if (font === 'v1') {
                         setStyle({ fontSize: '1.1em', letterSpacing: '2px' });
