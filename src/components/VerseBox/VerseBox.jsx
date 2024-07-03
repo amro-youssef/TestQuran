@@ -177,42 +177,6 @@ const VerseBox = (props) => {
     )
 }
 
-const ChapterNameButton = ({onViewVerseNumberChange, text, viewVerseNumber}) => {
-    const [buttonText, setButtonText] = useState(text);
-
-    const showVerseNumber = async () => {
-        if (!chapterName) {
-            chapterName = await getChapterName(chapterNumber);
-        }
-        setButtonText(`${chapterNumber}:${verseNumber}\n${chapterName}`);
-    }
-
-
-    useEffect(() => {
-        if (viewVerseNumber) {
-            showVerseNumber();
-        } else {
-            hideVerseNumber();
-        }
-    }, [viewVerseNumber]);
-
-    const hideVerseNumber = () => {
-        setButtonText(<VisibilityIcon />);
-    }
-
-
-    return (
-        <Button
-            size="medium"
-            style={{display: 'flex', justifyContent: 'flex-start', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', maxWidth: '38vw'}}
-            onClick={onViewVerseNumberChange}
-            sx={{ borderRadius: 24}}
-            id="verse-number">
-                {buttonText}
-        </Button>
-    );
-}
-
 VerseBox.propTypes = {
     verseText: PropTypes.string,
     readMorePressed: PropTypes.func,
