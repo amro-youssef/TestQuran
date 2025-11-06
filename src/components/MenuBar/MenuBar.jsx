@@ -15,18 +15,14 @@ import Button from '@mui/material/Button';
 import Slide from '@mui/material/Slide';
 import Sidebar from '../Sidebar/Sidebar';
 import { DarkModeSwitch } from 'react-toggle-dark-mode';
-import useMediaQuery from '@mui/material/useMediaQuery';
 
 const drawerWidth = 240;
 const navItems = ['Home', 'About', 'Contact'];
-
 
 export default function MenuBar(props ) {
   const {testPressed, darkMode, toggleDarkMode, setReciterNumber, isHomePage, goHome, showResultsPage} = props;
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const isMobile = useMediaQuery('(max-width:600px)');
-  const isSmallScreen = useMediaQuery('(max-width:500px)')
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -72,46 +68,30 @@ export default function MenuBar(props ) {
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <HideOnScroll>
-      <AppBar component="nav" style={{height: '8vh'}}>
-        <Toolbar sx={{ backgroundColor: !darkMode ? '#e0e0e0' : 'transparent', color: !darkMode ? 'black' : 'inherit' }}>
-          {/* <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
-          >
-            <MenuIcon />
-          </IconButton> */}
-          
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1, display: { sm: 'inline' }, width: '25%'}}
-          >
-            Test Quran
-          </Typography>
-          <div style={{display: 'flex', justifyContent: 'right'}}>
-            <DarkModeSwitch
-              checked={darkMode}
-              onChange={toggleDarkMode}
-              style={{display: 'flex', marginRight: "20px", marginTop: "6px"}}
-            />
+        <AppBar component="nav" style={{height: '4rem'}}>
+          <Toolbar sx={{ backgroundColor: !darkMode ? '#e0e0e0' : 'transparent', color: !darkMode ? 'black' : 'inherit' }}>          
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{ flexGrow: 1, display: { sm: 'inline' }, width: '25%'}}
+            >
+              Test Quran
+            </Typography>
+            <div style={{display: 'flex', justifyContent: 'right'}}>
+              <DarkModeSwitch
+                checked={darkMode}
+                onChange={toggleDarkMode}
+                style={{display: 'flex', marginRight: "20px", marginTop: "6px"}}
+              />
 
+              <Button variant="outlined" onClick={isHomePage ? testPressed : goHome}>{isHomePage ? 'Test' : 'Home'}</Button>
+              <Sidebar setReciterNumber={(num) => {setReciterNumber(num)}} showResultsPage={showResultsPage}/>
+            </div>
 
-            <Button variant="outlined" onClick={isHomePage ? testPressed : goHome}>{isHomePage ? 'Test' : 'Home'}</Button>
-            <Sidebar setReciterNumber={(num) => {setReciterNumber(num)}} showResultsPage={showResultsPage}/>
-          </div>
-          {/* <Box sx={{ display: {sm: 'block' } }}>
-            {navItems.map((item) => (
-              <Button key={item} sx={{ color: '#fff' }}>
-                {item}
-              </Button>
-            ))}
-          </Box> */}
-        </Toolbar>
-      </AppBar>
+          </Toolbar>
+        </AppBar>
       </HideOnScroll>
+
       <nav>
         <Drawer
           container={container}
