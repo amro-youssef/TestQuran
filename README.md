@@ -1,95 +1,100 @@
-# TestQuran
+# 📖 TestQuran — Interactive Quran Memorization Practice
 
-TestQuran is a web application designed to help Quran memorization students test and strengthen their memorization skills. Inspired by traditional testing methods used by sheikhs, this app provides an interactive and customizable way to practice recalling verses from the Holy Quran.
+**TestQuran** is a web application designed to help **Quran memorization students** test and strengthen their memorisation.  
+Inspired by **traditional testing methods used by sheikhs**, it provides a modern, interactive way to practise recalling verses using audio, visual aids, and structured tests.
 
-## Features
+---
 
-- **Random Verse Generation**: Get a random verse from your selected range to test your memorization.
-- **Verse Information**: View the chapter (surah) and verse number for context.
-- **Audio Recitations**: Listen to the verse recited by any of 13 different reciters.
-- **Visual Aid**: See the image of the Quran page of any verse on screen.
-- **Test Mode**: Create custom tests with a specified number of questions from a chosen verse range.
-- **Progress Tracking**: Review your test results, including correct and incorrect answers, with the ability to revisit them later.
-- **Font**: Change the font to suit your preferences.
+## 🛠️ Technology Stack
 
-## Getting Started
+| Technology | Purpose |
+|----------|---------|
+| **React** | Component-based UI and state management |
+| **JavaScript** | Creating all the functionality |
+| **Vite** | Fast development and build tooling |
+| **npm** | Dependency management |
+| **Quran.com API** | Quran text, audio recitations, and page images |
+
+---
+
+## 🧩 Project Overview
+
+**TestQuran** focuses on two main modes of revision:
+
+### Practice Mode
+- Select a **custom verse range**
+- Generate a **random verse** to test memorisation
+- Recall the next verses before revealing them
+- Access verse context, audio recitation, and the original Quran page image
+
+### Test Mode
+- Create structured tests with a chosen range and number of questions
+- Attempt recall, reveal answers, and mark them as correct or incorrect
+- Review results at the end to identify verses needing more practice
+
+This mirrors traditional memorisation testing, with the flexibility of a web app.
+
+---
+
+## 🎯 Features
+
+- **Random Verse Generation** from selected ranges  
+- **Verse Context** (surah and ayah number)  
+- **Audio Recitations** from 13 different reciters  
+- **Quran Page View** for visual reinforcement  
+- **Custom Test Mode** with results tracking  
+- **Progress Review** for correct and incorrect answers  
+- **Font Customisation**  
+- Optional toggles for auto-playing audio and hiding verses until revealed  
+
+---
+
+## 🚀 Getting Started
 
 ### Prerequisites
-
-- Node.js (version 20.5.1 or higher)
-- npm (version 10.1.0 or higher)
+- Node.js ≥ 20.5.1  
+- npm ≥ 10.1.0  
 
 ### Installation
 
-1. Clone the repository:
-   ```
-   git clone https://github.com/amro-youssef/TestQuran.git
-   ```
+```
+git clone https://github.com/amro-youssef/TestQuran.git  
+cd TestQuran  
+npm install
+npm start
+```
 
-2. Navigate to the project directory:
-   ```
-   cd TestQuran
-   ```
+Open `http://localhost:3000` (or the port specified by Vite).
+May take a while to install.
 
-3. Install dependencies:
-   ```
-   npm install
-   ```
-   (Note this may take a while)
+---
 
-4. Start the development server:
-   ```
-   npm start
-   ```
+## 🤝 Contributing
 
-5. Open your browser and visit `http://localhost:3000` (or the port specified by Vite).
+Contributions are welcome!
 
-## Usage
+1. Fork the repository  
+2. Create a feature or fix branch  
+3. Commit your changes with clear messages  
+4. Push to your fork and open a pull request  
 
-1. **Main Page**: 
-   - Select the range of verses you want to practice.
-   - Click the "Randomize" button to get a random verse from your selected range.
-   - Try to guess the next verses, then expand button to show the next 2 verses. Click 'next verse' or 'show rest of chapter' if you want to see more
-   - Use the buttons next to the verse to reveal the chapter and verse, to play audio, or view the Quran page.
+See the **Issues** tab for known issues and ideas.
 
-2. **Test Mode**:
-   - Enter the desired verse range and number of questions.
-   - For each question, try to guess the next verse, then click the expand button to reveal the answer
-   - Mark whether you got the correct or incorrect
-   - Review your results at the end of the test and see which verses need more practice.
+---
 
-3. **Settings**:
-   - Change the font
-   - View test results
-   - Toggle whether to automatically play the audio on randomize
-   - Toggle whether to hide the next verses until clicked on
+## 🙏 Acknowledgments
 
-## Contributing
+- Inspired by traditional Quran memorisation testing methods  
+- UI and UX inspiration from **quran.com**  
+- Quran data and recitations via the **Quran.com API**  
+  https://api-docs.quran.com/docs/category/quran.com-api  
 
-We welcome contributions to TestQuran! If you'd like to contribute, please follow these steps:
+---
 
-1. Fork the repository.
-2. Create a new branch for your feature or bug fix.
-3. Make your changes and commit them with clear, descriptive messages.
-4. Push your changes to your fork.
-5. Submit a pull request to the main repository.
+## 📬 Contact
 
-There's a list of known issues in the 'issues' tab. Feel free to work on any of these, or anything else you think could do with improvement. Note that the repository may be take a while to download.
+**Amro Youssef**  
+📧 amro.youssef@ymail.com  
 
-## Technology Stack
-
-- React
-- Vite
-- npm
-
-## Contact
-
-Amro Youssef - amro.youssef@ymail.com
-
-Project Link: https://github.com/amro-youssef/TestQuran
-
-## Acknowledgments
-
-- Inspired by traditional Quran memorization testing methods
-- A good amount of inspiration was taken from quran.com
-- https://api-docs.quran.com/docs/category/quran.com-api
+🔗 Project repository:  
+https://github.com/amro-youssef/TestQuran
