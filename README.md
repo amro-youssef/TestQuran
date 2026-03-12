@@ -11,6 +11,7 @@
 | **React** | Component-based UI and state management |
 | **JavaScript** | Creating all the functionality |
 | **Vite** | Fast development and build tooling |
+| **MUI** | Modern Component Library |
 | **npm** | Dependency management |
 | **Quran.com API** | Quran text, audio recitations, and page images |
 
