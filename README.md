@@ -1,6 +1,6 @@
 # 📖 TestQuran — Interactive Quran Memorization Practice
 
-**TestQuran** is a web application designed to help **Quran memorization students** test and strengthen their memorisation. Inspired by **traditional testing methods used by sheikhs**, it provides a modern, interactive way to practise recalling verses using audio, visual aids, and structured tests.
+**TestQuran** is a web application designed to help **Quran memorization students** test and strengthen their memorisation. Inspired by **traditional testing methods used by teachers**, it provides a modern, interactive way to practise recalling verses using audio, visual aids, and structured tests.
 
 ---
 
@@ -13,7 +13,7 @@
 | **Vite** | Fast development and build tooling |
 | **MUI** | Modern Component Library |
 | **npm** | Dependency management |
-| **Quran.com API** | Quran text, audio recitations, and page images |
+| **Quran.com API** | Quran text, audio recitations, and other data |
 
 ---
 
@@ -25,7 +25,7 @@
 - Select a **custom verse range**
 - Generate a **random verse** to test memorisation
 - Recall the next verses before revealing them
-- Access verse context, audio recitation, and the original Quran page image
+- Access verse text, audio recitation, and the image of the Quran page
 
 ### Test Mode
 - Create structured tests with a chosen range and number of questions
