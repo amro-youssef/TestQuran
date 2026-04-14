@@ -12,7 +12,7 @@ import Stack from '@mui/material/Stack';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 
-const AudioBar = ({ audioFile, incrementVerseAudio, decrementVerseAudio }) => {
+const AudioBar = ({ audioFile, audioLoading, incrementVerseAudio, decrementVerseAudio }) => {
   const [isPlaying, setPlaying] = useState(false);
   const audioRef = useRef(null);
   const windowSmall = useMediaQuery('(max-width:950px)');
@@ -154,9 +154,9 @@ const AudioBar = ({ audioFile, incrementVerseAudio, decrementVerseAudio }) => {
             <Button
               size="large"
               onClick={playPauseHandler}
-              disabled={isLoading}
+              disabled={isLoading || audioLoading}
             >
-              {isLoading ? (
+              {isLoading || audioLoading ? (
                 <CircularProgress size={24} />
               ) : isPlaying ? (
                 <PauseIcon />
@@ -179,9 +179,9 @@ const AudioBar = ({ audioFile, incrementVerseAudio, decrementVerseAudio }) => {
             <Button
               size="large"
               onClick={playPauseHandler}
-              disabled={isLoading}
+              disabled={isLoading || audioLoading}
             >
-              {isLoading ? (
+              {isLoading || audioLoading ? (
                 <CircularProgress size={24} />
               ) : isPlaying ? (
                 <PauseIcon />

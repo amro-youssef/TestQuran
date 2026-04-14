@@ -37,6 +37,7 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
 
   const [loading, setLoading] = useState(false);
   const [versePlaying, setVersePlaying] = useState();
+  const [audioLoading, setAudioLoading] = useState(null);
   const [mode, setMode] = useState((localStorage.getItem('hideVerseText') && localStorage.getItem('autoPlayAudio')) ? 'audio' : 'visual');
 
   const isMobile = useMediaQuery('(max-width:600px)');
@@ -263,7 +264,9 @@ function randFloatWithCrypto() {
   };
 
   const playAudio = async (chapterNumber, verseNumber) => {
+    setAudioLoading({ chapterNumber, verseNumber });
     const url = await getAudioUrl(chapterNumber, verseNumber, reciterNumber);
+    setAudioLoading(null);
 
     // const audio = new Audio();
     // setTimeout(async () => {
@@ -492,7 +495,7 @@ function randFloatWithCrypto() {
               </>
             ) : <></>}
         
-      {audioUrl ? (<AudioBar audioFile={audioUrl} incrementVerseAudio={incrementVerseAudio} decrementVerseAudio={decrementVerseAudio}/>) : null}
+      {(audioUrl || audioLoading) ? (<AudioBar audioFile={audioUrl} audioLoading={!!audioLoading} incrementVerseAudio={incrementVerseAudio} decrementVerseAudio={decrementVerseAudio}/>) : null}
         
       <ScrollToTopButton/>
       <div style={{ marginTop: '5em' }}></div>
