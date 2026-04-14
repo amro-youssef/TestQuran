@@ -11,6 +11,7 @@ import { getVerseTextOfFont, isMobileOrTablet } from '../../utils.js';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import VersePickerMobile from '../../components/VersePicker/VersePickerMobile.jsx';
 import ScrollToTopButton from '../../components/ScrollToTopButton/ScrollToTopButton.jsx';
+import ModeToggle from '../../components/ModeToggle/ModeToggle.jsx';
 
 
 const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => { 
@@ -36,6 +37,7 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
 
   const [loading, setLoading] = useState(false);
   const [versePlaying, setVersePlaying] = useState();
+  const [mode, setMode] = useState((localStorage.getItem('hideVerseText') && localStorage.getItem('autoPlayAudio')) ? 'audio' : 'visual');
 
   const isMobile = useMediaQuery('(max-width:600px)');
 
@@ -80,6 +82,17 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
       playAudio(randomVerse?.chapterNumber, randomVerse?.verseNumber);
     }
   };
+
+  const onModeChange = (mode) => {
+    setMode(mode);
+    if (mode === 'visual') {
+      localStorage.setItem('alwaysHideVerse', false);
+      localStorage.setItem('autoPlayAudio', false);
+    } else if (mode === 'audio') {
+      localStorage.setItem('alwaysHideVerse', true);
+      localStorage.setItem('autoPlayAudio', true);
+    }
+  }
 
   /**
    * @return whether there are empty fields
@@ -349,7 +362,7 @@ function randFloatWithCrypto() {
   return (
       <div className="App">
         <h3 className='title'>Pick the range of verses you would like to be tested on:</h3>
-        <div style={{ display: 'flex', justifyContent: 'space-evenly', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
           {/* {!isMobile ? 
           <VersePicker 
             loadState={loadState} 
@@ -368,6 +381,7 @@ function randFloatWithCrypto() {
           />
         
           }
+          <ModeToggle mode={mode} onChange={onModeChange} />
           <SubmitButton onClick={onSubmitClick} loading={loading}/>
         </div>
         {verseText ? (

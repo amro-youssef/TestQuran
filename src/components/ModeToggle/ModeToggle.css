@@ -1,0 +1,17 @@
+.mode-toggle {
+    display: flex;
+    align-items: center;
+    align-self: center;
+    gap: 2px;
+    flex-shrink: 0;
+}
+
+.mode-icon {
+    cursor: pointer;
+    opacity: 0.35;
+    transition: opacity 0.2s ease;
+}
+
+.mode-icon.active {
+    opacity: 1;
+}
