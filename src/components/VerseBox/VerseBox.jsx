@@ -1,6 +1,6 @@
 /* eslint-disable eqeqeq */
 import {React, useState, useEffect, useRef} from 'react';
-import { Button } from '@mui/material';
+import { Button, CircularProgress } from '@mui/material';
 import {getChapterName} from '../../backend.js'
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -15,7 +15,7 @@ import './VerseBox.css';
 
 const VerseBox = (props) => {
     let {verseText, readMorePressed, chapterNumber, chapterName, verseNumber, viewVerseNumber,
-         onViewVerseNumberChange, playAudio, versePlaying, showAudioButton, hideVerse } = props;
+         onViewVerseNumberChange, playAudio, versePlaying, showAudioButton, hideVerse, audioLoading } = props;
 
     const [verse, setVerse] = useState(verseText);
     const [showImageDialog, setShowImageDialog] = useState(false);
@@ -113,6 +113,10 @@ const VerseBox = (props) => {
         return versePlaying && versePlaying.chapterNumber == chapterNumber && versePlaying.verseNumber == verseNumber
     }
 
+    const isAudioLoading = () => {
+        return audioLoading && audioLoading.chapterNumber == chapterNumber && audioLoading.verseNumber == verseNumber
+    }
+
     return (
         <div ref={divRef} className={`verse-container ${isVersePlaying() ? 'selected': ''} ${localStorage.getItem('darkMode') === 'false' ? 'light' : 'dark'}`}>
             <Verse verseText={verseText} hideVerse={hideVerse} chapterNumber={chapterNumber} verseNumber={verseNumber} />
@@ -153,8 +157,9 @@ const VerseBox = (props) => {
                         onClick={() => {
                             playAudio(chapterNumber, verseNumber)
                         }}
+                        disabled={isAudioLoading()}
                     >
-                        {<VolumeUp/>}
+                        {isAudioLoading() ? <CircularProgress size={24} /> : <VolumeUp/>}
                     </Button>) : <div></div>}
                     <Button
                         size="medium"
@@ -189,7 +194,8 @@ VerseBox.propTypes = {
     allowHideVerse: PropTypes.bool,
     versePlaying: PropTypes.bool,
     showAudioButton: PropTypes.bool,
-    hideVerse: PropTypes.bool
+    hideVerse: PropTypes.bool,
+    audioLoading: PropTypes.object
 }
 
 export default VerseBox;

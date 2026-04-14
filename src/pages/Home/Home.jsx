@@ -37,6 +37,7 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
 
   const [loading, setLoading] = useState(false);
   const [versePlaying, setVersePlaying] = useState();
+  const [audioLoading, setAudioLoading] = useState(null);
   const [mode, setMode] = useState((localStorage.getItem('hideVerseText') && localStorage.getItem('autoPlayAudio')) ? 'audio' : 'visual');
 
   const isMobile = useMediaQuery('(max-width:600px)');
@@ -263,7 +264,9 @@ function randFloatWithCrypto() {
   };
 
   const playAudio = async (chapterNumber, verseNumber) => {
+    setAudioLoading({ chapterNumber, verseNumber });
     const url = await getAudioUrl(chapterNumber, verseNumber, reciterNumber);
+    setAudioLoading(null);
 
     // const audio = new Audio();
     // setTimeout(async () => {
@@ -397,6 +400,7 @@ function randFloatWithCrypto() {
               onViewVerseNumberChange={onViewVerseNumberChange}
               playAudio={playAudio}
               versePlaying={audioUrl ? versePlaying : null}
+              audioLoading={audioLoading}
               hideVerse = {localStorage.getItem('alwaysHideVerse') === "true"} // TODO make this update dynamically rather than needing refresh for it to apply
             />
 
@@ -411,6 +415,7 @@ function randFloatWithCrypto() {
                   onViewVerseNumberChange={onViewVerseNumberChange}
                   playAudio={playAudio}
                   versePlaying={audioUrl ? versePlaying : null}
+                  audioLoading={audioLoading}
                   hideVerse = {localStorage.getItem('alwaysHideVerse') === "true"}
                 />
               </>
@@ -426,6 +431,7 @@ function randFloatWithCrypto() {
                   onViewVerseNumberChange={onViewVerseNumberChange}
                   playAudio={playAudio}
                   versePlaying={audioUrl ? versePlaying : null}
+                  audioLoading={audioLoading}
                   hideVerse = {localStorage.getItem('alwaysHideVerse') === "true"}
                 />
                 {/* {!showRestOfChapter && 
@@ -452,6 +458,7 @@ function randFloatWithCrypto() {
               onViewVerseNumberChange={onViewVerseNumberChange}
               playAudio={playAudio}
               versePlaying={audioUrl ? versePlaying : null}
+              audioLoading={audioLoading}
               hideVerse = {localStorage.getItem('alwaysHideVerse') === "true"}
             />
         ))}
