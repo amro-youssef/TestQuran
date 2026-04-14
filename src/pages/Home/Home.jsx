@@ -400,7 +400,6 @@ function randFloatWithCrypto() {
               onViewVerseNumberChange={onViewVerseNumberChange}
               playAudio={playAudio}
               versePlaying={audioUrl ? versePlaying : null}
-              audioLoading={audioLoading}
               hideVerse = {localStorage.getItem('alwaysHideVerse') === "true"} // TODO make this update dynamically rather than needing refresh for it to apply
             />
 
@@ -415,7 +414,6 @@ function randFloatWithCrypto() {
                   onViewVerseNumberChange={onViewVerseNumberChange}
                   playAudio={playAudio}
                   versePlaying={audioUrl ? versePlaying : null}
-                  audioLoading={audioLoading}
                   hideVerse = {localStorage.getItem('alwaysHideVerse') === "true"}
                 />
               </>
@@ -431,7 +429,6 @@ function randFloatWithCrypto() {
                   onViewVerseNumberChange={onViewVerseNumberChange}
                   playAudio={playAudio}
                   versePlaying={audioUrl ? versePlaying : null}
-                  audioLoading={audioLoading}
                   hideVerse = {localStorage.getItem('alwaysHideVerse') === "true"}
                 />
                 {/* {!showRestOfChapter && 
@@ -458,7 +455,6 @@ function randFloatWithCrypto() {
               onViewVerseNumberChange={onViewVerseNumberChange}
               playAudio={playAudio}
               versePlaying={audioUrl ? versePlaying : null}
-              audioLoading={audioLoading}
               hideVerse = {localStorage.getItem('alwaysHideVerse') === "true"}
             />
         ))}
@@ -499,7 +495,7 @@ function randFloatWithCrypto() {
               </>
             ) : <></>}
         
-      {audioUrl ? (<AudioBar audioFile={audioUrl} incrementVerseAudio={incrementVerseAudio} decrementVerseAudio={decrementVerseAudio}/>) : null}
+      {(audioUrl || audioLoading) ? (<AudioBar audioFile={audioUrl} audioLoading={!!audioLoading} incrementVerseAudio={incrementVerseAudio} decrementVerseAudio={decrementVerseAudio}/>) : null}
         
       <ScrollToTopButton/>
       <div style={{ marginTop: '5em' }}></div>
