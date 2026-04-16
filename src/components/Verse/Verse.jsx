@@ -34,6 +34,7 @@ const Verse = ({ verseText, hideVerse, chapterNumber, verseNumber }) => {
         const font = localStorage.getItem('selectedFont') || 'v1';
         
         const loadFont = async () => {
+            setIsFontLoaded(false);
             try {
                 await fontCache.init();
 
@@ -68,13 +69,15 @@ const Verse = ({ verseText, hideVerse, chapterNumber, verseNumber }) => {
                         setStyle({ letterSpacing: '0px', opacity: 1 })
                     }
                 }
-                setIsFontLoaded(true);
+                // setIsFontLoaded(true);
 
                 // Clear old fonts periodically
                 fontCache.clearOldFonts();
             } catch (error) {
                 console.error('Failed to load font:', error);
-                setIsFontLoaded(true); // Set to true to fall back to default font
+                // setIsFontLoaded(true); // Set to true to fall back to default font
+            } finally {
+                setIsFontLoaded(true);
             }
         };
 

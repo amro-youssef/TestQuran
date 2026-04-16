@@ -38,7 +38,7 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
   const [loading, setLoading] = useState(false);
   const [versePlaying, setVersePlaying] = useState();
   const [audioLoading, setAudioLoading] = useState(null);
-  const [mode, setMode] = useState((localStorage.getItem('hideVerseText') && localStorage.getItem('autoPlayAudio')) ? 'audio' : 'visual');
+  const [mode, setMode] = useState((localStorage.getItem('alwaysHideVerse') && localStorage.getItem('autoPlayAudio')) ? 'audio' : 'visual');
 
   const isMobile = useMediaQuery('(max-width:600px)');
 
