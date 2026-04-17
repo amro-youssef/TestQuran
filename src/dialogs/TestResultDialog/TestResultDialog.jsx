@@ -24,6 +24,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Verse from '../../components/Verse/Verse.jsx';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import './TestResultDialog.css'
+import { Link } from 'react-router-dom';
 
 const TestResultDialog = ({
   open,
@@ -148,6 +149,9 @@ const TestResultDialog = ({
         )}
       </DialogContent>
       <DialogActions>
+        <Button component={Link} to="/testresults" color="primary">
+          View All Results
+        </Button>
         <Button onClick={restart} color="primary">
           Restart
         </Button>
