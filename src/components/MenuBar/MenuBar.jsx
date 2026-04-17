@@ -15,6 +15,7 @@ import Button from '@mui/material/Button';
 import Slide from '@mui/material/Slide';
 import Sidebar from '../Sidebar/Sidebar';
 import { DarkModeSwitch } from 'react-toggle-dark-mode';
+import { Link } from 'react-router-dom';
 
 const drawerWidth = 240;
 const navItems = ['Home', 'About', 'Contact'];
@@ -70,13 +71,16 @@ export default function MenuBar(props ) {
       <HideOnScroll>
         <AppBar component="nav" style={{height: '6vh' ,minHeight: '60px', maxHeight: '8vh'}}>
           <Toolbar sx={{ backgroundColor: !darkMode ? '#e0e0e0' : 'transparent', color: !darkMode ? 'black' : 'inherit' }}>          
+            {/* <Link> */}
             <Typography
               variant="h6"
-              component="div"
-              sx={{ flexGrow: 1, display: { sm: 'inline' }, width: '25%'}}
+              component={Link}
+              to="/"
+              sx={{ flexGrow: 1, display: { sm: 'inline' }, width: '25%', textDecoration: 'none', color: 'inherit'}}
             >
               Test Quran
             </Typography>
+            {/* </Link> */}
             <div style={{display: 'flex', justifyContent: 'right'}}>
               <DarkModeSwitch
                 checked={darkMode}
