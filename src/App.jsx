@@ -7,11 +7,12 @@ import About from './pages/About/About.jsx';
 import TestDialog from './dialogs/TestDialog/TestDialog.jsx' 
 import MenuBar from './components/MenuBar/MenuBar.jsx' 
 import Footer from './components/Footer/Footer.jsx'
-import {React, useState} from 'react';
+import {React, useState, useEffect} from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
+import themes from './themes.js'
 
 const App = () => { 
   const [testDialog, setTestDialog] = useState(false);
@@ -73,17 +74,38 @@ const openTestPage = () => {
 }
 
   const [darkMode, setDarkMode] = useState(localStorage.getItem("darkMode") !== "false"); 
+  const [themeColor, setThemeColor] = useState(localStorage.getItem("themeColor") || "blue");
+
+  const currentAccent = themes[themeColor] || themes.blue;
+  const accent = darkMode ? currentAccent.dark : currentAccent.light;
+
+  // Apply CSS variables for accent colors
+  useEffect(() => {
+    const root = document.documentElement;
+    root.style.setProperty('--accent-link', accent.linkColor);
+    root.style.setProperty('--accent-selection-shadow', accent.selectionShadow);
+    root.style.setProperty('--accent-selection-outline', accent.selectionOutline);
+    root.style.setProperty('--accent-selection-bg', accent.selectionBg);
+  }, [accent]);
+
     const darkTheme = createTheme({ 
         palette: { 
             mode: darkMode ? 'dark' : 'light',
+            primary: { main: accent.primary },
+            secondary: { main: accent.secondary },
             background: {
-              default: darkMode ? '#242526' : '#f5f5f5',
+              default: darkMode ? '#242526' : '#f0ede6',
+              ...(darkMode ? {} : { paper: '#f7f5f0' }),
             },
         }, 
     }); 
     const toggleDarkMode = (checked) => {
       setDarkMode(checked);
       localStorage.setItem("darkMode", checked);
+    };
+    const changeThemeColor = (color) => {
+      setThemeColor(color);
+      localStorage.setItem("themeColor", color);
     };
 
   return (
@@ -105,6 +127,8 @@ const openTestPage = () => {
         darkMode={darkMode} 
         setReciterNumber={setReciterNumber}
         showResultsPage={() => {navigate('/testresults')}}
+        themeColor={themeColor}
+        changeThemeColor={changeThemeColor}
         >
       </MenuBar>
 

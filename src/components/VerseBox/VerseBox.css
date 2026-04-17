@@ -1,7 +1,7 @@
 .verse-container {
     margin: 0 auto; /* Center the container horizontally */
-    border-top: 1px solid rgb(201, 201, 201);;
-    border-bottom: 1px solid rgb(201, 201, 201);;
+    border-top: 1px solid #ddd8cf;
+    border-bottom: 1px solid #ddd8cf;
     width: 77%;
     flex-grow: 1;
     /* background-color: #e9f2f5; */
@@ -12,16 +12,15 @@
   } */
 
   .selected.dark{
-    box-shadow: 0 0 7px 7px rgba(100, 100, 255, 0.1);
-    outline: 1px solid rgba(100, 100, 255, 0.2);
-    background-color: #05050546;
-
+    box-shadow: 0 0 0 3px var(--accent-selection-shadow, rgba(100, 100, 255, 0.1));
+    outline: 1px solid var(--accent-selection-outline, rgba(100, 100, 255, 0.2));
+    background-color: var(--accent-selection-bg, #05050546);
   }
 
   .selected.light{
-    box-shadow: 0 0 7px 7px rgba(0, 0, 255, 0.1);
-    outline: 1px solid rgba(100, 100, 255, 0.15);
-
+    box-shadow: 0 0 0 3px var(--accent-selection-shadow, rgba(107, 127, 94, 0.12));
+    outline: 1px solid var(--accent-selection-outline, rgba(107, 127, 94, 0.25));
+    background-color: var(--accent-selection-bg, rgba(107, 127, 94, 0.04));
   }
 
   #expand-div {

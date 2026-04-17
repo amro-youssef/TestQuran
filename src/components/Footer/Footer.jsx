@@ -7,9 +7,6 @@ const Footer = () => {
             <a style={{justifyContent: 'center', color: 'darkgray'}}rel="noreferrer" href="/about">
                 About
             </a>
-            <a style={{justifyContent: 'center', color: 'darkgray'}} target='_blank' rel="noreferrer" href="https://api-docs.quran.com/docs/category/quran.com-api">
-                Quran.com api
-            </a>
             <a style={{justifyContent: 'center', color: 'darkgray'}} href='https://forms.gle/o4oxGsqGaBUqaWqi8' target='_blank'  rel="noreferrer">
                 Feedback form
             </a>

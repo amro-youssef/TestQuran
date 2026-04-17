@@ -1,6 +1,7 @@
 import {React, useState, useEffect} from 'react';
 import {getAudioUrl, getNumberVerses, getVerseText, getChapterName} from '../../backend.js';
 import { Button, CircularProgress } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import ProgressBar from "@ramonak/react-progress-bar";
 import VerseBox from '../../components/VerseBox/VerseBox.jsx';
 import DoneIcon from '@mui/icons-material/Done';
@@ -11,6 +12,7 @@ import TestResultDialog from '../../dialogs/TestResultDialog/TestResultDialog.js
 import TestResults from '../TestResults/TestResults.jsx';
 
 const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
+    const muiTheme = useTheme();
     const [firstVerse, setFirstVerse] = useState();
     const [firstVerseText, setFirstVerseText] = useState();
     const [secondVerseText, setSecondVerseText] = useState();
@@ -277,7 +279,7 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
         <div style={{ width: '80%', margin: 'auto' }}>
         <ProgressBar 
             completed={100 * (currentQuestionNumber / state.numQuestions)}
-            bgColor="#007bff"
+            bgColor={muiTheme.palette.primary.main}
             height="5px"
             labelColor="#e80909"
             customLabel=" "
