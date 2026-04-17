@@ -3,17 +3,20 @@ import './App.css';
 import Home from './pages/Home/Home.jsx';
 import Test from './pages/Test/Test.jsx';
 import TestResults from './pages/TestResults/TestResults.jsx';
+import About from './pages/About/About.jsx';
 import TestDialog from './dialogs/TestDialog/TestDialog.jsx' 
 import MenuBar from './components/MenuBar/MenuBar.jsx' 
 import Footer from './components/Footer/Footer.jsx'
 import {React, useState} from 'react';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 
 const App = () => { 
   const [testDialog, setTestDialog] = useState(false);
-  const [testPage, setTestPage] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const [startChapterNumber, setStartChapterNumber] = useState();
   const [startVerseNumber, setStartVerseNumber] = useState();
@@ -22,7 +25,6 @@ const App = () => {
   const [numQuestions, setNumQuestions] = useState();
   const [reciterNumber, setReciterNumber] = useState(1);
   const [testMode, setTestMode] = useState();
-  const [showResultsPage, setShowResultsPage] = useState(false);
 
   const loadState = (startChapter, startVerse, endChapter, endVerse, numQuestions, testMode) => {
     setStartChapterNumber(parseInt(startChapter));
@@ -67,7 +69,7 @@ const App = () => {
 // generateFontFaces(604);
 
 const openTestPage = () => {
-  setTestPage(true);
+  navigate('/test');
 }
 
   const [darkMode, setDarkMode] = useState(localStorage.getItem("darkMode") !== "false"); 
@@ -93,49 +95,22 @@ const openTestPage = () => {
 
       <MenuBar 
         testPressed={() => setTestDialog(true)}
-        isHomePage={!testPage && !showResultsPage}
+        isHomePage={location.pathname === '/'}
         goHome={() => {
-          setTestPage(false);
           setTestDialog(false);
-          setShowResultsPage(false);
+          navigate('/');
         }}
         style={{height: '10vh'}}
         toggleDarkMode={toggleDarkMode} 
         darkMode={darkMode} 
         setReciterNumber={setReciterNumber}
-        showResultsPage={() => {setShowResultsPage(true)}}
+        showResultsPage={() => {navigate('/testresults')}}
         >
       </MenuBar>
 
-      {showResultsPage ? (
-        <>
-          <TestResults 
-              // Pass any necessary props for TestResults
-          />
-        </>
-      ) : (
-        <>
-          {testPage ? (
-            <Test 
-              goHome={() => {
-                setTestPage(false);
-                setTestDialog(false);
-                setShowResultsPage(false);
-              }}
-              state={{
-                startChapterNumber: startChapterNumber,
-                startVerseNumber: startVerseNumber,
-                endChapterNumber: endChapterNumber,
-                endVerseNumber: endVerseNumber,
-                numQuestions: numQuestions,
-                testMode: testMode,
-              }}
-              toggleDarkMode={toggleDarkMode}
-              darkMode={darkMode}
-              setShowResultsPage={setShowResultsPage}
-            />
-          ) : (
-            <>
+      <Routes>
+        <Route path="/" element={
+          <>
             <Home style={{marginTop: '50px'}} className="App" testPressed={() => setTestDialog(true)} toggleDarkMode={toggleDarkMode} darkMode={darkMode} reciterNumber={reciterNumber}/> 
             {testDialog ? 
               <TestDialog
@@ -144,13 +119,34 @@ const openTestPage = () => {
                 loadState={(a,b,c,d,e,f) => loadState(a,b,c,d,e,f)} 
                 openTestPage={openTestPage}/>
                 : <></>}
-            </>
-            // <TestResults 
-            //   // Pass any necessary props for TestResults
-            // />
-          )}
-        </>
-      )}
+          </>
+        } />
+        <Route path="/test" element={
+          <Test 
+            goHome={() => {
+              setTestDialog(false);
+              navigate('/');
+            }}
+            state={{
+              startChapterNumber: startChapterNumber,
+              startVerseNumber: startVerseNumber,
+              endChapterNumber: endChapterNumber,
+              endVerseNumber: endVerseNumber,
+              numQuestions: numQuestions,
+              testMode: testMode,
+            }}
+            toggleDarkMode={toggleDarkMode}
+            darkMode={darkMode}
+            setShowResultsPage={() => navigate('/testresults')}
+          />
+        } />
+        <Route path="/testresults" element={
+          <TestResults />
+        } />
+        <Route path="/about" element={
+          <About />
+        } />
+      </Routes>
 
     <Footer />
     </ThemeProvider> 

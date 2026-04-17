@@ -471,6 +471,12 @@ function randFloatWithCrypto() {
                   versePlaying={audioUrl ? versePlaying : null}
                   hideVerse = {localStorage.getItem('alwaysHideVerse') === "true"}
                 /> */}
+                {lastVerseIsOnScreen && 
+                    <p id='end-of-chapter'>
+                      {/* <button id='next-verse' className={`${localStorage.getItem('darkMode') === 'false' ? '' : 'dark-text-link'} text-link`} onClick={getNextVerse}> */}
+                        End of Chapter
+                      {/* </button> */}
+                    </p>}
                 {!lastVerseIsOnScreen && 
                   <div className={'bottom-button-div'}>
                     <p>

@@ -4,6 +4,9 @@ import React from 'react';
 const Footer = () => {
     return (
         <footer style ={{display: 'flex', marginBottom: '20px', gap: '6vh', justifyContent: 'center'}}>
+            <a style={{justifyContent: 'center', color: 'darkgray'}}rel="noreferrer" href="/about">
+                About
+            </a>
             <a style={{justifyContent: 'center', color: 'darkgray'}} target='_blank' rel="noreferrer" href="https://api-docs.quran.com/docs/category/quran.com-api">
                 Quran.com api
             </a>
