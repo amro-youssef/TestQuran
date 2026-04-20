@@ -147,21 +147,19 @@ const openTestPage = () => {
         } />
         <Route path="/test" element={
           <Test 
-            goHome={() => {
-              setTestDialog(false);
-              navigate('/');
-            }}
-            state={{
-              startChapterNumber: startChapterNumber,
-              startVerseNumber: startVerseNumber,
-              endChapterNumber: endChapterNumber,
-              endVerseNumber: endVerseNumber,
-              numQuestions: numQuestions,
-              testMode: testMode,
-            }}
-            toggleDarkMode={toggleDarkMode}
-            darkMode={darkMode}
-            setShowResultsPage={() => navigate('/testresults')}
+            // goHome={() => {
+            //   setTestDialog(false);
+            //   navigate('/');
+            // }}
+            // state={{
+            //   startChapterNumber: startChapterNumber,
+            //   startVerseNumber: startVerseNumber,
+            //   endChapterNumber: endChapterNumber,
+            //   endVerseNumber: endVerseNumber,
+            //   numQuestions: numQuestions,
+            //   testMode: testMode,
+            // }}
+            // setShowResultsPage={() => navigate('/testresults')}
           />
         } />
         <Route path="/testresults" element={
