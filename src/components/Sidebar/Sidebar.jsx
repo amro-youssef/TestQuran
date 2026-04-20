@@ -18,10 +18,11 @@ import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import {getReciters} from '../../backend.js';
+import themes from '../../themes.js';
 
 import './Sidebar.css';
 
-export default function Sidebar({ setReciterNumber, showResultsPage }) {
+export default function Sidebar({ setReciterNumber, showResultsPage, themeColor, changeThemeColor }) {
   const [state, setState] = useState({
     top: false,
     left: false,
@@ -173,6 +174,28 @@ export default function Sidebar({ setReciterNumber, showResultsPage }) {
             <MenuItem value="uthmani">QPC Uthmani Hafs</MenuItem>
           </Select>
         </FormControl>
+
+        <h2>Theme Color:</h2>
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          {Object.entries(themes).map(([key, theme]) => (
+            <button
+              key={key}
+              onClick={() => changeThemeColor(key)}
+              title={theme.label}
+              style={{
+                width: 32,
+                height: 32,
+                borderRadius: '50%',
+                backgroundColor: theme.swatch,
+                border: themeColor === key ? '3px solid currentColor' : '2px solid transparent',
+                outline: themeColor === key ? '2px solid ' + theme.swatch : 'none',
+                outlineOffset: '2px',
+                cursor: 'pointer',
+                transition: 'outline 0.15s, border 0.15s',
+              }}
+            />
+          ))}
+        </div>
 
         <h2>Test:</h2>
         <Button variant="outlined" style={{top: '0px'}} onClick={() => {toggleDrawer('right', false); showResultsPage();}}>Test Results</Button>

@@ -11,7 +11,7 @@
 .text-link {
   background: none;
   border: none;
-  color: blue;
+  color: var(--accent-link, #6b7f5e);
   text-decoration: underline;
   cursor: pointer;
   padding: 0;
@@ -21,7 +21,7 @@
 }
 
 .dark-text-link {
-  color: #90caf9;
+  color: var(--accent-link, #90caf9);
 }
 
 .App-header {
@@ -64,12 +64,12 @@ html, body {
 }
 
 ::-webkit-scrollbar-track {
-  background-color: #f2f2f2; /* Color of the track */
+  background-color: #e8e5de;
 }
 
 .light {
-  background-color: #faf5f5;
-  color: #333; /* Set text color to a darker shade for readability */
+  background-color: #f0ede6;
+  color: #3b3a37;
 }
 
 .title {

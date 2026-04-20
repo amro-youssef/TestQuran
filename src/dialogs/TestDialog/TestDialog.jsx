@@ -3,6 +3,7 @@ import { Dialog, DialogTitle, DialogContent, DialogActions, OutlinedInput, Butto
 import './TestDialog.css';
 import {getChapterNames, getNumberVerses} from '../../backend.js'
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { useNavigate } from 'react-router-dom';
 
 const TestDialog = ({open, closeDialog, loadState, openTestPage}) => { 
   const [showTestDialog, setShowTestDialog] = useState(false); // State to control test dialog visibility
@@ -22,6 +23,7 @@ const TestDialog = ({open, closeDialog, loadState, openTestPage}) => {
 
   const [numQuestions, setNumQuestions] = useState(5);
   const [testMode, setTestMode] = useState('guessNextVerse');
+  const navigate = useNavigate();
 
   const isMobile = useMediaQuery('(max-width:600px)');
 
@@ -130,27 +132,28 @@ const TestDialog = ({open, closeDialog, loadState, openTestPage}) => {
 
 return (
   <Dialog open={showTestDialog} onClose={closeTestDialog}>
-      <DialogTitle>Create Memorization Test</DialogTitle>
-      <DialogContent className='testDialogContent'>
-        <div style={{"display": "flex", "flexDirection": "row",}}>
+    <DialogTitle>Create Memorization Test</DialogTitle>
+    <DialogContent className="testDialogContent">
+      <div style={{ display: "flex", flexDirection: "row" }}>
         <FormControl sx={{ m: 0.5, width: 255 }}>
           <FormLabel id="formlabel">Start Chapter</FormLabel>
           <Select
             value={startChapter}
             onChange={(event) => {
               try {
-                  setStartChapter(event.target.value);
-                  setStartChapterName(event.target.value.split(' ').slice(1).join(' '));
-                  setStartChapterNumber(parseInt(event.target.value.split(' ')[0]))
-                  setStartVerses([])
+                setStartChapter(event.target.value);
+                setStartChapterName(
+                  event.target.value.split(" ").slice(1).join(" "),
+                );
+                setStartChapterNumber(
+                  parseInt(event.target.value.split(" ")[0]),
+                );
+                setStartVerses([]);
               } catch {}
-              }}
-            >
+            }}
+          >
             {startChapters.map((name) => (
-              <MenuItem
-                key={name}
-                value={name}
-              >
+              <MenuItem key={name} value={name}>
                 {name}
               </MenuItem>
             ))}
@@ -163,43 +166,38 @@ return (
             value={startVerseNumber}
             onChange={(event) => {
               try {
-                  setStartVerseNumber(event.target.value);
+                setStartVerseNumber(event.target.value);
               } catch {}
             }}
           >
             {startVerses.map((name) => (
-              <MenuItem
-                key={name}
-                value={name}
-              >
+              <MenuItem key={name} value={name}>
                 {name}
               </MenuItem>
             ))}
           </Select>
         </FormControl>
-        </div>
+      </div>
 
-        <div style={{"display": "flex", "flexDirection": "row"}}>
+      <div style={{ display: "flex", flexDirection: "row" }}>
         <FormControl sx={{ m: 0.5, width: 255 }}>
           <FormLabel id="formlabel">End Chapter</FormLabel>
           <Select
             onChange={(event) => {
               // change to an if
               try {
-                  setEndChapter(event.target.value);
-                  setEndChapterName(event.target.value.split(' ').slice(1).join(' '));
-                  setEndChapterNumber(parseInt(event.target.value.split(' ')[0]))
-                  setEndVerses([])
-              } catch {
-              }
-          }}
+                setEndChapter(event.target.value);
+                setEndChapterName(
+                  event.target.value.split(" ").slice(1).join(" "),
+                );
+                setEndChapterNumber(parseInt(event.target.value.split(" ")[0]));
+                setEndVerses([]);
+              } catch {}
+            }}
             value={endChapter}
           >
             {endChapters.map((name) => (
-              <MenuItem
-                key={name}
-                value={name}
-              >
+              <MenuItem key={name} value={name}>
                 {name}
               </MenuItem>
             ))}
@@ -211,56 +209,70 @@ return (
           <Select
             onChange={(event) => {
               try {
-                  setEndVerseNumber(event.target.value);
+                setEndVerseNumber(event.target.value);
               } catch {}
-          }}
+            }}
             value={endVerseNumber}
           >
             {endVerses.map((name) => (
-              <MenuItem
-                key={name}
-                value={name}
-              >
+              <MenuItem key={name} value={name}>
                 {name}
               </MenuItem>
             ))}
-
           </Select>
         </FormControl>
-        </div>
+      </div>
 
-        <div id="number-of-questions-div">
-        <FormControl><FormLabel id="formlabel">Number of questions</FormLabel>
+      <div id="number-of-questions-div">
+        <FormControl>
+          <FormLabel id="formlabel">Number of questions</FormLabel>
           {/* <TextField type="number" inputProps={{ type: 'number'}} min="1" defaultValue="1" onChange={(e) => {setNumQuestions(e.target.value)}}required/> */}
           <Select
-            onChange={(e) => {setNumQuestions(e.target.value)}}
+            onChange={(e) => {
+              setNumQuestions(e.target.value);
+            }}
             value={numQuestions}
             defaultValue={5}
           >
             {Array.from(Array(99).keys()).map((name) => (
-              <MenuItem
-                key={name+1}
-                value={name+1}
-              >
-                {name+1}
+              <MenuItem key={name + 1} value={name + 1}>
+                {name + 1}
               </MenuItem>
             ))}
-
           </Select>
         </FormControl>
-        </div>
-        {/* <FormControl id="test-mode-control">
+      </div>
+      {/* <FormControl id="test-mode-control">
           <FormLabel>Test Mode</FormLabel>
           <TestTypeRadio setTestMode={setTestMode}/>
         </FormControl> */}
-        {/* <ExampleProductAttributes/> */}
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={closeTestDialog}>Cancel</Button>
-        <Button disabled={!startChapter || !startVerseNumber || !endChapter || !endVerseNumber || !numQuestions} onClick={openTestPage}>Start Test</Button>
-      </DialogActions>
-    </Dialog>
-  );
+      {/* <ExampleProductAttributes/> */}
+    </DialogContent>
+    <DialogActions>
+      <Button onClick={closeTestDialog}>Cancel</Button>
+      <Button
+        disabled={
+          !startChapter ||
+          !startVerseNumber ||
+          !endChapter ||
+          !endVerseNumber ||
+          !numQuestions
+        }
+        onClick={() =>
+          
+          {
+            closeTestDialog();
+            navigate(
+              `/test?startChapter=${startChapterNumber}&startVerse=${startVerseNumber}&endChapter=${endChapterNumber}&endVerse=${endVerseNumber}&numQuestions=${numQuestions}`,
+            )
+          }
+        }
+      >
+        Start Test
+      </Button>
+    </DialogActions>
+  </Dialog>
+);
 }
 
 const TestTypeRadio = ({setTestMode}) => {

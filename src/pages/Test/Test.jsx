@@ -1,6 +1,7 @@
 import {React, useState, useEffect} from 'react';
 import {getAudioUrl, getNumberVerses, getVerseText, getChapterName} from '../../backend.js';
 import { Button, CircularProgress } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import ProgressBar from "@ramonak/react-progress-bar";
 import VerseBox from '../../components/VerseBox/VerseBox.jsx';
 import DoneIcon from '@mui/icons-material/Done';
@@ -8,9 +9,10 @@ import CloseIcon from '@mui/icons-material/Close';
 import { getVerseTextOfFont } from '../../utils.js';
 import './Test.css';
 import TestResultDialog from '../../dialogs/TestResultDialog/TestResultDialog.jsx';
-import TestResults from '../TestResults/TestResults.jsx';
+import { useSearchParams } from 'react-router-dom'
 
 const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
+    const muiTheme = useTheme();
     const [firstVerse, setFirstVerse] = useState();
     const [firstVerseText, setFirstVerseText] = useState();
     const [secondVerseText, setSecondVerseText] = useState();
@@ -29,6 +31,13 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
     const [incorrectAnswers, setIncorrectAnswers] = useState([]);
     const [startTime, setStartTime] = useState(null);
     const [endTime, setEndTime] = useState(null);
+
+    const [searchParams, setSearchParams] = useSearchParams();
+    const startChapterNumber = searchParams.get('startChapter');
+    const endChapterNumber = searchParams.get('endChapter');
+    const startVerseNumber = searchParams.get('startVerse');
+    const endVerseNumber = searchParams.get('endVerse');
+    const numQuestions = searchParams.get('numQuestions');
 
     // Helper function to calculate the time taken
     const calculateTimeTaken = () => {
@@ -49,15 +58,15 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
 
     const loadVerses = async () => {
       setIsLoading(true);
-      const versesList = await getVersesList(parseInt(state.startChapterNumber), parseInt(state.startVerseNumber),
-        parseInt(state.endChapterNumber), parseInt(state.endVerseNumber));
+      const versesList = await getVersesList(parseInt(startChapterNumber), parseInt(startVerseNumber),
+        parseInt(endChapterNumber), parseInt(endVerseNumber));
       if (versesList.some(element => element === null)) {
         return;
       }
       let randomVerse = await getRandomVerse(versesList);
       let numberVersesInChapter = await getNumberVerses(randomVerse.chapterNumber);
       // avoids the last verse in the chapter being chosen, unless this is the only verse specified
-      while (state.startVerseNumber !== state.endVerseNumber && parseInt(randomVerse?.verseNumber) === parseInt(numberVersesInChapter)) {
+      while (startVerseNumber !== endVerseNumber && parseInt(randomVerse?.verseNumber) === parseInt(numberVersesInChapter)) {
         randomVerse = await getRandomVerse(versesList);
         numberVersesInChapter = await getNumberVerses(randomVerse.chapterNumber);
       }
@@ -89,7 +98,7 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
       if (correctSelected === null) {
         return;
       }
-      if (currentQuestionNumber >= state.numQuestions) {
+      if (currentQuestionNumber >= numQuestions) {
         // Set the end time when the last question is answered
         setEndTime(new Date().getTime());
         // Update the correct and incorrect answers arrays
@@ -164,10 +173,10 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
       testResult.timeTaken = timeTaken;
       testResult.isoDate = new Date().toISOString();
 
-      testResult.startChapterNumber = state.startChapterNumber;
-      testResult.endChapterNumber = state.endChapterNumber;
-      testResult.startVerseNumber = state.startVerseNumber;
-      testResult.endVerseNumber = state.endVerseNumber;
+      testResult.startChapterNumber = startChapterNumber;
+      testResult.endChapterNumber = endChapterNumber;
+      testResult.startVerseNumber = startVerseNumber;
+      testResult.endVerseNumber = endVerseNumber;
 
       results.push(testResult);
 
@@ -268,7 +277,7 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
     return (
         <div className="App">
         {/* <h1>Memorization Test</h1> */}
-        <h3 className='title'>Question {currentQuestionNumber} out of {state.numQuestions}</h3>
+        <h3 className='title'>Question {currentQuestionNumber} out of {numQuestions}</h3>
         {/* <DarkModeSwitch
             checked={darkMode}
             onChange={toggleDarkMode}
@@ -276,8 +285,8 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
             /> */}
         <div style={{ width: '80%', margin: 'auto' }}>
         <ProgressBar 
-            completed={100 * (currentQuestionNumber / state.numQuestions)}
-            bgColor="#007bff"
+            completed={100 * (currentQuestionNumber / numQuestions)}
+            bgColor={muiTheme.palette.primary.main}
             height="5px"
             labelColor="#e80909"
             customLabel=" "
@@ -389,7 +398,7 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
           disabled={
           (correctSelected !== true && correctSelected !== false) ? true : false}
         >
-          {currentQuestionNumber === state.numQuestions ? <div>End Quiz</div> : <div>Next Question</div>}
+          {currentQuestionNumber === numQuestions ? <div>End Quiz</div> : <div>Next Question</div>}
         </Button>
 
         <div style={{padding: '100px 0px 0px 0px'}}></div>
