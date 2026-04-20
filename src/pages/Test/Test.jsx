@@ -9,7 +9,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { getVerseTextOfFont } from '../../utils.js';
 import './Test.css';
 import TestResultDialog from '../../dialogs/TestResultDialog/TestResultDialog.jsx';
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 
 const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
     const muiTheme = useTheme();
@@ -33,11 +33,14 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
     const [endTime, setEndTime] = useState(null);
 
     const [searchParams, setSearchParams] = useSearchParams();
+    const navigate = useNavigate();
     const startChapterNumber = searchParams.get('startChapter');
     const endChapterNumber = searchParams.get('endChapter');
     const startVerseNumber = searchParams.get('startVerse');
     const endVerseNumber = searchParams.get('endVerse');
     const numQuestions = searchParams.get('numQuestions');
+
+
 
     // Helper function to calculate the time taken
     const calculateTimeTaken = () => {
@@ -185,6 +188,7 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
 
     const handleCloseResultDialog = () => {
       setShowResultDialog(false);
+      navigate('/');
       goHome();
     };
 
