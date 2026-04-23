@@ -71,16 +71,16 @@ export default function MenuBar(props ) {
       <HideOnScroll>
         <AppBar component="nav" style={{height: '6vh' ,minHeight: '60px', maxHeight: '8vh'}}>
           <Toolbar sx={{ backgroundColor: !darkMode ? '#f7f5f0' : 'transparent', color: !darkMode ? '#3b3a37' : 'inherit', boxShadow: !darkMode ? '0 1px 4px rgba(0,0,0,0.06)' : 'none' }}>          
-            {/* <Link> */}
-            <Typography
-              variant="h6"
-              component={Link}
-              to="/"
-              sx={{ flexGrow: 1, display: { sm: 'inline' }, width: '25%', textDecoration: 'none', color: 'inherit'}}
-            >
-              Test Quran
-            </Typography>
-            {/* </Link> */}
+            <Box sx={{ flexGrow: 1 }}>
+              <Typography
+                variant="h6"
+                component={Link}
+                to="/"
+                sx={{ display: 'inline-block', textDecoration: 'none', color: 'inherit' }}
+              >
+                Test Quran
+              </Typography>
+            </Box>
             <div style={{display: 'flex', justifyContent: 'right'}}>
               <DarkModeSwitch
                 checked={darkMode}
