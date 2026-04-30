@@ -13,6 +13,7 @@ import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import themes from './themes.js'
+import Journal from './pages/Journal/Journal.jsx';
 
 const App = () => { 
   const [testDialog, setTestDialog] = useState(false);
@@ -167,6 +168,9 @@ const openTestPage = () => {
         } />
         <Route path="/about" element={
           <About />
+        } />
+        <Route path="/journal" element={
+          <Journal />
         } />
       </Routes>
 

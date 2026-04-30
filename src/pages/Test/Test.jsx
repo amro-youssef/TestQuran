@@ -10,6 +10,7 @@ import { getVerseTextOfFont } from '../../utils.js';
 import './Test.css';
 import TestResultDialog from '../../dialogs/TestResultDialog/TestResultDialog.jsx';
 import { useSearchParams, useNavigate } from 'react-router-dom'
+import { useQuranStore } from '../../store/useQuranStore.js';
 
 const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
     const muiTheme = useTheme();
@@ -172,6 +173,7 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
         chapterNumber: answer.chapterNumber,
         verseNumber: answer.firstVerseNumber
       }))
+      
 
       testResult.timeTaken = timeTaken;
       testResult.isoDate = new Date().toISOString();
@@ -184,6 +186,14 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
       results.push(testResult);
 
       localStorage.setItem('results', JSON.stringify(results));
+
+      const updateVerse = useQuranStore.getState().updateVerse;
+      incorrectAnswers.forEach(answer => {
+        updateVerse(answer.chapterNumber, answer.firstVerseNumber, "needs_revision")
+      });
+      correctAnswers.forEach(answer => {
+        updateVerse(answer.chapterNumber, answer.firstVerseNumber, "memorised")
+      });
     }
 
     const handleCloseResultDialog = () => {
