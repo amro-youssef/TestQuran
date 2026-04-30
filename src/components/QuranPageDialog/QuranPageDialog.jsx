@@ -30,8 +30,8 @@ const QuranPageDialog = ({ open, onClose, chapterNumber, verseNumber }) => {
 
     return (
         <Dialog open={open} onClose={onClose} maxWidth="" >
-            <DialogContent>
-                {imageUrl && <img src={imageUrl} alt="Quran Page" style={{ maxWidth: '100%', width: 'auto', height: isMobile ? '450px' : '550px' }} />}
+            <DialogContent sx={{padding: "20px 20px 10px"}}>
+                {imageUrl && <img src={imageUrl} alt="Quran Page" style={{ maxWidth: '100%', width: 'auto', height: isMobile ? '450px' : '620px' }} />}
             </DialogContent>
             <DialogActions>
                 <Button onClick={onClose}>Close</Button>
