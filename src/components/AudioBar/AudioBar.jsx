@@ -135,7 +135,7 @@ const AudioBar = ({ audioFile, audioLoading, incrementVerseAudio, decrementVerse
 
   return (
     <div className={`bottom-bar ${localStorage.getItem('darkMode') === 'false' ? 'light' : 'dark'}`}>
-      <Stack spacing={2} direction={isMobile ? "column" : "row"} sx={{ width: isMobile ? '100% !important' : '300', mb: !isMobile ? 1 : 0 }} alignItems="center">
+      <Stack spacing={2} direction={isMobile ? "column" : "row"} sx={{ width: isMobile ? '100% !important' : '300', mb: 0 }} alignItems="center">
         {isMobile && <>
           <Slider aria-label="timeline" value={time} onChange={timelineChangeHandler} sx={{ width: '100%', padding: '0px !important' }} className="timeline-slider" />
         </>}
