@@ -7,11 +7,16 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import VolumeUp from '@mui/icons-material/VolumeUp';
 import ArticleIcon from '@mui/icons-material/Article';
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
+import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
+import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 import PropTypes from 'prop-types';
 
 import Verse from '../Verse/Verse.jsx';
 import QuranPageDialog from '../QuranPageDialog/QuranPageDialog.jsx';
 import './VerseBox.css';
+import { useQuranStore } from '../../store/useQuranStore.js';
 
 const VerseBox = (props) => {
     let {verseText, readMorePressed, chapterNumber, chapterName, verseNumber, viewVerseNumber,
@@ -22,6 +27,7 @@ const VerseBox = (props) => {
     const [buttonText, setButtonText] = useState(<VisibilityIcon />);
     const [expandIcon, setExpandIcon] = useState(<ExpandMoreIcon />);
     const [expanded, setExpanded] = useState(false);
+    const [verseStrength, setVerseStrength] = useState(null); // null, 'strong', or 'weak'
 
     const showVerseNumber = async () => {
         if (!chapterName) {
@@ -51,9 +57,16 @@ const VerseBox = (props) => {
         toggleExpandIcon();
     }
 
-    useEffect(() => {
-        setVerse(verseText);
-    }, [verseText]);
+    const onStrengthChange = (strength) => {
+        setVerseStrength(verseStrength === strength ? null : strength)
+        const updateVerse = useQuranStore.getState().updateVerse;
+        if (strength === 'strong') {
+            updateVerse(chapterNumber, verseNumber, "memorised");
+        } else if (strength === 'weak') {
+            updateVerse(chapterNumber, verseNumber, "needs_revision");
+        }
+    }
+
 
     useEffect(() => {
         if (viewVerseNumber) {
@@ -73,7 +86,9 @@ const VerseBox = (props) => {
     }, [expanded])
 
     useEffect(() => {
+        setVerse(verseText);
         setExpanded(false);
+        setVerseStrength(null);
     }, [verseText])
 
     const [leftPosition, setLeftPosition] = useState('50%');
@@ -126,6 +141,24 @@ const VerseBox = (props) => {
                         sx={{ borderRadius: 24}}
                         id="verse-number">
                             {buttonText}
+                    </Button>
+                    <Button
+                        size="small"
+                        style={{display: 'flex', justifyContent: 'flex-start'}}
+                        sx={{ borderRadius: 14 }}
+                        id="strength-button"
+                        onClick={() => onStrengthChange('strong')}
+                    >
+                        {verseStrength === 'strong' ? <ThumbUpAltIcon/> : <ThumbUpOffAltIcon/>}
+                    </Button>
+                    <Button
+                        size="small"
+                        style={{display: 'flex', justifyContent: 'flex-start'}}
+                        sx={{ borderRadius: 24 }}
+                        id="weakness-button"
+                        onClick={() => onStrengthChange('weak')}
+                    >
+                        {verseStrength === 'weak' ? <ThumbDownAltIcon/> : <ThumbDownOffAltIcon/>}
                     </Button>
                 </div>
                 {/* <div style={expandDivStyle} id="expand-div"> */}

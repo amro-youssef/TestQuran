@@ -1,0 +1,28 @@
+.chapterContainer {
+    position: relative;
+    display: inline-block;
+}
+
+.chapterGrid {
+    border: 1px solid black;
+    display: flex;
+    flex-wrap: wrap;
+    /* height: 300px; */
+    max-width: 400px;
+    align-content: flex-start;
+    position: absolute;
+    background-color: white;
+    z-index: 10;
+    margin-top: 0;
+    top: 120%;
+    left: 0;
+}
+
+.chapterName {
+    border: 1px solid black;
+    padding: 10px;
+    flex-wrap: wrap;
+    width: 20vw;
+    position: relative;
+    display: inline-block;
+}

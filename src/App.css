@@ -73,7 +73,7 @@ html, body {
 }
 
 .title {
-  margin: 5px 10px 12px
+  margin: 2vh 10px 12px
 }
 @media (max-width: 600px) {
   .title {
