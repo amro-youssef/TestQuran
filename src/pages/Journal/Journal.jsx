@@ -43,7 +43,7 @@ const getChaptersGroupedByJuz = (chapters) => {
 const quranChapters = await getChapters();
 const chaptersByJuz = getChaptersGroupedByJuz(quranChapters);
 
-export default function Tracker() {
+export default function Journal() {
     return (
         <div className="trackerContainer">
             <h1>Journal</h1>
