@@ -1,6 +1,7 @@
 import { getChapters } from "../../backend"
 import "./Journal.css"
 import ChapterStatus from "../../components/ChapterStatus/ChapterStatus";
+import Circle from "../../components/Circle/Circle";
 
 // Mapping of chapters to Juzs (30 Juzs total)
 const CHAPTER_TO_JUZ = {
@@ -47,6 +48,12 @@ export default function Journal() {
     return (
         <div className="trackerContainer">
             <h1>Journal</h1>
+
+            <div className="legend">
+              <span className="legendItem">Memorised: <Circle/></span>
+              <span className="legendItem">Needs Work: <Circle colour="orange"/></span>
+              <span className="legendItem">Unmemorised: <Circle colour="gray"/></span>
+            </div>
             
             {
               Object.keys(chaptersByJuz).map((juzNumber) => {

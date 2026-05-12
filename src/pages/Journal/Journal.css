@@ -13,6 +13,18 @@
     gap: 20px;
   }
 
+  .legend {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+
+    span {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+  }
+
   .juzSection {
     display: flex;
     flex-direction: column;
