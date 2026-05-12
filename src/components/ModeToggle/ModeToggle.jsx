@@ -7,6 +7,7 @@ import './ModeToggle.css';
 
 const ModeToggle = ({ mode, onChange }) => {
     const isVisual = mode === 'visual';
+    console.log(mode)
 
     const handleChange = () => {
         onChange(isVisual ? 'audio' : 'visual');
