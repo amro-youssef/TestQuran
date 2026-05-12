@@ -149,6 +149,29 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
       setCurrentQuetionNumber(currentQuestionNumber + 1);
     };
 
+    const endTestEarly = () => {
+      setEndTime(new Date().getTime());
+        // Update the correct and incorrect answers arrays
+        const currentAnswer = {
+          questionNumber: currentQuestionNumber,
+          correct: correctSelected,
+          verses: [firstVerseText, secondVerseText, thirdVerseText],
+          chapterNumber: firstVerse?.chapterNumber,
+          firstVerseNumber: firstVerse?.verseNumber
+        };
+        if (correctSelected) {
+          storeResults([...correctAnswers, currentAnswer], [...incorrectAnswers], new Date().getTime() - startTime);
+          setCorrectAnswers([...correctAnswers, currentAnswer]);
+        } else {
+          storeResults([...correctAnswers], [...incorrectAnswers, currentAnswer], new Date().getTime() - startTime);
+          setIncorrectAnswers([...incorrectAnswers, currentAnswer]);
+        }
+
+        // Open the result dialog
+        setShowResultDialog(true);
+        return;
+    }
+
     /**
      * Stores test results in local storage. only the chapter number and verse number of the first verse are store in order
      * to reduce amount of data stored, as well as time taken and date of test
@@ -289,31 +312,34 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
     }
 
     return (
-        <div className="App">
+      <div className="App">
         {/* <h1>Memorization Test</h1> */}
-        <h3 className='title'>Question {currentQuestionNumber} out of {numQuestions}</h3>
+        <h3 className="title">
+          Question {currentQuestionNumber} out of {numQuestions}
+        </h3>
         {/* <DarkModeSwitch
             checked={darkMode}
             onChange={toggleDarkMode}
             style={{marginBottom: "10px"}}
             /> */}
-        <div style={{ width: '80%', margin: 'auto' }}>
-        <ProgressBar 
+        <div style={{ width: "80%", margin: "auto" }}>
+          <ProgressBar
             completed={100 * (currentQuestionNumber / numQuestions)}
             bgColor={muiTheme.palette.primary.main}
             height="5px"
             labelColor="#e80909"
             customLabel=" "
             width="100%"
-            style={{"margin":"auto"}}
-        />
+            style={{ margin: "auto" }}
+          />
         </div>
         {/* <Button height="30px" size="medium" onClick={goHome}>Home</Button> */}
-        <div style={{ marginTop: '2em' }}></div>
-        {isLoading ? 
+        <div style={{ marginTop: "2em" }}></div>
+        {isLoading ? (
           <div className="loading-spinner">
             <CircularProgress />
-          </div> :
+          </div>
+        ) : (
           <>
             <VerseBox
               verseText={firstVerseText}
@@ -330,108 +356,139 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
               versePlaying={false}
             />
 
-        {showOtherVerses && secondVerseText ?  (
-          <>
-            <VerseBox
-              verseText={secondVerseText}
-              chapterNumber={firstVerse?.chapterNumber}
-              verseNumber={firstVerse?.verseNumber + 1}
-              chapterName={chapterName}
-              viewVerseNumber={showVerseNumbers}
-              onViewVerseNumberChange={onViewVerseNumberChange}
-              // playAudio={playAudio}
-              playAudio={() => {}} //TODO
-              showAudioButton={false} // haven't decided whether to have the audio icon available
-              // versePlaying={audioUrl ? versePlaying : null}
-              versePlaying={false}
-              allowHideVerse={true}
-            />
+            {showOtherVerses && secondVerseText ? (
+              <>
+                <VerseBox
+                  verseText={secondVerseText}
+                  chapterNumber={firstVerse?.chapterNumber}
+                  verseNumber={firstVerse?.verseNumber + 1}
+                  chapterName={chapterName}
+                  viewVerseNumber={showVerseNumbers}
+                  onViewVerseNumberChange={onViewVerseNumberChange}
+                  // playAudio={playAudio}
+                  playAudio={() => {}} //TODO
+                  showAudioButton={false} // haven't decided whether to have the audio icon available
+                  // versePlaying={audioUrl ? versePlaying : null}
+                  versePlaying={false}
+                  allowHideVerse={true}
+                />
+              </>
+            ) : (
+              <></>
+            )}
+
+            {showOtherVerses && thirdVerseText ? (
+              <>
+                <VerseBox
+                  verseText={thirdVerseText}
+                  chapterNumber={firstVerse?.chapterNumber}
+                  verseNumber={firstVerse?.verseNumber + 2}
+                  chapterName={chapterName}
+                  viewVerseNumber={showVerseNumbers}
+                  onViewVerseNumberChange={onViewVerseNumberChange}
+                  // playAudio={playAudio}
+                  playAudio={() => {}} //TODO
+                  showAudioButton={false} // haven't decided whether to have the audio icon available
+                  // versePlaying={audioUrl ? versePlaying : null}
+                  versePlaying={false}
+                />
+              </>
+            ) : (
+              <></>
+            )}
+
+            {showOtherVerses ? (
+              <div className="bottom-div">
+                <p className="question-text">Were you correct: </p>
+                <div style={{ padding: "0px 20px 0px 0px" }}></div>
+
+                <Button
+                  variant="contained"
+                  style={{
+                    borderRadius: "50%", // Make the button circular
+                    minWidth: 0, // Ensure the button doesn't have extra padding
+                    width: 48, // Set the width and height to make it circular
+                    height: 48,
+                    // backgroundColor: correctSelected === true ? '#3de33d' : '#E0E0E0'
+                    backgroundColor:
+                      correctSelected === false ? "#E0E0E0" : "#3de33d",
+                  }}
+                  onClick={() => setCorrectSelected(true)}
+                >
+                  <DoneIcon />
+                </Button>
+
+                <div style={{ padding: "0px 20px 0px 0px" }}></div>
+
+                <Button
+                  variant="contained"
+                  style={{
+                    borderRadius: "50%", // Make the button circular
+                    minWidth: 0, // Ensure the button doesn't have extra padding
+                    width: 48, // Set the width and height to make it circular
+                    height: 48,
+                    // backgroundColor: correctSelected === false ? '#fc4242' : '#E0E0E0'
+                    backgroundColor:
+                      correctSelected === true ? "#E0E0E0" : "#fc4242",
+                  }}
+                  onClick={() => setCorrectSelected(false)}
+                >
+                  <CloseIcon />
+                </Button>
+
+                <div style={{ padding: "0px 20px 0px 0px" }}></div>
+
+                <Button
+                  variant="contained"
+                  onClick={nextQuestionPressed}
+                  disabled={
+                    correctSelected !== true && correctSelected !== false
+                      ? true
+                      : false
+                  }
+                >
+                  {currentQuestionNumber === numQuestions ? (
+                    <div>End Quiz</div>
+                  ) : (
+                    <div>Next Question</div>
+                  )}
+                </Button>
+
+                {currentQuestionNumber !== numQuestions ? (
+                  <Button
+                    variant="contained"
+                    disabled={
+                      correctSelected !== true && correctSelected !== false
+                        ? true
+                        : false
+                    }
+                    style={{ marginLeft: '15px'}}
+                    onClick={endTestEarly}
+                  >
+                    End Quiz
+                  </Button>
+                ) : (
+                  <></>
+                )}
+
+                <div style={{ padding: "100px 0px 0px 0px" }}></div>
+              </div>
+            ) : (
+              <></>
+            )}
           </>
-        ) : <></>}
+        )}
 
-        {showOtherVerses && thirdVerseText ?  (
-          <>
-            <VerseBox
-              verseText={thirdVerseText}
-              chapterNumber={firstVerse?.chapterNumber}
-              verseNumber={firstVerse?.verseNumber + 2}
-              chapterName={chapterName}
-              viewVerseNumber={showVerseNumbers}
-              onViewVerseNumberChange={onViewVerseNumberChange}
-              // playAudio={playAudio}
-              playAudio={() => {}} //TODO
-              showAudioButton={false} // haven't decided whether to have the audio icon available
-              // versePlaying={audioUrl ? versePlaying : null}
-              versePlaying={false}
-            />
-          </>
-        ) : <></>}
-
-    {showOtherVerses ?  
-      <div className='bottom-div'>
-        <p className='question-text'>Were you correct:  </p>
-        <div style={{padding: '0px 20px 0px 0px'}}></div>
-
-        <Button
-          variant="contained"
-          style={{
-            borderRadius: '50%', // Make the button circular
-            minWidth: 0, // Ensure the button doesn't have extra padding
-            width: 48, // Set the width and height to make it circular
-            height: 48,
-            // backgroundColor: correctSelected === true ? '#3de33d' : '#E0E0E0'
-            backgroundColor: correctSelected === false ? '#E0E0E0' : '#3de33d'
-          }}
-          onClick={() => setCorrectSelected(true)}
-          >
-          <DoneIcon />
-        </Button>
-
-        <div style={{padding: '0px 20px 0px 0px'}}></div>
-
-        <Button
-          variant="contained"
-          style={{
-            borderRadius: '50%', // Make the button circular
-            minWidth: 0, // Ensure the button doesn't have extra padding
-            width: 48, // Set the width and height to make it circular
-            height: 48,
-            // backgroundColor: correctSelected === false ? '#fc4242' : '#E0E0E0' 
-            backgroundColor: correctSelected === true ? '#E0E0E0' : '#fc4242' 
-          }}
-          onClick={() => setCorrectSelected(false)}
-          >
-          <CloseIcon />
-        </Button>
-
-        <div style={{padding: '0px 20px 0px 0px'}}></div>
-
-        <Button
-          variant="contained"
-          onClick={nextQuestionPressed}
-          disabled={
-          (correctSelected !== true && correctSelected !== false) ? true : false}
-        >
-          {currentQuestionNumber === numQuestions ? <div>End Quiz</div> : <div>Next Question</div>}
-        </Button>
-
-        <div style={{padding: '100px 0px 0px 0px'}}></div>
+        <TestResultDialog
+          open={showResultDialog}
+          handleClose={handleCloseResultDialog}
+          correctAnswers={correctAnswers}
+          incorrectAnswers={incorrectAnswers}
+          timeTaken={timeTaken}
+          restart={restartTest}
+        />
       </div>
-    : <></>
-    }
-          </>
-        }
-
-    <TestResultDialog
-        open={showResultDialog}
-        handleClose={handleCloseResultDialog}
-        correctAnswers={correctAnswers}
-        incorrectAnswers={incorrectAnswers}
-        timeTaken={timeTaken}
-        restart={restartTest}
-    />
-    </div>
-    )
+    );
 }
 
 export default Test;
