@@ -125,6 +125,20 @@ const getReciters = async () => {
     return localData.reciters;
 }
 
+const getChapterWithPages = async (chapterNumber) => {
+    const localData = await getLocalData();
+    const chapter = localData.allData.find((data) => data.chapter.id === chapterNumber);
+    if (!chapter) return null;
+    return {
+        chapter: chapter.chapter,
+        versesWithPages: chapter.versesV1.map(v => ({
+            chapterNumber,
+            verseNumber: parseInt(v.verse_key.split(':')[1]),
+            page: v.v1_page
+        }))
+    };
+};
+
 export {
     getChapters,
     getChapterNames,
@@ -136,5 +150,6 @@ export {
     getVerseV1Glyph,
     getVerseV2Glyph,
     getV1PageNumber,
-    getV2PageNumber
+    getV2PageNumber,
+    getChapterWithPages
 };
