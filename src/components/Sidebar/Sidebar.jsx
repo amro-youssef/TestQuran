@@ -17,6 +17,9 @@ import DialogActions from '@mui/material/DialogActions';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import ToggleButton from '@mui/material/ToggleButton';
+import Tooltip from '@mui/material/Tooltip';
 import {getReciters} from '../../backend.js';
 import themes from '../../themes.js';
 
@@ -38,6 +41,7 @@ export default function Sidebar({ setReciterNumber, showResultsPage, themeColor,
   const [reciterList, setReciterList] = useState([]);
   const [reciterName, setReciterName] = useState();
   const [selectedFont, setSelectedFont] = useState(localStorage.getItem('selectedFont') || 'v1');
+  const [randomizeMode, setRandomizeMode] = useState(localStorage.getItem('randomizeMode') || 'byPage');
 
   useEffect(() => {
     for (const reciter of reciterList) {
@@ -107,6 +111,13 @@ export default function Sidebar({ setReciterNumber, showResultsPage, themeColor,
   const handleAlwaysHideText = (event) => {
     setAlwaysHideText(event.target.checked);
     localStorage.setItem('alwaysHideVerse', event.target.checked);
+  };
+
+  const handleRandomizeModeChange = (event, newMode) => {
+    if (newMode !== null) {
+      setRandomizeMode(newMode);
+      localStorage.setItem('randomizeMode', newMode);
+    }
   };
 
   const list = (anchor) => (
@@ -196,6 +207,20 @@ export default function Sidebar({ setReciterNumber, showResultsPage, themeColor,
             />
           ))}
         </div>
+
+        <h2>Randomizer:</h2>
+        <Tooltip title={randomizeMode === 'byPage' ? "Pick a random page, then a verse on it" : "Pick any verse in the range with equal probability"} enterTouchDelay={0} leaveTouchDelay={2000} arrow>
+          <ToggleButtonGroup
+            value={randomizeMode}
+            exclusive
+            onChange={handleRandomizeModeChange}
+            aria-label="randomize mode"
+            size="small"
+          >
+            <ToggleButton value="byPage" aria-label="by page">By Page</ToggleButton>
+            <ToggleButton value="byVerse" aria-label="by verse">By Verse</ToggleButton>
+          </ToggleButtonGroup>
+        </Tooltip>
 
         <h2>Test:</h2>
         <Button variant="outlined" style={{top: '0px'}} onClick={() => {toggleDrawer('right', false); showResultsPage();}}>Test Results</Button>

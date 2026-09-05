@@ -1,5 +1,5 @@
 import {React, useState, useEffect} from 'react';
-import {getAudioUrl, getNumberVerses, getVerseText, getChapterName} from '../../backend.js';
+import {getAudioUrl, getNumberVerses, getVerseText, getChapterName, getChapterWithPages} from '../../backend.js';
 import { Button, CircularProgress } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import ProgressBar from "@ramonak/react-progress-bar";
@@ -67,11 +67,22 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
       if (versesList.some(element => element === null)) {
         return;
       }
-      let randomVerse = await getRandomVerse(versesList);
+
+      const randomizeMode = localStorage.getItem('randomizeMode') || 'byPage';
+      let randomVerse;
+      if (randomizeMode === 'byPage') {
+        randomVerse = await getRandomVerseByPage(versesList);
+      } else {
+        randomVerse = await getRandomVerse(versesList);
+      }
       let numberVersesInChapter = await getNumberVerses(randomVerse.chapterNumber);
       // avoids the last verse in the chapter being chosen, unless this is the only verse specified
       while (startVerseNumber !== endVerseNumber && parseInt(randomVerse?.verseNumber) === parseInt(numberVersesInChapter)) {
-        randomVerse = await getRandomVerse(versesList);
+        if (randomizeMode === 'byPage') {
+          randomVerse = await getRandomVerseByPage(versesList);
+        } else {
+          randomVerse = await getRandomVerse(versesList);
+        }
         numberVersesInChapter = await getNumberVerses(randomVerse.chapterNumber);
       }
       const firstVerseText = await getVerseTextOfFont(randomVerse?.chapterNumber, randomVerse?.verseNumber);
@@ -260,6 +271,28 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
     const getRandomVerse = async (verseList) => {
       const list = await verseList;
       return list[Math.floor(Math.random()*list.length)];
+    };
+
+    const getRandomVerseByPage = async (verseList) => {
+      const list = await verseList;
+      const chaptersInList = [...new Set(list.map(v => v.chapterNumber))];
+
+      const pageMap = {};
+      for (const chapterNum of chaptersInList) {
+        const chapterWithPages = await getChapterWithPages(chapterNum);
+        if (chapterWithPages) {
+          pageMap[chapterNum] = {};
+          for (const v of chapterWithPages.versesWithPages) {
+            pageMap[chapterNum][v.verseNumber] = v.page;
+          }
+        }
+      }
+
+      const pagesInList = [...new Set(list.map(v => pageMap[v.chapterNumber]?.[v.verseNumber]).filter(Boolean))];
+      const randomPage = pagesInList[Math.floor(Math.random() * pagesInList.length)];
+
+      const versesOnPage = list.filter(v => pageMap[v.chapterNumber]?.[v.verseNumber] === randomPage);
+      return versesOnPage[Math.floor(Math.random() * versesOnPage.length)];
     };
 
     const onViewVerseNumberChange = () => {

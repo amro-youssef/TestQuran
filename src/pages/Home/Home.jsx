@@ -1,6 +1,6 @@
 /* eslint-disable eqeqeq */
 import './Home.css';
-import {getAudioUrl, getNumberVerses, getVerseText, getChapterName, getVerseV1Glyph, getVerseV2Glyph} from '../../backend.js';
+import {getAudioUrl, getNumberVerses, getVerseText, getChapterName, getVerseV1Glyph, getVerseV2Glyph, getChapterWithPages} from '../../backend.js';
 import {React, useState} from 'react';
 import VersePicker from '../../components/VersePicker/VersePicker.jsx';
 import SubmitButton from '../../components/SubmitButton/SubmitButton.jsx';
@@ -57,11 +57,22 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
     if (versesList.some(element => element === null)) {
       return;
     }
-    let randomVerse = await getRandomVerse(versesList);
+
+    const randomizeMode = localStorage.getItem('randomizeMode') || 'byPage';
+    let randomVerse;
+    if (randomizeMode === 'byPage') {
+      randomVerse = await getRandomVerseByPage(versesList);
+    } else {
+      randomVerse = await getRandomVerse(versesList);
+    }
     let numberOfVerses = await getNumberVerses(randomVerse.chapterNumber);
     // avoids the last verse in the chapter being chosen, unless this is the only verse specified
     while (startVerseNumber !== endVerseNumber && randomVerse.verseNumber === numberOfVerses) {
-      randomVerse = await getRandomVerse(versesList);
+      if (randomizeMode === 'byPage') {
+        randomVerse = await getRandomVerseByPage(versesList);
+      } else {
+        randomVerse = await getRandomVerse(versesList);
+      }
       numberOfVerses = await getNumberVerses(randomVerse.chapterNumber);
     }
 
@@ -117,6 +128,28 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
     // although Math.random() should be enough for this type of function, I felt the results being produced
     // would often be close to the previous answer and not be properly evenly distributed
     return list[Math.floor(randFloatWithCrypto()*list.length)];
+  };
+
+  const getRandomVerseByPage = async (verseList) => {
+    const list = await verseList;
+    const chaptersInList = [...new Set(list.map(v => v.chapterNumber))];
+
+    const pageMap = {};
+    for (const chapterNum of chaptersInList) {
+      const chapterWithPages = await getChapterWithPages(chapterNum);
+      if (chapterWithPages) {
+        pageMap[chapterNum] = {};
+        for (const v of chapterWithPages.versesWithPages) {
+          pageMap[chapterNum][v.verseNumber] = v.page;
+        }
+      }
+    }
+
+    const pagesInList = [...new Set(list.map(v => pageMap[v.chapterNumber]?.[v.verseNumber]).filter(Boolean))];
+    const randomPage = pagesInList[Math.floor(randFloatWithCrypto() * pagesInList.length)];
+
+    const versesOnPage = list.filter(v => pageMap[v.chapterNumber]?.[v.verseNumber] === randomPage);
+    return versesOnPage[Math.floor(randFloatWithCrypto() * versesOnPage.length)];
   };
 
 /**
