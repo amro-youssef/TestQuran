@@ -209,7 +209,6 @@ export default function Sidebar({ setReciterNumber, showResultsPage, themeColor,
         </div>
 
         <h2>Randomizer:</h2>
-        <Tooltip title={randomizeMode === 'byPage' ? "Pick a random page, then a verse on it" : "Pick any verse in the range with equal probability"} enterTouchDelay={0} leaveTouchDelay={2000} arrow>
           <ToggleButtonGroup
             value={randomizeMode}
             exclusive
@@ -217,10 +216,13 @@ export default function Sidebar({ setReciterNumber, showResultsPage, themeColor,
             aria-label="randomize mode"
             size="small"
           >
+          <Tooltip title="Pick a random page, then a verse on it (Recommended)" enterTouchDelay={0} leaveTouchDelay={2000} arrow>
             <ToggleButton value="byPage" aria-label="by page">By Page</ToggleButton>
+          </Tooltip>
+          <Tooltip title="Pick any verse in the range with equal probability. Pages with more verses are more likely." enterTouchDelay={0} leaveTouchDelay={2000} arrow>
             <ToggleButton value="byVerse" aria-label="by verse">By Verse</ToggleButton>
-          </ToggleButtonGroup>
-        </Tooltip>
+          </Tooltip>
+        </ToggleButtonGroup>
 
         <h2>Test:</h2>
         <Button variant="outlined" style={{top: '0px'}} onClick={() => {toggleDrawer('right', false); showResultsPage();}}>Test Results</Button>
