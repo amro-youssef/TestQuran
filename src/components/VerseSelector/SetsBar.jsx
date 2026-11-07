@@ -66,13 +66,19 @@ export const SaveSetButton = ({ items, extra, tooltip }) => {
 /**
  * Saved (★) sets and recent selections as chips; tapping one loads it.
  * `recent` entries are { id, usedAt, items, detail? }; `detail` is extra text for the chip and tooltip.
+ * `pinned` is a set that belongs to the page (e.g. a class's set); it comes first and can't be deleted.
  */
-const SetsBar = ({ recent, onPick }) => {
+const SetsBar = ({ recent, onPick, pinned }) => {
   const { saved, removeSet } = useSetsStore();
-  if (!saved.length && !recent.length) return null;
+  if (!pinned && !saved.length && !recent.length) return null;
 
   return (
     <div className='sets-bar'>
+      {pinned && (
+        <Tooltip title={selectionSummary(pinned.items)} arrow>
+          <Chip size="small" color="primary" icon={<StarIcon />} label={pinned.name} onClick={() => onPick(pinned)} />
+        </Tooltip>
+      )}
       {saved.map(set => (
         <Tooltip key={set.id} title={selectionSummary(set.items)} arrow>
           <Chip size="small" icon={<StarIcon />} label={set.name}

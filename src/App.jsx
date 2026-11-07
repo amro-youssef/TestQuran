@@ -99,7 +99,8 @@ const App = () => {
 
       <MenuBar 
         testPressed={() => setTestDialog(true)}
-        isHomePage={location.pathname === '/'}
+        // class pages are home pages too, so the bar offers Test rather than Home
+        isHomePage={location.pathname === '/' || location.pathname.startsWith('/icm2025')}
         goHome={() => {
           setTestDialog(false);
           navigate('/');
@@ -152,7 +153,8 @@ const App = () => {
           <Journal />
         } />
         <Route path="/icm2025" element={
-          <ClassPage classId="icm2025" reciterNumber={reciterNumber} />
+          <ClassPage classId="icm2025" reciterNumber={reciterNumber}
+            testDialogOpen={testDialog} closeTestDialog={() => setTestDialog(false)} />
         } />
       </Routes>
 

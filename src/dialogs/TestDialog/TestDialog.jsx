@@ -11,7 +11,8 @@ import './TestDialog.css';
 
 const DEFAULT_QUESTIONS = 5;
 
-const TestDialog = ({ open, closeDialog }) => {
+// pinnedSet: a set that belongs to the page (e.g. a class's set), offered first and used as the starting selection
+const TestDialog = ({ open, closeDialog, pinnedSet }) => {
   const navigate = useNavigate();
   const fullScreen = useMediaQuery('(max-width:600px)');
   const { recentTests, addRecentTest } = useSetsStore();
@@ -19,10 +20,10 @@ const TestDialog = ({ open, closeDialog }) => {
   const [numQuestions, setNumQuestions] = useState(DEFAULT_QUESTIONS);
   const verseCount = useMemo(() => selectionVerses(items).length, [items]);
 
-  // always start from the whole Quran; previous tests are a tap away in the chips above
+  // start from the page's set, else the whole Quran; previous tests are a tap away in the chips above
   useEffect(() => {
     if (!open) return;
-    setItems(withIds(WHOLE_QURAN));
+    setItems(withIds(pinnedSet?.items ?? WHOLE_QURAN));
     setNumQuestions(DEFAULT_QUESTIONS);
   }, [open]);
 
@@ -43,6 +44,7 @@ const TestDialog = ({ open, closeDialog }) => {
       <DialogTitle>Create Memorisation Test</DialogTitle>
       <DialogContent className="testDialogContent">
         <SetsBar
+          pinned={pinnedSet}
           recent={recentTests.map(t => ({ ...t, detail: `${t.numQuestions} questions` }))}
           onPick={pick}
         />

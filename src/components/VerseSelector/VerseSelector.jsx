@@ -14,7 +14,7 @@ import './VerseSelector.css';
  * Collapsed it's a one-line summary next to the mode toggle and Randomize button;
  * tapping the summary opens the full list to edit.
  */
-const VerseSelector = ({ items, onItemsChange, mode, onModeChange, onRandomize, loading }) => {
+const VerseSelector = ({ items, onItemsChange, mode, onModeChange, onRandomize, loading, pinnedSet }) => {
   const [open, setOpen] = useState(false);
   const recent = useSetsStore(s => s.recent);
   const verseCount = useMemo(() => selectionVerses(items).length, [items]);
@@ -54,7 +54,7 @@ const VerseSelector = ({ items, onItemsChange, mode, onModeChange, onRandomize, 
           </div>
         </div>
       </Collapse>
-      <SetsBar recent={recent.slice(0, 3)} onPick={pickSet} />
+      <SetsBar pinned={pinnedSet} recent={recent.slice(0, 3)} onPick={pickSet} />
     </div>
   );
 };

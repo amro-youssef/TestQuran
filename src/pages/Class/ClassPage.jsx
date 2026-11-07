@@ -1,10 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button, Select, MenuItem, LinearProgress, Collapse } from '@mui/material';
 import Home from '../Home/Home.jsx';
+import TestDialog from '../../dialogs/TestDialog/TestDialog.jsx';
 import { CHRONOLOGICAL_ORDER } from './chronologicalOrder.js';
-import { chapterName, encodeSelection } from '../../components/VerseSelector/selection.js';
-import { useSetsStore } from '../../store/useSetsStore.js';
 import './ClassPage.css';
 
 /**
@@ -36,65 +33,31 @@ const useClassConfig = (id) => {
   return config;
 };
 
-const ClassIntro = ({ config, surahs, items }) => {
-  const navigate = useNavigate();
-  const addRecentTest = useSetsStore(s => s.addRecentTest);
-  const [numQuestions, setNumQuestions] = useState(10);
-  const [showSurahs, setShowSurahs] = useState(false);
-  const covered = surahs.length;
-  const latest = surahs[covered - 1];
-
-  const startTest = () => {
-    addRecentTest(items, numQuestions);
-    navigate(`/test?portions=${encodeSelection(items)}&numQuestions=${numQuestions}`);
-  };
-
-  return (
-    <div className='class-intro'>
-      <h2 className='class-title'>{config.name}</h2>
-      <div className='class-progress-text'>
-        <span>{covered} of {CHRONOLOGICAL_ORDER.length} surahs, in order of revelation</span>
-        <span>up to {chapterName(latest)}</span>
-      </div>
-      <LinearProgress variant='determinate' value={100 * covered / CHRONOLOGICAL_ORDER.length} className='class-progress' />
-
-      <div className='class-actions'>
-        <Button variant='contained' onClick={startTest}>Start a class test</Button>
-        <Select size='small' value={numQuestions} onChange={e => setNumQuestions(e.target.value)}>
-          {[5, 10, 15, 20, 30].map(n => <MenuItem key={n} value={n}>{n} questions</MenuItem>)}
-        </Select>
-        <Button size='small' color='inherit' className='class-surahs-toggle' onClick={() => setShowSurahs(s => !s)}>
-          {showSurahs ? 'Hide surahs' : 'Show surahs'}
-        </Button>
-      </div>
-
-      <Collapse in={showSurahs}>
-        <ol className='class-surah-list'>
-          {surahs.map(c => <li key={c}>{chapterName(c)} <span>{c}</span></li>)}
-        </ol>
-      </Collapse>
-
-      <p className='class-hint'>Or pick a random verse from what we've covered below, and narrow it down if you like.</p>
-    </div>
-  );
-};
-
-/** A class revision page, e.g. /icm2025: the home page preset to the surahs the class has covered */
-const ClassPage = ({ classId, ...homeProps }) => {
+/**
+ * A class page, e.g. /icm2025: the normal home page, starting on the surahs the class has covered
+ * (in order of revelation), with them also offered as a set named after the class.
+ */
+const ClassPage = ({ classId, testDialogOpen, closeTestDialog, ...homeProps }) => {
   const config = useClassConfig(classId);
-  const surahs = useMemo(() => config ? CHRONOLOGICAL_ORDER.slice(0, config.coveredUpTo) : [], [config]);
-  const items = useMemo(() => surahs.map(c => ({ type: 'surah', from: c, to: c })), [surahs]);
+  const items = useMemo(
+    () => config ? CHRONOLOGICAL_ORDER.slice(0, config.coveredUpTo).map(c => ({ type: 'surah', from: c, to: c })) : [],
+    [config]
+  );
 
   if (!config) return <div className='App class-loading'>Loading…</div>;
 
+  const classSet = { id: classId, name: config.setName ?? config.name, items };
   return (
-    <Home
-      // remount when the covered surahs change so the selection resets to them
-      key={config.coveredUpTo}
-      {...homeProps}
-      initialSelection={items}
-      intro={<ClassIntro config={config} surahs={surahs} items={items} />}
-    />
+    <>
+      <Home
+        // remount when the covered surahs change so the selection resets to them
+        key={config.coveredUpTo}
+        {...homeProps}
+        initialSelection={items}
+        pinnedSet={classSet}
+      />
+      {testDialogOpen && <TestDialog open closeDialog={closeTestDialog} pinnedSet={classSet} />}
+    </>
   );
 };
 
