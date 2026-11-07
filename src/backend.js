@@ -125,18 +125,48 @@ const getReciters = async () => {
     return localData.reciters;
 }
 
-const getChapterWithPages = async (chapterNumber) => {
-    const localData = await getLocalData();
-    const chapter = localData.allData.find((data) => data.chapter.id === chapterNumber);
-    if (!chapter) return null;
-    return {
-        chapter: chapter.chapter,
-        versesWithPages: chapter.versesV1.map(v => ({
-            chapterNumber,
-            verseNumber: parseInt(v.verse_key.split(':')[1]),
-            page: v.v1_page
-        }))
-    };
+// Every verse in mushaf order, plus where each chapter and page starts in that order.
+// Built once so picking a verse by page doesn't rescan the data on every pick.
+const getPageIndex = async () => {
+    if (!getPageIndex.cache) {
+        const localData = await getLocalData();
+        const verses = [];
+        const chapterStart = {};
+        const pageRange = {};
+        for (const chapterData of localData.allData) {
+            const chapterNumber = chapterData.chapter.id;
+            chapterStart[chapterNumber] = verses.length;
+            chapterData.versesV1.forEach((v, i) => {
+                const page = v.v1_page;
+                if (!pageRange[page]) {
+                    pageRange[page] = [verses.length, verses.length];
+                }
+                pageRange[page][1] = verses.length;
+                verses.push({ chapterNumber, verseNumber: i + 1, page });
+            });
+        }
+        getPageIndex.cache = { verses, chapterStart, pageRange };
+    }
+    return getPageIndex.cache;
+};
+
+/**
+ * Picks a random page within the range, then a random verse on that page within the range.
+ * randFloat returns a float in [0, 1).
+ */
+const getRandomVerseInRangeByPage = async (startChapterNumber, startVerseNumber, endChapterNumber, endVerseNumber, randFloat = Math.random) => {
+    const { verses, chapterStart, pageRange } = await getPageIndex();
+    const startIndex = chapterStart[startChapterNumber] + startVerseNumber - 1;
+    const endIndex = chapterStart[endChapterNumber] + endVerseNumber - 1;
+    const startPage = verses[startIndex].page;
+    const endPage = verses[endIndex].page;
+
+    // pages are contiguous, so every page between the first and last has a verse in range
+    const page = startPage + Math.floor(randFloat() * (endPage - startPage + 1));
+    const first = Math.max(pageRange[page][0], startIndex);
+    const last = Math.min(pageRange[page][1], endIndex);
+    const { chapterNumber, verseNumber } = verses[first + Math.floor(randFloat() * (last - first + 1))];
+    return { chapterNumber, verseNumber };
 };
 
 export {
@@ -151,5 +181,5 @@ export {
     getVerseV2Glyph,
     getV1PageNumber,
     getV2PageNumber,
-    getChapterWithPages
+    getRandomVerseInRangeByPage
 };
