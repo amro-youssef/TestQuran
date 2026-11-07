@@ -20,6 +20,24 @@ import { Link } from 'react-router-dom';
 const drawerWidth = 240;
 const navItems = ['Home', 'About', 'Contact'];
 
+// Defined at module level: declaring it inside MenuBar gave it a new identity on every render,
+// which remounted the whole app bar (including the settings sidebar) and closed the drawer.
+function HideOnScroll(props) {
+  const { children, window } = props;
+  // Note that you normally won't need to set the window ref as useScrollTrigger
+  // will default to window.
+  // This is only being set here because the demo is in an iframe.
+  const trigger = useScrollTrigger({
+    target: window ? window() : undefined,
+  });
+
+  return (
+    <Slide appear={false} direction="down" in={!trigger}>
+      {children}
+    </Slide>
+  );
+}
+
 export default function MenuBar(props ) {
   const {testPressed, darkMode, toggleDarkMode, setReciterNumber, isHomePage, goHome, showResultsPage, themeColor, changeThemeColor} = props;
   const { window } = props;
@@ -46,22 +64,6 @@ export default function MenuBar(props ) {
       </List>
     </Box>
   );
-
-  function HideOnScroll(props) {
-    const { children, window } = props;
-    // Note that you normally won't need to set the window ref as useScrollTrigger
-    // will default to window.
-    // This is only being set here because the demo is in an iframe.
-    const trigger = useScrollTrigger({
-      target: window ? window() : undefined,
-    });
-  
-    return (
-      <Slide appear={false} direction="down" in={!trigger}>
-        {children}
-      </Slide>
-    );
-  }
 
   const container = window !== undefined ? () => window().document.body : undefined;
 

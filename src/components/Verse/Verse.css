@@ -23,26 +23,72 @@
   }
 
 
- .blur {
-    color: transparent;
-    text-shadow: 0 0 18px rgba(0,0,0,0.7);
- }
-
-.darkPlaceholder.placeholder {
-    background: linear-gradient(90deg, #2c2c2c 25%, #1e1e1e 50%, #2c2c2c 75%);
-    background-size: 200% 100%;
-    animation: shimmer 3s infinite;
+/* hidden verse: the real text, blurred, on an accent-tinted card with a reveal prompt */
+.verse {
+    position: relative;
+    border-radius: 12px;
+    transition: background-color 0.35s ease;
 }
 
-.placeholder {
-    background: linear-gradient(90deg, #e6e3dc 25%, #dbd7cf 50%, #e6e3dc 75%);
-    background-size: 200% 100%;
-    animation: shimmer 3s infinite;
-} 
+.verseText {
+    transition: opacity 0.3s ease, filter 0.4s ease;
+}
 
-@keyframes shimmer {
-    to {
-        background-position: -200% 0;
+.verse-hidden {
+    cursor: pointer;
+    user-select: none;
+    background-color: var(--accent-selection-bg, rgba(107, 127, 94, 0.04));
+    box-shadow: inset 0 0 0 1px var(--accent-selection-outline, rgba(107, 127, 94, 0.25));
+}
+
+.verse-hidden .verseText {
+    filter: blur(10px);
+    opacity: 0.45 !important;
+}
+
+.verse-hidden.dark .verseText {
+    opacity: 0.55 !important;
+}
+
+.verse-hidden:focus-visible {
+    outline: 2px solid var(--accent-link, #6b7f5e);
+    outline-offset: 2px;
+}
+
+.reveal-hint {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-family: 'Inter', 'Roboto', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+    color: var(--accent-link, #6b7f5e);
+    background-color: rgba(247, 245, 240, 0.85);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08), inset 0 0 0 1px var(--accent-selection-outline, rgba(107, 127, 94, 0.25));
+    pointer-events: none;
+    transition: transform 0.2s ease;
+}
+
+.verse-hidden.dark .reveal-hint {
+    background-color: rgba(36, 37, 38, 0.85);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), inset 0 0 0 1px var(--accent-selection-outline, rgba(144, 202, 249, 0.25));
+}
+
+.verse-hidden:hover .reveal-hint {
+    transform: translate(-50%, -50%) scale(1.04);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .verse, .verseText, .reveal-hint {
+        transition: none;
     }
 }
 

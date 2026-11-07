@@ -7,10 +7,9 @@ import './ModeToggle.css';
 
 const ModeToggle = ({ mode, onChange }) => {
     const isVisual = mode === 'visual';
-    console.log(mode)
 
-    const handleChange = () => {
-        onChange(isVisual ? 'audio' : 'visual');
+    const handleChange = (event) => {
+        onChange(event.target.checked ? 'audio' : 'visual');
     };
 
     return (
@@ -24,6 +23,7 @@ const ModeToggle = ({ mode, onChange }) => {
                 <VisibilityIcon
                     className={`mode-icon ${isVisual ? 'active' : ''}`}
                     sx={{ fontSize: 18 }}
+                    onClick={() => onChange('visual')}
                 />
             </Tooltip>
             <Switch
@@ -41,9 +41,9 @@ const ModeToggle = ({ mode, onChange }) => {
                 <HeadphonesIcon
                     className={`mode-icon ${!isVisual ? 'active' : ''}`}
                     sx={{ fontSize: 18 }}
+                    onClick={() => onChange('audio')}
                 />
             </Tooltip>
-            
         </div>
     );
 };
