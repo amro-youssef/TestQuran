@@ -1,4 +1,4 @@
-import {React, useState, useEffect, Fragment} from 'react';
+import {React, useState, useEffect} from 'react';
 import Box from '@mui/material/Box';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import Button from '@mui/material/Button';
@@ -22,53 +22,24 @@ import ToggleButton from '@mui/material/ToggleButton';
 import Tooltip from '@mui/material/Tooltip';
 import {getReciters} from '../../backend.js';
 import themes from '../../themes.js';
+import { useSettingsStore } from '../../store/useSettingsStore.js';
 
 import './Sidebar.css';
 
 export default function Sidebar({ setReciterNumber, showResultsPage, themeColor, changeThemeColor }) {
-  const [state, setState] = useState({
-    top: false,
-    left: false,
-    bottom: false,
-    right: false,
-    reciters: false
-  });
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [recitersOpen, setRecitersOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState(localStorage.getItem('reciterId') ? localStorage.getItem('reciterId') : 6);
   const [continuePlayingAudio, setContinuePlayingAudio] = useState(localStorage.getItem('continuePlayingAudio') === 'false' ? false : true);
-  const [autoPlayAudio, setAutoPlayAudio] = useState(localStorage.getItem('autoPlayAudio') === 'true' ? true : false);
-  const [alwaysHideText, setAlwaysHideText] = useState(localStorage.getItem('alwaysHideVerse') === 'true' ? true : false);
+  const autoPlayAudio = useSettingsStore((state) => state.autoPlayAudio);
+  const setAutoPlayAudio = useSettingsStore((state) => state.setAutoPlayAudio);
+  const alwaysHideText = useSettingsStore((state) => state.hideVerse);
+  const setAlwaysHideText = useSettingsStore((state) => state.setHideVerse);
   const [reciterComponentList, setReciterComponentList] = useState();
   const [reciterList, setReciterList] = useState([]);
   const [reciterName, setReciterName] = useState();
   const [selectedFont, setSelectedFont] = useState(localStorage.getItem('selectedFont') || 'v1');
   const [randomizeMode, setRandomizeMode] = useState(localStorage.getItem('randomizeMode') || 'byPage');
-
-  useEffect(() => {
-    for (const reciter of reciterList) {
-      if (reciter.id == selectedValue) {
-        setReciterName(reciter.reciter_name)
-        break;
-      }
-    }
-  }, []);
-
-  const toggleDrawer = (anchor) => () => {
-    setState({ ...state, [anchor]: !state[anchor] });
-  };
-
-  useEffect(() => {
-    const fetchReciters = async () => {
-      const reciters = await getReciters();
-      setReciterList(reciters);
-      for (const reciter of reciters) {
-        if (reciter.id == selectedValue) {
-          setReciterName(reciter.reciter_name)
-          break;
-        }
-      }
-    };
-    fetchReciters();
-  }, []);
 
   useEffect(() => {
     setReciterNumber(selectedValue);
@@ -86,6 +57,12 @@ export default function Sidebar({ setReciterNumber, showResultsPage, themeColor,
   const renderReciters = async () => {
     const reciters = await getReciters();
     setReciterList(reciters)
+    for (const reciter of reciters) {
+      if (reciter.id == selectedValue) {
+        setReciterName(reciter.reciter_name)
+        break;
+      }
+    }
       reciters.sort((a, b) => a.id - b.id)
       const labels = reciters.map((reciter) => (
         <FormControlLabel
@@ -105,12 +82,10 @@ export default function Sidebar({ setReciterNumber, showResultsPage, themeColor,
 
   const handleAutoPlayChange = (event) => {
     setAutoPlayAudio(event.target.checked);
-    localStorage.setItem('autoPlayAudio', event.target.checked);
   };
 
   const handleAlwaysHideText = (event) => {
     setAlwaysHideText(event.target.checked);
-    localStorage.setItem('alwaysHideVerse', event.target.checked);
   };
 
   const handleRandomizeModeChange = (event, newMode) => {
@@ -120,7 +95,7 @@ export default function Sidebar({ setReciterNumber, showResultsPage, themeColor,
     }
   };
 
-  const list = (anchor) => (
+  const list = () => (
     <Box
       className="box"
       style={{display: 'flex', flexDirection: 'column', margin: '15px'}}
@@ -129,7 +104,7 @@ export default function Sidebar({ setReciterNumber, showResultsPage, themeColor,
         {/* <IconButton onClick={handleDrawerClose}>
             {<ChevronRightIcon />}
         </IconButton> */}
-        <IconButton onClick={toggleDrawer('right', false)} style={{position: 'absolute', top: '5px', right: '5px', padding: '5px'}}>
+        <IconButton onClick={() => setDrawerOpen(false)} style={{position: 'absolute', top: '5px', right: '5px', padding: '5px'}}>
           <CloseIcon fontSize="medium"/>
         </IconButton>
         <h2>Audio:</h2>
@@ -137,9 +112,9 @@ export default function Sidebar({ setReciterNumber, showResultsPage, themeColor,
         <FormControlLabel checked={continuePlayingAudio} onChange={handleContinuePlayingChange} control={<Checkbox />} label="Continue playing audio" />
 
         <div style={{margin: '5px'}}/>
-        <Button variant="outlined" onClick={toggleDrawer('reciters')}>Reciter: {reciterName}</Button>
+        <Button variant="outlined" onClick={() => setRecitersOpen(true)}>Reciter: {reciterName}</Button>
         
-        <Dialog open={state.reciters} onClose={toggleDrawer('reciters')}>
+        <Dialog open={recitersOpen} onClose={() => setRecitersOpen(false)}>
           <DialogTitle>Select Reciter</DialogTitle>
           <DialogContent>
             <FormControl>
@@ -148,7 +123,6 @@ export default function Sidebar({ setReciterNumber, showResultsPage, themeColor,
                 onChange={(event) => {
                   setSelectedValue(event.target.value);
                   localStorage.setItem('reciterId', event.target.value)
-                  setReciterNumber(event.target.value);
                   for (const reciter of reciterList) {
                     if (reciter.id == event.target.value) {
                       setReciterName(reciter.reciter_name)
@@ -163,7 +137,7 @@ export default function Sidebar({ setReciterNumber, showResultsPage, themeColor,
             </FormControl>
           </DialogContent>
           <DialogActions>
-            <Button onClick={toggleDrawer('reciters')}>Close</Button>
+            <Button onClick={() => setRecitersOpen(false)}>Close</Button>
           </DialogActions>
         </Dialog>
 
@@ -225,25 +199,20 @@ export default function Sidebar({ setReciterNumber, showResultsPage, themeColor,
         </ToggleButtonGroup>
 
         <h2>Test:</h2>
-        <Button variant="outlined" style={{top: '0px'}} onClick={() => {toggleDrawer('right', false); showResultsPage();}}>Test Results</Button>
+        <Button variant="outlined" style={{top: '0px'}} onClick={() => {setDrawerOpen(false); showResultsPage();}}>Test Results</Button>
     </Box>
   );
 
   return (
     <div>
-      {['right'].map((anchor) => (
-        <Fragment key={anchor}>
-          <Button onClick={toggleDrawer(anchor, true)}>{<SettingsIcon/>}</Button>
-          <SwipeableDrawer
-            permanent = "true"
-            anchor={anchor}
-            open={state[anchor]}
-            onClose={toggleDrawer(anchor, false)}
-            onOpen={toggleDrawer(anchor, true)}>
-                {list(anchor)}
-          </SwipeableDrawer>
-        </Fragment>
-      ))}
+      <Button onClick={() => setDrawerOpen(true)}>{<SettingsIcon/>}</Button>
+      <SwipeableDrawer
+        anchor="right"
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        onOpen={() => setDrawerOpen(true)}>
+            {list()}
+      </SwipeableDrawer>
     </div>
   );
 }

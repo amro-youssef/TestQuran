@@ -2,6 +2,7 @@ import {React, useState, useEffect, Suspense} from 'react';
 import PropTypes from 'prop-types';
 import { getV1PageNumber, getV2PageNumber } from '../../backend';
 import { fontCache } from './fontCache';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import './Verse.css';
 
 const Verse = ({ verseText, hideVerse, chapterNumber, verseNumber }) => {
@@ -86,23 +87,42 @@ const Verse = ({ verseText, hideVerse, chapterNumber, verseNumber }) => {
 
     useEffect(() => {
         setIsContentHidden(hideVerse === true);
-    }, [verseText]);
+    }, [verseText, hideVerse]);
 
     if (!isFontLoaded) {
         return <div >Loading...</div>;
     }
 
+    const isDark = localStorage.getItem('darkMode') !== 'false';
+
+    const onKeyDown = (event) => {
+        if (isContentHidden && (event.key === 'Enter' || event.key === ' ')) {
+            event.preventDefault();
+            makeContentVisibile();
+        }
+    };
+
     return (
         <div 
             dir="rtl" 
-            className={`verse ${isContentHidden ? 'placeholder blur' : ''} ${localStorage.getItem('darkMode') === 'false' ? '' : 'darkPlaceholder'}`} 
+            className={`verse ${isContentHidden ? 'verse-hidden' : ''} ${isDark ? 'dark' : 'light'}`} 
             onClick={makeContentVisibile}
+            onKeyDown={onKeyDown}
+            role={isContentHidden ? 'button' : undefined}
+            tabIndex={isContentHidden ? 0 : undefined}
+            aria-label={isContentHidden ? 'Hidden verse, tap to reveal' : undefined}
         >
-            <div className={`verseText`} style={{ fontFamily, ...style, opacity: isFontLoaded ? 1 : 0, transition: 'opacity 0.3s ease'}} dir="rtl">
+            <div className={`verseText`} style={{ fontFamily, ...style, opacity: isFontLoaded ? 1 : 0 }} dir="rtl" aria-hidden={isContentHidden}>
                 {
                     fontFamily.includes('uthmani') ? processAyah(verseText) : (isFontLoaded ? verseText?.slice(0, -1) : '')
                 }
             </div>
+            {isContentHidden && (
+                <div className="reveal-hint" dir="ltr">
+                    <VisibilityIcon sx={{ fontSize: 18 }} />
+                    <span>Tap to reveal</span>
+                </div>
+            )}
         </div>
     )
 }

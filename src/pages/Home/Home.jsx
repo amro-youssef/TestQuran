@@ -12,6 +12,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import VersePickerMobile from '../../components/VersePicker/VersePickerMobile.jsx';
 import ScrollToTopButton from '../../components/ScrollToTopButton/ScrollToTopButton.jsx';
 import ModeToggle from '../../components/ModeToggle/ModeToggle.jsx';
+import { useSettingsStore, selectMode } from '../../store/useSettingsStore.js';
 
 
 const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => { 
@@ -38,7 +39,10 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
   const [loading, setLoading] = useState(false);
   const [versePlaying, setVersePlaying] = useState();
   const [audioLoading, setAudioLoading] = useState(null);
-  const [mode, setMode] = useState((localStorage.getItem('alwaysHideVerse') === 'true' && localStorage.getItem('autoPlayAudio') === 'true') ? 'audio' : 'visual');
+  const mode = useSettingsStore(selectMode);
+  const setMode = useSettingsStore((state) => state.setMode);
+  const hideVerse = useSettingsStore((state) => state.hideVerse);
+  const autoPlayAudio = useSettingsStore((state) => state.autoPlayAudio);
 
   const isMobile = useMediaQuery('(max-width:600px)');
 
@@ -90,21 +94,10 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
     setLoading(false);
     setChapterName(await getChapterName(randomVerse?.chapterNumber));
 
-    if (localStorage.getItem('autoPlayAudio') === 'true') {
+    if (autoPlayAudio) {
       playAudio(randomVerse?.chapterNumber, randomVerse?.verseNumber);
     }
   };
-
-  const onModeChange = (mode) => {
-    setMode(mode);
-    if (mode === 'visual') {
-      localStorage.setItem('alwaysHideVerse', false);
-      localStorage.setItem('autoPlayAudio', false);
-    } else if (mode === 'audio') {
-      localStorage.setItem('alwaysHideVerse', true);
-      localStorage.setItem('autoPlayAudio', true);
-    }
-  }
 
   /**
    * @return whether there are empty fields
@@ -402,7 +395,7 @@ function randFloatWithCrypto() {
           />
         
           }
-          <ModeToggle mode={mode} onChange={onModeChange} />
+          <ModeToggle mode={mode} onChange={setMode} />
           <SubmitButton onClick={onSubmitClick} loading={loading}/>
         </div>
         {verseText ? (
@@ -418,7 +411,7 @@ function randFloatWithCrypto() {
               onViewVerseNumberChange={onViewVerseNumberChange}
               playAudio={playAudio}
               versePlaying={audioUrl ? versePlaying : null}
-              hideVerse = {localStorage.getItem('alwaysHideVerse') === "true"} // TODO make this update dynamically rather than needing refresh for it to apply
+              hideVerse = {hideVerse}
             />
 
             {readMore && secondVerseText ?  (
@@ -432,7 +425,7 @@ function randFloatWithCrypto() {
                   onViewVerseNumberChange={onViewVerseNumberChange}
                   playAudio={playAudio}
                   versePlaying={audioUrl ? versePlaying : null}
-                  hideVerse = {localStorage.getItem('alwaysHideVerse') === "true"}
+                  hideVerse = {hideVerse}
                 />
               </>
             ) : <></>}
@@ -447,7 +440,7 @@ function randFloatWithCrypto() {
                   onViewVerseNumberChange={onViewVerseNumberChange}
                   playAudio={playAudio}
                   versePlaying={audioUrl ? versePlaying : null}
-                  hideVerse = {localStorage.getItem('alwaysHideVerse') === "true"}
+                  hideVerse = {hideVerse}
                 />
                 {/* {!showRestOfChapter && 
                   <p>
@@ -473,7 +466,7 @@ function randFloatWithCrypto() {
               onViewVerseNumberChange={onViewVerseNumberChange}
               playAudio={playAudio}
               versePlaying={audioUrl ? versePlaying : null}
-              hideVerse = {localStorage.getItem('alwaysHideVerse') === "true"}
+              hideVerse = {hideVerse}
             />
         ))}
         {readMore && thirdVerseText ?  (
@@ -487,7 +480,7 @@ function randFloatWithCrypto() {
                   onViewVerseNumberChange={onViewVerseNumberChange}
                   playAudio={playAudio}
                   versePlaying={audioUrl ? versePlaying : null}
-                  hideVerse = {localStorage.getItem('alwaysHideVerse') === "true"}
+                  hideVerse = {hideVerse}
                 /> */}
                 {lastVerseIsOnScreen && 
                     <p id='end-of-chapter'>
