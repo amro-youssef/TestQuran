@@ -1,5 +1,5 @@
 import {React, useState, useEffect} from 'react';
-import {getAudioUrl, getNumberVerses, getVerseText, getChapterName, getRandomVerseInRangeByPage} from '../../backend.js';
+import {getAudioUrl, getNumberVerses, getVerseText, getChapterName, getRandomVerseByPage as pickRandomVerseByPage} from '../../backend.js';
 import { Button, CircularProgress } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import ProgressBar from "@ramonak/react-progress-bar";
@@ -11,6 +11,7 @@ import './Test.css';
 import TestResultDialog from '../../dialogs/TestResultDialog/TestResultDialog.jsx';
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import { useQuranStore } from '../../store/useQuranStore.js';
+import { decodeSelection, selectionVerses, versesIn } from '../../components/VerseSelector/selection.js';
 
 const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
     const muiTheme = useTheme();
@@ -35,10 +36,7 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
 
     const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate();
-    const startChapterNumber = searchParams.get('startChapter');
-    const endChapterNumber = searchParams.get('endChapter');
-    const startVerseNumber = searchParams.get('startVerse');
-    const endVerseNumber = searchParams.get('endVerse');
+    const portions = decodeSelection(searchParams.get('portions'));
     const numQuestions = searchParams.get('numQuestions');
 
 
@@ -62,9 +60,8 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
 
     const loadVerses = async () => {
       setIsLoading(true);
-      const versesList = await getVersesList(parseInt(startChapterNumber), parseInt(startVerseNumber),
-        parseInt(endChapterNumber), parseInt(endVerseNumber));
-      if (versesList.some(element => element === null)) {
+      const versesList = selectionVerses(portions);
+      if (versesList.length === 0) {
         return;
       }
 
@@ -76,8 +73,9 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
         randomVerse = await getRandomVerse(versesList);
       }
       let numberVersesInChapter = await getNumberVerses(randomVerse.chapterNumber);
-      // avoids the last verse in the chapter being chosen, unless this is the only verse specified
-      while (startVerseNumber !== endVerseNumber && parseInt(randomVerse?.verseNumber) === parseInt(numberVersesInChapter)) {
+      // avoids the last verse in the chapter being chosen, unless every verse specified is a last verse
+      const hasNonLastVerse = versesList.some(v => v.verseNumber !== versesIn(v.chapterNumber));
+      while (hasNonLastVerse && parseInt(randomVerse?.verseNumber) === parseInt(numberVersesInChapter)) {
         if (randomizeMode === 'byPage') {
           randomVerse = await getRandomVerseByPage(versesList);
         } else {
@@ -212,10 +210,7 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
       testResult.timeTaken = timeTaken;
       testResult.isoDate = new Date().toISOString();
 
-      testResult.startChapterNumber = startChapterNumber;
-      testResult.endChapterNumber = endChapterNumber;
-      testResult.startVerseNumber = startVerseNumber;
-      testResult.endVerseNumber = endVerseNumber;
+      testResult.portions = portions;
 
       results.push(testResult);
 
@@ -273,12 +268,7 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
       return list[Math.floor(Math.random()*list.length)];
     };
 
-    const getRandomVerseByPage = async (verseList) => {
-      const list = await verseList;
-      const first = list[0];
-      const last = list[list.length - 1];
-      return getRandomVerseInRangeByPage(first.chapterNumber, first.verseNumber, last.chapterNumber, last.verseNumber, Math.random);
-    };
+    const getRandomVerseByPage = (verseList) => pickRandomVerseByPage(verseList, Math.random);
 
     const onViewVerseNumberChange = () => {
       setShowVerseNumbers(!showVerseNumbers);
@@ -286,47 +276,6 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
 
     const expandPressed = async () => {
       setShowOtherVerses(!showOtherVerses);
-    }
-
-    const getVersesList = async (startChapterNumber, startVerseNumber, endChapterNumber, endVerseNumber) => {
-      const verseList = [];
-      if (startChapterNumber == endChapterNumber) {
-        for (let j = startVerseNumber; j <= endVerseNumber; j++) {
-          verseList.push({
-            chapterNumber: startChapterNumber,
-            verseNumber: j
-          })
-        }
-        return verseList;
-  
-      }
-      for (let i = startChapterNumber; i <= endChapterNumber; i++) {
-        const numVersesInChapter = await getNumberVerses(i);
-        if (i == startChapterNumber) {
-          for (let j = startVerseNumber; j <= numVersesInChapter; j++) {
-            verseList.push({
-              chapterNumber: i,
-              verseNumber: j
-            })
-          }
-        } else if (i == endChapterNumber) {
-          for (let j = 1; j <= endVerseNumber; j++) {
-            verseList.push({
-              chapterNumber: i,
-              verseNumber: j
-            })
-          }
-        } else {
-          for (let j = 1; j <= numVersesInChapter; j++) {
-            verseList.push({
-              chapterNumber: i,
-              verseNumber: j
-            })
-          }
-        }
-  
-      }
-      return verseList
     }
 
     return (

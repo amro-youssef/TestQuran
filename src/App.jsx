@@ -20,23 +20,7 @@ const App = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [startChapterNumber, setStartChapterNumber] = useState();
-  const [startVerseNumber, setStartVerseNumber] = useState();
-  const [endChapterNumber, setEndChapterNumber] = useState();
-  const [endVerseNumber, setEndVerseNumber] = useState();
-  const [numQuestions, setNumQuestions] = useState();
   const [reciterNumber, setReciterNumber] = useState(1);
-  const [testMode, setTestMode] = useState();
-
-  const loadState = (startChapter, startVerse, endChapter, endVerse, numQuestions, testMode) => {
-    setStartChapterNumber(parseInt(startChapter));
-    setStartVerseNumber(parseInt(startVerse));
-    setEndChapterNumber(parseInt(endChapter));
-    setEndVerseNumber(parseInt(endVerse));
-    setNumQuestions(parseInt(numQuestions));
-    setTestMode(testMode);
-    console.log(testMode)
-  }
 
 //   function generateFontFaces(count) {
 //     const style = document.createElement('style');
@@ -69,10 +53,6 @@ const App = () => {
 // }
 
 // generateFontFaces(604);
-
-const openTestPage = () => {
-  navigate('/test');
-}
 
   const [darkMode, setDarkMode] = useState(localStorage.getItem("darkMode") !== "false"); 
   const [themeColor, setThemeColor] = useState(localStorage.getItem("themeColor") || "blue");
@@ -140,9 +120,7 @@ const openTestPage = () => {
             {testDialog ? 
               <TestDialog
                 open={true} 
-                closeDialog={() => setTestDialog(false)} 
-                loadState={(a,b,c,d,e,f) => loadState(a,b,c,d,e,f)} 
-                openTestPage={openTestPage}/>
+                closeDialog={() => setTestDialog(false)} />
                 : <></>}
           </>
         } />

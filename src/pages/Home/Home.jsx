@@ -1,25 +1,21 @@
 /* eslint-disable eqeqeq */
 import './Home.css';
-import {getAudioUrl, getNumberVerses, getVerseText, getChapterName, getVerseV1Glyph, getVerseV2Glyph, getRandomVerseInRangeByPage} from '../../backend.js';
+import {getAudioUrl, getNumberVerses, getVerseText, getChapterName, getVerseV1Glyph, getVerseV2Glyph, getRandomVerseByPage as pickRandomVerseByPage} from '../../backend.js';
 import {React, useState} from 'react';
-import VersePicker from '../../components/VersePicker/VersePicker.jsx';
-import SubmitButton from '../../components/SubmitButton/SubmitButton.jsx';
 import VerseBox from '../../components/VerseBox/VerseBox.jsx';
 import AudioBar from '../../components/AudioBar/AudioBar.jsx';
-import { getVerseTextOfFont, isMobileOrTablet } from '../../utils.js';
-
-import useMediaQuery from '@mui/material/useMediaQuery';
-import VersePickerMobile from '../../components/VersePicker/VersePickerMobile.jsx';
+import { getVerseTextOfFont } from '../../utils.js';
 import ScrollToTopButton from '../../components/ScrollToTopButton/ScrollToTopButton.jsx';
-import ModeToggle from '../../components/ModeToggle/ModeToggle.jsx';
+import VerseSelector from '../../components/VerseSelector/VerseSelector.jsx';
+import { selectionVerses, versesIn, withIds, WHOLE_QURAN } from '../../components/VerseSelector/selection.js';
 import { useSettingsStore, selectMode } from '../../store/useSettingsStore.js';
+import { useSetsStore } from '../../store/useSetsStore.js';
 
 
 const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => { 
-  const [startChapterNumber, setStartChapterNumber] = useState(null); 
-  const [endChapterNumber, setEndChapterNumber] = useState(null); 
-  const [startVerseNumber, setStartVerseNumber] = useState(null); 
-  const [endVerseNumber, setEndVerseNumber] = useState(null); 
+  // starts on whatever was tested last, or the whole Quran the first time
+  const [selection, setSelection] = useState(() => withIds(useSetsStore.getState().recent[0]?.items ?? WHOLE_QURAN));
+  const addRecent = useSetsStore(s => s.addRecent);
   const [chapterName, setChapterName] = useState(null); 
 
   const [verseText, setVerseText] = useState(null);
@@ -44,23 +40,12 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
   const hideVerse = useSettingsStore((state) => state.hideVerse);
   const autoPlayAudio = useSettingsStore((state) => state.autoPlayAudio);
 
-  const isMobile = useMediaQuery('(max-width:600px)');
-
-  const loadState = (startChapter, startVerse, endChapter, endVerse) => {
-      setStartChapterNumber(parseInt(startChapter));
-      setStartVerseNumber(parseInt(startVerse));
-      setEndChapterNumber(parseInt(endChapter));
-      setEndVerseNumber(parseInt(endVerse));
-  }
-
-  const onSubmitClick = async () => {
-    if (checkEmptyFields()) return;
+  // items is passed in (rather than read from state) so a saved set can be loaded and tested in one tap
+  const onSubmitClick = async (items) => {
+    const versesList = selectionVerses(items);
+    if (versesList.length === 0) return;
     setLoading(true);
-    const versesList = await getVersesList(parseInt(startChapterNumber), parseInt(startVerseNumber),
-    parseInt(endChapterNumber), parseInt(endVerseNumber));
-    if (versesList.some(element => element === null)) {
-      return;
-    }
+    addRecent(items.map(({ id, ...item }) => item));
 
     const randomizeMode = localStorage.getItem('randomizeMode') || 'byPage';
     let randomVerse;
@@ -71,7 +56,8 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
     }
     let numberOfVerses = await getNumberVerses(randomVerse.chapterNumber);
     // avoids the last verse in the chapter being chosen, unless this is the only verse specified
-    while (startVerseNumber !== endVerseNumber && randomVerse.verseNumber === numberOfVerses) {
+    const hasNonLastVerse = versesList.some(v => v.verseNumber !== versesIn(v.chapterNumber));
+    while (hasNonLastVerse && randomVerse.verseNumber === numberOfVerses) {
       if (randomizeMode === 'byPage') {
         randomVerse = await getRandomVerseByPage(versesList);
       } else {
@@ -99,12 +85,6 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
     }
   };
 
-  /**
-   * @return whether there are empty fields
-   */
-  const checkEmptyFields = () => {
-  }
-
   const resetStates = () => {
     setFirstVerse(null);
     setShowVerseNumbers(false);
@@ -123,12 +103,7 @@ const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => {
     return list[Math.floor(randFloatWithCrypto()*list.length)];
   };
 
-  const getRandomVerseByPage = async (verseList) => {
-    const list = await verseList;
-    const first = list[0];
-    const last = list[list.length - 1];
-    return getRandomVerseInRangeByPage(first.chapterNumber, first.verseNumber, last.chapterNumber, last.verseNumber, randFloatWithCrypto);
-  };
+  const getRandomVerseByPage = (verseList) => pickRandomVerseByPage(verseList, randFloatWithCrypto);
 
 /**
 * Return a random float between 0 (inclusive) and 1 (exclusive) using the Crypto module.
@@ -139,47 +114,6 @@ function randFloatWithCrypto() {
 	return ( randomInt / ( maxInt + 1 ) );
 
 }
-
-  const getVersesList = async (startChapterNumber, startVerseNumber, endChapterNumber, endVerseNumber) => {
-    const verseList = [];
-    if (startChapterNumber == endChapterNumber) {
-      for (let j = startVerseNumber; j <= endVerseNumber; j++) {
-        verseList.push({
-          chapterNumber: startChapterNumber,
-          verseNumber: j
-        })
-      }
-      return verseList;
-
-    }
-    for (let i = startChapterNumber; i <= endChapterNumber; i++) {
-      const numVersesInChapter = await getNumberVerses(i);
-      if (i == startChapterNumber) {
-        for (let j = startVerseNumber; j <= numVersesInChapter; j++) {
-          verseList.push({
-            chapterNumber: i,
-            verseNumber: j
-          })
-        }
-      } else if (i == endChapterNumber) {
-        for (let j = 1; j <= endVerseNumber; j++) {
-          verseList.push({
-            chapterNumber: i,
-            verseNumber: j
-          })
-        }
-      } else {
-        for (let j = 1; j <= numVersesInChapter; j++) {
-          verseList.push({
-            chapterNumber: i,
-            verseNumber: j
-          })
-        }
-      }
-
-    }
-    return verseList
-  }
 
   const expandPressed = async () => {
     if (!readMore) {
@@ -375,28 +309,15 @@ function randFloatWithCrypto() {
 
   return (
       <div className="App">
-        <h3 className='title'>Pick the range of verses you would like to be tested on:</h3>
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
-          {/* {!isMobile ? 
-          <VersePicker 
-            loadState={loadState} 
-          /> : 
-          <VersePickerMobile
-            loadState={loadState}
+        <div className='selector-container'>
+          <VerseSelector
+            items={selection}
+            onItemsChange={setSelection}
+            mode={mode}
+            onModeChange={setMode}
+            onRandomize={onSubmitClick}
+            loading={loading}
           />
-          } */}
-
-          {isMobile && isMobileOrTablet() ?
-              <VersePickerMobile
-              loadState={loadState}
-            /> :
-            <VersePicker 
-            loadState={loadState} 
-          />
-        
-          }
-          <ModeToggle mode={mode} onChange={setMode} />
-          <SubmitButton onClick={onSubmitClick} loading={loading}/>
         </div>
         {verseText ? (
           <>

@@ -6,14 +6,17 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import './Verse.css';
 
 const Verse = ({ verseText, hideVerse, chapterNumber, verseNumber }) => {
-    const [isContentHidden, setIsContentHidden] = useState(hideVerse === true);
+    // which verse the user has revealed; derived during render (not in an effect) so a new
+    // verse in hide mode is never painted readable for a frame before the blur applies
+    const [revealedVerse, setRevealedVerse] = useState(null);
+    const isContentHidden = hideVerse === true && revealedVerse !== verseText;
     // const [fontClass, setFontClass] = useState('');
     const [fontFamily, setFontFamily] = useState('');
     const [style, setStyle] = useState({});
     const [isFontLoaded, setIsFontLoaded] = useState(false);
 
     const makeContentVisibile = () => {
-        setIsContentHidden(false);
+        setRevealedVerse(verseText);
     };
 
     // credit to https://github.com/AShaaban0109/QuranType for this function
@@ -85,9 +88,10 @@ const Verse = ({ verseText, hideVerse, chapterNumber, verseNumber }) => {
         loadFont();
     }, [chapterNumber, verseNumber, verseText]);
 
+    // switching hide mode back on hides the current verse again
     useEffect(() => {
-        setIsContentHidden(hideVerse === true);
-    }, [verseText, hideVerse]);
+        if (hideVerse) setRevealedVerse(null);
+    }, [hideVerse]);
 
     if (!isFontLoaded) {
         return <div >Loading...</div>;
@@ -105,7 +109,7 @@ const Verse = ({ verseText, hideVerse, chapterNumber, verseNumber }) => {
     return (
         <div 
             dir="rtl" 
-            className={`verse ${isContentHidden ? 'verse-hidden' : ''} ${isDark ? 'dark' : 'light'}`} 
+            className={`verse ${isContentHidden ? 'verse-hidden' : ''} ${isDark ? 'verse-on-dark' : 'verse-on-light'}`} 
             onClick={makeContentVisibile}
             onKeyDown={onKeyDown}
             role={isContentHidden ? 'button' : undefined}
@@ -117,8 +121,9 @@ const Verse = ({ verseText, hideVerse, chapterNumber, verseNumber }) => {
                     fontFamily.includes('uthmani') ? processAyah(verseText) : (isFontLoaded ? verseText?.slice(0, -1) : '')
                 }
             </div>
-            {isContentHidden && (
-                <div className="reveal-hint" dir="ltr">
+            {/* kept mounted so it can fade out as the verse is revealed */}
+            {hideVerse && (
+                <div className="reveal-hint" dir="ltr" aria-hidden={!isContentHidden}>
                     <VisibilityIcon sx={{ fontSize: 18 }} />
                     <span>Tap to reveal</span>
                 </div>

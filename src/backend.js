@@ -151,21 +151,23 @@ const getPageIndex = async () => {
 };
 
 /**
- * Picks a random page within the range, then a random verse on that page within the range.
+ * Picks a random page that has a verse in the list, then a random listed verse on that page.
+ * The list can have gaps (e.g. Al-Mulk and Juz 30), so pages with nothing selected are never picked.
  * randFloat returns a float in [0, 1).
  */
-const getRandomVerseInRangeByPage = async (startChapterNumber, startVerseNumber, endChapterNumber, endVerseNumber, randFloat = Math.random) => {
-    const { verses, chapterStart, pageRange } = await getPageIndex();
-    const startIndex = chapterStart[startChapterNumber] + startVerseNumber - 1;
-    const endIndex = chapterStart[endChapterNumber] + endVerseNumber - 1;
-    const startPage = verses[startIndex].page;
-    const endPage = verses[endIndex].page;
-
-    // pages are contiguous, so every page between the first and last has a verse in range
-    const page = startPage + Math.floor(randFloat() * (endPage - startPage + 1));
-    const first = Math.max(pageRange[page][0], startIndex);
-    const last = Math.min(pageRange[page][1], endIndex);
-    const { chapterNumber, verseNumber } = verses[first + Math.floor(randFloat() * (last - first + 1))];
+const getRandomVerseByPage = async (verseList, randFloat = Math.random) => {
+    const { verses, chapterStart } = await getPageIndex();
+    const versesByPage = new Map();
+    for (const verse of verseList) {
+        const page = verses[chapterStart[verse.chapterNumber] + verse.verseNumber - 1].page;
+        if (!versesByPage.has(page)) {
+            versesByPage.set(page, []);
+        }
+        versesByPage.get(page).push(verse);
+    }
+    const pages = [...versesByPage.values()];
+    const onPage = pages[Math.floor(randFloat() * pages.length)];
+    const { chapterNumber, verseNumber } = onPage[Math.floor(randFloat() * onPage.length)];
     return { chapterNumber, verseNumber };
 };
 
@@ -181,5 +183,5 @@ export {
     getVerseV2Glyph,
     getV1PageNumber,
     getV2PageNumber,
-    getRandomVerseInRangeByPage
+    getRandomVerseByPage
 };
