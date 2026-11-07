@@ -12,9 +12,10 @@ import { useSettingsStore, selectMode } from '../../store/useSettingsStore.js';
 import { useSetsStore } from '../../store/useSetsStore.js';
 
 
-const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber} ) => { 
-  // starts on whatever was tested last, or the whole Quran the first time
-  const [selection, setSelection] = useState(() => withIds(useSetsStore.getState().recent[0]?.items ?? WHOLE_QURAN));
+// initialSelection and intro let other pages (e.g. a class page) reuse Home with their own preset
+const Home = ( {testPressed, darkMode, toggleDarkMode, reciterNumber, initialSelection, intro} ) => { 
+  // starts on the page's preset, else whatever was tested last, or the whole Quran the first time
+  const [selection, setSelection] = useState(() => withIds(initialSelection ?? useSetsStore.getState().recent[0]?.items ?? WHOLE_QURAN));
   const addRecent = useSetsStore(s => s.addRecent);
   const [chapterName, setChapterName] = useState(null); 
 
@@ -309,6 +310,7 @@ function randFloatWithCrypto() {
 
   return (
       <div className="App">
+        {intro}
         <div className='selector-container'>
           <VerseSelector
             items={selection}

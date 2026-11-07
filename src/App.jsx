@@ -14,6 +14,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import themes from './themes.js'
 import Journal from './pages/Journal/Journal.jsx';
+import ClassPage from './pages/Class/ClassPage.jsx';
 
 const App = () => { 
   const [testDialog, setTestDialog] = useState(false);
@@ -149,6 +150,9 @@ const App = () => {
         } />
         <Route path="/journal" element={
           <Journal />
+        } />
+        <Route path="/icm2025" element={
+          <ClassPage classId="icm2025" reciterNumber={reciterNumber} />
         } />
       </Routes>
 

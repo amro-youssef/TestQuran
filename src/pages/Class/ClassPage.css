@@ -1,0 +1,77 @@
+.class-intro {
+    max-width: 760px;
+    margin: 28px auto 0;
+    padding: 0 16px;
+    box-sizing: border-box;
+    text-align: left;
+}
+
+.class-title {
+    margin: 0 0 6px;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.class-progress-text {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+    font-size: 14px;
+    opacity: 0.75;
+}
+
+.class-progress.MuiLinearProgress-root {
+    margin: 8px 0 14px;
+    height: 6px;
+    border-radius: 3px;
+}
+
+.class-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.class-surahs-toggle.MuiButton-root {
+    margin-left: auto;
+    text-transform: none;
+    opacity: 0.7;
+}
+
+.class-surah-list {
+    columns: 3 180px;
+    column-gap: 24px;
+    margin: 12px 0 0;
+    padding-left: 24px;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.class-surah-list span {
+    font-size: 11px;
+    opacity: 0.45;
+}
+
+.class-hint {
+    margin: 18px 0 0;
+    font-size: 13px;
+    opacity: 0.6;
+}
+
+.class-loading {
+    margin-top: 48px;
+    opacity: 0.6;
+}
+
+/* the selector sits closer under the intro than under the bare home page */
+.class-intro + .selector-container {
+    margin-top: 10px;
+}
+
+@media (max-width: 600px) {
+    .class-surahs-toggle.MuiButton-root {
+        margin-left: 0;
+    }
+}
