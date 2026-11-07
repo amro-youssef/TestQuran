@@ -1,48 +1,49 @@
-/* Style for the number input to make it similar to mui */
-input[type=number] {
-    -moz-appearance: textfield;
-    appearance: textfield;
-    width: 50%;
-    padding: 8px 12px;
-    border: 1px solid #ced4da;
-    border-radius: 2px;
-    box-sizing: border-box;
-    font-size: 1rem;
-    display: block;
-  }
-  
-  /* Style for the number input when focused */
-  input[type=number]:focus {
-    outline: none;
-    border-color: #4caf50;
-    box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.25);
-  }
-  
-  /* Style for the number input when hovered */
-  input[type=number]:hover {
-    border-color: #6c757d;
-  }
+.testDialogContent {
+    --selector-border: color-mix(in srgb, currentColor 15%, transparent);
+}
 
-  #formlabel {
-    font-size: 1em;
-  }
+.testDialogContent .sets-bar {
+    margin-bottom: 16px;
+}
 
-  #number-of-questions-div {
-    margin: 0px 0px 0px 5px;
-  }
-  #test-mode-control {
-    margin: 10px 0px 0px 10px;
-  }
-  
-  
-  @media screen and (max-width: 480px) {
-    .testDialogContent #formlabel {
-      font-size: 1.1em;
+/* small uppercase caption, like a form label, instead of a boxed section */
+.test-dialog-caption {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+    font-size: 11px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    opacity: 0.6;
+}
+
+/* reads as the next line of the same form */
+.test-dialog-questions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.test-dialog-actions.MuiDialogActions-root {
+    padding: 8px 16px 12px 16px;
+}
+
+.test-dialog-actions-left {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-right: auto;
+}
+
+@media screen and (max-width: 600px) {
+    .test-dialog-actions.MuiDialogActions-root {
+        flex-wrap: wrap;
+        row-gap: 8px;
     }
-  }
 
-  @media screen and (max-width: 369px) {
-    .testDialogContent #formlabel {
-      font-size: 0.9em;
+    .test-dialog-actions-left {
+        width: 100%;
     }
-  }
+}

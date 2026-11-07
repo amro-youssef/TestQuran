@@ -2,7 +2,7 @@ import { Button } from '@mui/material';
 import React from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 
-const SubmitButton = ( {onClick, loading} ) => {
+const SubmitButton = ( {onClick, loading, disabled} ) => {
 
     return (
         
@@ -10,7 +10,7 @@ const SubmitButton = ( {onClick, loading} ) => {
             size="medium"
             variant="contained"
             onClick={onClick}
-            disabled={loading}
+            disabled={loading || disabled}
             sx={{width: '120px', height: '48px', // Set the desired height
             minHeight: '48px',}}
         >

@@ -1,4 +1,5 @@
 import {React, useState, useEffect} from 'react';
+import { selectionSummary } from '../../components/VerseSelector/selection.js';
 import {
     Dialog,
     DialogTitle,
@@ -201,7 +202,9 @@ const TestResults = () => {
                         <div style={{marginRight: "8px"}}></div>
                         {result.correctAnswers.length} out of {result.correctAnswers.length + result.incorrectAnswers.length}
                         <div style={{marginRight: "20px"}}></div>
-                        From verse {result.startChapterNumber}:{result.startVerseNumber} to {result.endChapterNumber}:{result.endVerseNumber}
+                        {result.portions
+                            ? selectionSummary(result.portions)
+                            : `From verse ${result.startChapterNumber}:${result.startVerseNumber} to ${result.endChapterNumber}:${result.endVerseNumber}`}
                         </AccordionSummary>
 
                         <AccordionDetails>
