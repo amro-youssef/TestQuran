@@ -1,5 +1,5 @@
 import {React, useState, useEffect} from 'react';
-import {getAudioUrl, getNumberVerses, getVerseText, getChapterName, getChapterWithPages} from '../../backend.js';
+import {getAudioUrl, getNumberVerses, getVerseText, getChapterName, getRandomVerseInRangeByPage} from '../../backend.js';
 import { Button, CircularProgress } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import ProgressBar from "@ramonak/react-progress-bar";
@@ -275,24 +275,9 @@ const Test = ( {goHome, state, darkMode, toggleDarkMode} ) => {
 
     const getRandomVerseByPage = async (verseList) => {
       const list = await verseList;
-      const chaptersInList = [...new Set(list.map(v => v.chapterNumber))];
-
-      const pageMap = {};
-      for (const chapterNum of chaptersInList) {
-        const chapterWithPages = await getChapterWithPages(chapterNum);
-        if (chapterWithPages) {
-          pageMap[chapterNum] = {};
-          for (const v of chapterWithPages.versesWithPages) {
-            pageMap[chapterNum][v.verseNumber] = v.page;
-          }
-        }
-      }
-
-      const pagesInList = [...new Set(list.map(v => pageMap[v.chapterNumber]?.[v.verseNumber]).filter(Boolean))];
-      const randomPage = pagesInList[Math.floor(Math.random() * pagesInList.length)];
-
-      const versesOnPage = list.filter(v => pageMap[v.chapterNumber]?.[v.verseNumber] === randomPage);
-      return versesOnPage[Math.floor(Math.random() * versesOnPage.length)];
+      const first = list[0];
+      const last = list[list.length - 1];
+      return getRandomVerseInRangeByPage(first.chapterNumber, first.verseNumber, last.chapterNumber, last.verseNumber, Math.random);
     };
 
     const onViewVerseNumberChange = () => {
